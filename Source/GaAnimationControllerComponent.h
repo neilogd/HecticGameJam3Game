@@ -1,0 +1,50 @@
+/**************************************************************************
+*
+* File:		GaAnimationControllerComponent.h
+* Author:	Neil Richardson 
+* Ver/Date:	15/12/12	
+* Description:
+*		Camera component.
+*		
+*
+*
+* 
+**************************************************************************/
+
+#ifndef __GaAnimationControllerComponent_H__
+#define __GaAnimationControllerComponent_H__
+
+#include "Psybrus.h"
+
+#include "System/Scene/Animation/ScnAnimation.h"
+#include "System/Scene/Animation/ScnAnimationComponent.h"
+
+//////////////////////////////////////////////////////////////////////////
+// GaExampleComponentRef
+typedef ReObjectRef< class GaAnimationControllerComponent > GaAnimationControllerComponentRef;
+
+//////////////////////////////////////////////////////////////////////////
+// GaAnimationControllerComponent
+class GaAnimationControllerComponent:
+	public ScnComponent
+{
+public:
+	DECLARE_RESOURCE( GaAnimationControllerComponent, ScnComponent );
+
+	void initialise( const Json::Value& Object );
+
+	virtual void update( BcF32 Tick );
+
+	virtual void onAttach( ScnEntityWeakRef Parent );
+	
+private:
+	ReObjectRef< class ScnAnimationTreeBlendNode > pRootTrack_;
+	ReObjectRef< class ScnAnimationTreeTrackNode > pIdleTrack_;
+	ReObjectRef< class ScnAnimationTreeTrackNode > pReloadTrack_;
+	ScnAnimationRef AnimIdle_;
+	ScnAnimationRef AnimFire_;
+	ScnAnimationRef AnimReload_;
+};
+
+#endif
+
