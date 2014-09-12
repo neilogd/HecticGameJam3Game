@@ -15,7 +15,7 @@
 #define __GaSwarmElementComponent_H__
 
 #include "Psybrus.h"
-#include "Base/BcMath.h"
+#include "Math/MaVec2d.h"
 
 //////////////////////////////////////////////////////////////////////////
 // GaExampleComponentRef
@@ -37,10 +37,20 @@ public:
 	virtual void						onDetach( ScnEntityWeakRef Parent );
 
 	BcU8								getUnitMask();
+
+	MaVec2d								getAcceleration();
+	void								stageAcceleration(MaVec2d acceleration);
+	MaVec2d								getVelocity();
+	void								stageVelocity(MaVec2d acceleration);
+	void								commitChanges();
 private:
 	ReObjectRef< class GaSwarmManagerComponent > Manager_;
 	BcU8								UnitMask_;
-	BcVec2d
+	MaVec2d								Acceleration_;
+	MaVec2d								Velocity_;
+
+	MaVec2d								StagedAcceleration_;
+	MaVec2d								StagedVelocity_;
 };
 
 #endif
