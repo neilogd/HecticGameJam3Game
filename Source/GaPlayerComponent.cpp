@@ -12,6 +12,7 @@
 **************************************************************************/
 
 #include "GaPlayerComponent.h"
+#include "GaTankComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnCanvasComponent.h"
@@ -24,6 +25,7 @@
 
 #include "System/Debug/DsCore.h"
 
+#include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -37,6 +39,13 @@ void GaPlayerComponent::StaticRegisterClass()
 		new ReField( "Canvas_", &GaPlayerComponent::Canvas_, bcRFF_TRANSIENT ),
 		new ReField( "ViewMatrix_", &GaPlayerComponent::ViewMatrix_, DsCore::DsCoreSerialised ),
 		new ReField( "TargetPosition_", &GaPlayerComponent::TargetPosition_, DsCore::DsCoreSerialised ),
+		new ReField( "PlayerState_", &GaPlayerComponent::PlayerState_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "JumpHeight_", &GaPlayerComponent::JumpHeight_, DsCore::DsCoreSerialised ),
+		new ReField( "JumpTimer_", &GaPlayerComponent::JumpTimer_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "JumpSpeed_", &GaPlayerComponent::JumpSpeed_, DsCore::DsCoreSerialised ),
+		new ReField( "JumpStart_", &GaPlayerComponent::JumpStart_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "JumpEnd_", &GaPlayerComponent::JumpEnd_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "TankIndex_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 	};
 
 	ReRegisterClass< GaPlayerComponent, Super >( Fields )
@@ -45,9 +54,25 @@ void GaPlayerComponent::StaticRegisterClass()
 
 //////////////////////////////////////////////////////////////////////////
 // initialise
-void GaPlayerComponent::initialise( const Json::Value& Object )
+void GaPlayerComponent::initialise()
 {
 	TargetPosition_ = MaVec2d( 0.0f, 0.0f );
+	PlayerState_ = PlayerState::IDLE;
+
+	JumpHeight_ = 1024.0f;
+	JumpTimer_ = 0.0f;
+	JumpSpeed_ = 0.5f;
+	JumpStart_ = MaVec2d( 0.0f, 0.0f );
+	JumpEnd_ = MaVec2d( 0.0f, 0.0f );
+
+	TankIndex_ = 0;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// initialise
+void GaPlayerComponent::initialise( const Json::Value& Object )
+{
+	initialise();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,9 +91,38 @@ void GaPlayerComponent::preUpdate( BcF32 Tick )
 //virtual
 void GaPlayerComponent::update( BcF32 Tick )
 {
-	getParentEntity()->setLocalPosition( 
-		MaVec3d( TargetPosition_, 0.0f ) );
+	switch( PlayerState_ )
+	{
+	case PlayerState::IDLE:
+		{
+			getParentEntity()->setLocalPosition(
+				MaVec3d( TargetPosition_, 0.0f ) );
+		}
+		break;
 
+	case PlayerState::JUMP:
+		{
+			BcF32 ClampedTimer = BcSmoothStep( std::min( JumpTimer_, 1.0f ) );
+			MaVec2d Position;
+			Position.lerp( JumpStart_, JumpEnd_, ClampedTimer );
+
+			Position.y( Position.y() + std::sin( ClampedTimer * BcPI ) * JumpHeight_ );
+
+			getParentEntity()->setLocalPosition(
+				MaVec3d( Position, 0.0f ) );
+
+			if( JumpTimer_ > 1.0f )
+			{
+				TargetPosition_ = MaVec2d( 
+					getParentEntity()->getLocalPosition().x(), 
+					getParentEntity()->getLocalPosition().y() );
+				PlayerState_ = PlayerState::IDLE;
+			}
+
+			JumpTimer_ += Tick * JumpSpeed_;
+		}
+		break;
+	}
 	Super::update( Tick );
 }
 
@@ -93,6 +147,19 @@ void GaPlayerComponent::onAttach( ScnEntityWeakRef Parent )
 	// Find a canvas to use for rendering (someone in ours, or our parent's hierarchy).
 	Canvas_ = Parent->getComponentAnyParentByType< ScnCanvasComponent >( 0 );
 	BcAssertMsg( Canvas_.isValid(), "Player component needs to be attached to an entity with a canvas component in any parent!" );
+
+	// Jump tank 0.
+	jumpTank( 0 );
+
+	// Start in centre of tank.
+	auto TankDimensions = Tank_->getComponentByType< GaTankComponent >()->getDimensions();
+
+	getParentEntity()->setLocalPosition(
+		MaVec3d( TankDimensions.x(), TankDimensions.y(), 0.0f ) * 0.5f );
+
+	TargetPosition_ = MaVec2d( 
+		getParentEntity()->getLocalPosition().x(), 
+		getParentEntity()->getLocalPosition().y() );
 
 }
 
@@ -121,8 +188,38 @@ eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Ev
 	InverseViewMatrix.inverse();
 	MousePosition = MousePosition * InverseViewMatrix;
 
-	TargetPosition_ = MousePosition;
+	if( Event.ButtonCode_ == 0 )
+	{
+		TargetPosition_ = MousePosition;
+	}
+	else
+	{
+		jumpTank( TankIndex_ + 1 );
+	}
 
 	return evtRET_PASS;
 }
 
+//////////////////////////////////////////////////////////////////////////
+// jumpTank
+void GaPlayerComponent::jumpTank( BcU32 TankIndex )
+{
+	Tank_ = getParentEntity()->getComponentAnyParentByType< ScnEntity >( BcName( "TankEntity", TankIndex ) );
+	if( TankIndex != TankIndex_ )
+	{
+		PlayerState_ = PlayerState::JUMP;
+		TankIndex_ = TankIndex;
+
+		BcAssertMsg( Tank_ != nullptr, "Implement end game condition here :)" );
+
+		auto TankDimensions = Tank_->getComponentByType< GaTankComponent >()->getDimensions();
+
+		JumpTimer_ = 0.0f;
+		JumpStart_ = MaVec2d( getParentEntity()->getLocalPosition().x(), getParentEntity()->getLocalPosition().y() );
+		JumpEnd_ = MaVec2d( Tank_->getLocalPosition().x(), Tank_->getLocalPosition().y() ) + TankDimensions * 0.5f;
+	}
+	else
+	{
+		PlayerState_ = PlayerState::IDLE;
+	}
+}

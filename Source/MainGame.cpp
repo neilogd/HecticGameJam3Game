@@ -56,14 +56,22 @@ void PsyLaunchGame()
 				ParentEntity,
 				[]( ScnEntity* ParentEntity )
 				{
-					ScnEntitySpawnParams TankEntityParams =
+					MaVec3d Position( 0.0f, 0.0f, 0.0f );
+					MaVec3d PositionIncrement( 2200.0f, 0.0f, 0.0f );
+					for( BcU32 Idx = 0; Idx < 10; ++Idx )
 					{
-						"default", "TankEntity", "TankEntity_0",
-						MaMat4d(),
-						ParentEntity,
-					};
+						ScnEntitySpawnParams TankEntityParams =
+						{
+							"default", "TankEntity", BcName( "TankEntity", Idx ),
+							MaMat4d(),
+							ParentEntity,
+						};
 
-					ScnCore::pImpl()->spawnEntity( TankEntityParams );
+						TankEntityParams.Transform_.translation( Position );
+						Position += PositionIncrement;
+
+						ScnCore::pImpl()->spawnEntity( TankEntityParams );
+					}
 
 					ScnEntitySpawnParams PlayerEntityParams =
 					{

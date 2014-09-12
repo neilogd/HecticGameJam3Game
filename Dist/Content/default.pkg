@@ -107,7 +107,7 @@
 					"type"					: "GaTankComponent",
 					"watermaterial"			: "WaterMaterial_0",
 					"glassmaterial"			: "GlassMaterial_0",
-					"dimensions"			: "1024.0, 512.0"
+					"dimensions"			: "2000.0, 1000.0"
 				}
 			]
 		},

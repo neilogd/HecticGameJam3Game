@@ -31,6 +31,7 @@ class GaPlayerComponent:
 public:
 	DECLARE_RESOURCE( GaPlayerComponent, ScnComponent );
 
+	void initialise();
 	void initialise( const Json::Value& Object );
 
 	virtual void preUpdate( BcF32 Tick );
@@ -42,11 +43,29 @@ public:
 
 	eEvtReturn onMouseDown( EvtID ID, const struct OsEventInputMouse& Event );
 
+	void jumpTank( BcU32 TankIndex );
 
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 	MaMat4d ViewMatrix_;
 	MaVec2d TargetPosition_;
+	
+	BcF32 JumpHeight_;
+	BcF32 JumpTimer_;
+	BcF32 JumpSpeed_;
+	MaVec2d JumpStart_;
+	MaVec2d JumpEnd_;
+
+	BcU32 TankIndex_;
+	ScnEntityRef Tank_;
+
+	enum class PlayerState
+	{
+		IDLE,
+		JUMP,
+	};
+
+	PlayerState PlayerState_;
 };
 
 #endif

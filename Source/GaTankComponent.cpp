@@ -98,3 +98,10 @@ void GaTankComponent::onDetach( ScnEntityWeakRef Parent )
 	Super::onDetach( Parent );
 
 }
+
+//////////////////////////////////////////////////////////////////////////
+// getDimensions
+const MaVec2d& GaTankComponent::getDimensions() const
+{
+	return Dimensions_;
+}

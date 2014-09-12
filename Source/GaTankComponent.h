@@ -28,12 +28,14 @@ class GaTankComponent:
 public:
 	DECLARE_RESOURCE( GaTankComponent, ScnComponent );
 
-	void								initialise( const Json::Value& Object );
+	void initialise( const Json::Value& Object );
 
-	virtual void						update( BcF32 Tick );
+	virtual void update( BcF32 Tick );
 	
-	virtual void						onAttach( ScnEntityWeakRef Parent );
-	virtual void						onDetach( ScnEntityWeakRef Parent );
+	virtual void onAttach( ScnEntityWeakRef Parent );
+	virtual void onDetach( ScnEntityWeakRef Parent );
+
+	const MaVec2d& getDimensions() const;
 
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
