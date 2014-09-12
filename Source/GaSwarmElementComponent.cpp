@@ -38,7 +38,7 @@ void GaSwarmElementComponent::StaticRegisterClass()
 		new ReField( "Velocity_", &GaSwarmElementComponent::Velocity_ ),
 		new ReField( "StagedVelocity_", &GaSwarmElementComponent::StagedVelocity_ ),
 	};
-
+		
 	ReRegisterClass< GaSwarmElementComponent, Super >( Fields )
 		.addAttribute( new ScnComponentAttribute( 1 ) );
 }
@@ -47,7 +47,22 @@ void GaSwarmElementComponent::StaticRegisterClass()
 // initialise
 void GaSwarmElementComponent::initialise( const Json::Value& Object )
 {
-	
+	initialise( );
+	if (Object["unitmask"] != Json::ValueType::nullValue)
+	{
+		UnitMask_ = (BcU8)Object["unitmask"].asUInt();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+// initialise
+void GaSwarmElementComponent::initialise( )
+{
+	UnitMask_ = 0;
+	Acceleration_ = MaVec2d( 0, 0 );
+	Velocity_ = MaVec2d( 0, 0 );
+	StagedAcceleration_ = MaVec2d( 0, 0 );
+	StagedVelocity_ = MaVec2d( 0, 0 );
 }
 
 //////////////////////////////////////////////////////////////////////////

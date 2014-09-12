@@ -29,6 +29,7 @@ class GaSwarmElementComponent:
 public:
 	DECLARE_RESOURCE( GaSwarmElementComponent, ScnComponent );
 
+	void								initialise( );
 	void								initialise( const Json::Value& Object );
 
 	virtual void						update( BcF32 Tick );
