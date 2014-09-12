@@ -20,7 +20,7 @@
 #include "System/Content/CsCore.h"
 
 #include "Base/BcProfiler.h"
-
+#include "System/Debug/DsCore.h"
 #include "GaSwarmManagerComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -35,7 +35,7 @@ void GaSwarmElementComponent::StaticRegisterClass()
 		new ReField( "UnitMask_", &GaSwarmElementComponent::UnitMask_ ),
 		new ReField( "Acceleration_", &GaSwarmElementComponent::Acceleration_ ),
 		new ReField( "StagedAcceleration_", &GaSwarmElementComponent::StagedAcceleration_ ),
-		new ReField( "Velocity_", &GaSwarmElementComponent::Velocity_ ),
+		new ReField( "Velocity_", &GaSwarmElementComponent::Velocity_ , DsCore::DsCoreSerialised),
 		new ReField( "StagedVelocity_", &GaSwarmElementComponent::StagedVelocity_ ),
 	};
 		
@@ -71,6 +71,13 @@ void GaSwarmElementComponent::initialise( )
 void GaSwarmElementComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
+
+	MaVec2d position = getPosition();
+	position = position + Velocity_;
+	
+	MaVec3d realPos(position, 0.0f);
+	getParentEntity()->setLocalPosition(realPos);
+	
 }
 
 //////////////////////////////////////////////////////////////////////////

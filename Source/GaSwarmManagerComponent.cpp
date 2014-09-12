@@ -44,6 +44,11 @@ void GaSwarmManagerComponent::initialise( const Json::Value& Object )
 void GaSwarmManagerComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
+	BcF32 size = this->SwarmElements.size();
+	for ( int Idx = 0; Idx < size; ++Idx )
+	{
+		
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
