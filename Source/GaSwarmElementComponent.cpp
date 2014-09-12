@@ -88,7 +88,7 @@ MaVec2d	GaSwarmElementComponent::getAcceleration()
 {
 	return Acceleration_;
 }
-void GaSwarmElementComponent::stageAcceleration(MaVec2d acceleration)
+void GaSwarmElementComponent::stageAcceleration( MaVec2d acceleration )
 {
 	StagedAcceleration_ = acceleration;
 }
@@ -96,7 +96,7 @@ MaVec2d GaSwarmElementComponent::getVelocity()
 {
 	return Velocity_;
 }
-void GaSwarmElementComponent::stageVelocity(MaVec2d acceleration)
+void GaSwarmElementComponent::stageVelocity( MaVec2d acceleration )
 {
 	StagedVelocity_ = acceleration;
 }
@@ -104,4 +104,10 @@ void GaSwarmElementComponent::commitChanges()
 {
 	Acceleration_ = StagedAcceleration_;
 	Velocity_ = StagedVelocity_;
+}
+
+MaVec2d GaSwarmElementComponent::getPosition()
+{
+	MaVec3d pos = getParentEntity()->getLocalPosition();
+	return MaVec2d(pos.x(), pos.y());
 }
