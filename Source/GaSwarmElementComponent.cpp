@@ -68,9 +68,18 @@ void GaSwarmElementComponent::onAttach( ScnEntityWeakRef Parent )
 //////////////////////////////////////////////////////////////////////////
 // onDetach
 //virtual
-void GaSwarmElementComponent::onDetach( ScnEntityWeakRef Parent )
+void GaSwarmElementComponent::onDetach(ScnEntityWeakRef Parent)
 {
-	Super::onDetach( Parent );
-	
+	Super::onDetach(Parent);
+
 	// TODO: Unregister with manager or something.
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+// getUnitMask
+//virtual
+BcU8 GaSwarmElementComponent::getUnitMask()
+{
+	return UnitMask_;
 }

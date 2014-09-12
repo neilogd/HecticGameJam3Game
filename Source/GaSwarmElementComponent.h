@@ -15,7 +15,7 @@
 #define __GaSwarmElementComponent_H__
 
 #include "Psybrus.h"
-
+#include "Base/BcMath.h"
 
 //////////////////////////////////////////////////////////////////////////
 // GaExampleComponentRef
@@ -36,8 +36,11 @@ public:
 	virtual void						onAttach( ScnEntityWeakRef Parent );
 	virtual void						onDetach( ScnEntityWeakRef Parent );
 
+	BcU8								getUnitMask();
 private:
 	ReObjectRef< class GaSwarmManagerComponent > Manager_;
+	BcU8								UnitMask_;
+	BcVec2d
 };
 
 #endif
