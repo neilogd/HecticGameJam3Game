@@ -122,7 +122,8 @@
 				},
 
 				{
-					"type"					: "GaSwarmElementComponent"
+					"type"					: "GaSwarmElementComponent",
+					"unitmask"				: 1
 				},
 
 				{
