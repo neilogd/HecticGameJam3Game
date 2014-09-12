@@ -32,6 +32,11 @@ void GaSwarmElementComponent::StaticRegisterClass()
 	ReField* Fields[] =
 	{
 		new ReField( "Manager_", &GaSwarmElementComponent::Manager_, bcRFF_TRANSIENT ),
+		new ReField( "UnitMask_", &GaSwarmElementComponent::UnitMask_ ),
+		new ReField( "Acceleration_", &GaSwarmElementComponent::Acceleration_ ),
+		new ReField( "StagedAcceleration_", &GaSwarmElementComponent::StagedAcceleration_ ),
+		new ReField( "Velocity_", &GaSwarmElementComponent::Velocity_ ),
+		new ReField( "StagedVelocity_", &GaSwarmElementComponent::StagedVelocity_ ),
 	};
 
 	ReRegisterClass< GaSwarmElementComponent, Super >( Fields )
