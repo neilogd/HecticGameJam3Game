@@ -37,6 +37,7 @@ void GaSwarmElementComponent::StaticRegisterClass()
 		new ReField( "StagedAcceleration_", &GaSwarmElementComponent::StagedAcceleration_ ),
 		new ReField( "Velocity_", &GaSwarmElementComponent::Velocity_ , DsCore::DsCoreSerialised),
 		new ReField( "StagedVelocity_", &GaSwarmElementComponent::StagedVelocity_ ),
+		new ReField( "VelocityDriven_", &GaSwarmElementComponent::VelocityDriven_ ),
 	};
 		
 	ReRegisterClass< GaSwarmElementComponent, Super >( Fields )
@@ -52,6 +53,10 @@ void GaSwarmElementComponent::initialise( const Json::Value& Object )
 	{
 		UnitMask_ = (BcU8)Object["unitmask"].asUInt();
 	}
+	if (Object["velocitydriven"] != Json::ValueType::nullValue)
+	{
+		VelocityDriven_ = Object["velocitydriven"].asBool();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -63,6 +68,7 @@ void GaSwarmElementComponent::initialise( )
 	Velocity_ = MaVec2d( 0, 0 );
 	StagedAcceleration_ = MaVec2d( 0, 0 );
 	StagedVelocity_ = MaVec2d( 0, 0 );
+	VelocityDriven_ = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,12 +78,14 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
 
-	MaVec2d position = getPosition();
-	position = position + Velocity_;
+	if ( VelocityDriven_ )
+	{
+		MaVec2d position = getPosition();
+		position = position + Velocity_;
 	
-	MaVec3d realPos(position, 0.0f);
-	getParentEntity()->setLocalPosition(realPos);
-	
+		MaVec3d realPos(position, 0.0f);
+		getParentEntity()->setLocalPosition(realPos);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

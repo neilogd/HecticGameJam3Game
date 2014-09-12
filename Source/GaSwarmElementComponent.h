@@ -53,6 +53,8 @@ private:
 
 	MaVec2d								StagedAcceleration_;
 	MaVec2d								StagedVelocity_;
+
+	BcBool								VelocityDriven_;
 };
 
 #endif
