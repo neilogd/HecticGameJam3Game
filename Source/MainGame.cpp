@@ -13,21 +13,13 @@
 
 #include "Psybrus.h"
 
-#include "GaCameraComponent.h"
-#include "GaAnimationControllerComponent.h"
-#include "GaLevelComponent.h"
-#include "GaTestModelComponent.h"
-#include "GaTestParticleComponent.h"
-#include "GaTestShaderComponent.h"
-#include "GaTestSelectionComponent.h"
-
 #include "System/Content/CsCore.h"
 #include "System/Os/OsCore.h"
 #include "System/Scene/ScnCore.h"
 
 //////////////////////////////////////////////////////////////////////////
 // GPsySetupParams
-PsySetupParams GPsySetupParams( "Development Game", psySF_GAME_DEV, 1.0f / 60.0f );	
+PsySetupParams GPsySetupParams( "Hectic Game Jam 3: Underwater", psySF_GAME_DEV, 1.0f / 60.0f );	
 
 //////////////////////////////////////////////////////////////////////////
 // PsyGameInit
@@ -42,7 +34,7 @@ void PsyLaunchGame()
 {
 	ScnEntitySpawnParams ScreenEntityParams = 
 	{
-		"default", "MenuEntity", "MenuEntity_0",
+		"default", "ScreenEntity", "ScreenEntity_0",
 		MaMat4d(),
 		nullptr
 	};
@@ -57,4 +49,13 @@ void PsyLaunchGame()
 	};
 
 	ScnCore::pImpl()->spawnEntity( CameraEntityParams );
+
+	ScnEntitySpawnParams GameEntityParams =
+	{
+		"default", "GameEntity", "GameEntity_0",
+		MaMat4d(),
+		nullptr
+	};
+
+	ScnCore::pImpl()->spawnEntity( GameEntityParams );
 }
