@@ -1,6 +1,6 @@
 /**************************************************************************
 *
-* File:		GaTestShaderComponent.h
+* File:		GaPlayerComponent.h
 * Author:	Neil Richardson 
 * Ver/Date:		
 * Description:
@@ -11,8 +11,8 @@
 * 
 **************************************************************************/
 
-#ifndef __GaTestShaderComponent_H__
-#define __GaTestShaderComponent_H__
+#ifndef __GaPlayerComponent_H__
+#define __GaPlayerComponent_H__
 
 #include "Psybrus.h"
 #include "System/Scene/Rendering/ScnRenderableComponent.h"
@@ -21,35 +21,25 @@
 
 //////////////////////////////////////////////////////////////////////////
 // GaExampleComponentRef
-typedef ReObjectRef< class GaTestShaderComponent > GaTestShaderComponentRef;
+typedef ReObjectRef< class GaPlayerComponent > GaPlayerComponentRef;
 
 //////////////////////////////////////////////////////////////////////////
-// GaTestShaderComponent
-class GaTestShaderComponent:
-	public ScnRenderableComponent
+// GaPlayerComponent
+class GaPlayerComponent:
+	public ScnComponent
 {
 public:
-	DECLARE_RESOURCE( GaTestShaderComponent, ScnRenderableComponent );
+	DECLARE_RESOURCE( GaPlayerComponent, ScnComponent );
 
 	void								initialise( const Json::Value& Object );
 
 	virtual void						update( BcF32 Tick );
-	virtual void						render( class ScnViewComponent* pViewComponent, RsFrame* pFrame, RsRenderSort Sort );
-
+	
 	virtual void						onAttach( ScnEntityWeakRef Parent );
 	virtual void						onDetach( ScnEntityWeakRef Parent );
-	
-	virtual MaAABB						getAABB() const;
 
 private:
-	class RsBuffer* ObjectUniformBuffer_;
-	class RsBuffer* TestUniformBuffer_;
-	class RsBuffer* IndexBuffer_;
-	class RsBuffer* VertexBuffer_;
-	class RsVertexDeclaration* VertexDeclaration_;
 
-	ScnMaterialRef Material_;
-	ScnMaterialComponentRef MaterialComponent_;
 };
 
 #endif

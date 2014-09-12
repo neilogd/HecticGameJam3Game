@@ -60,13 +60,13 @@
 #include "System/Sound/SsCore.h"
 #include "System/SysKernel.h"
 #include "System/SysSystem.h"
-#include "GaAnimationControllerComponent.h"
 #include "GaCameraComponent.h"
-#include "GaLevelComponent.h"
-#include "GaTestModelComponent.h"
-#include "GaTestParticleComponent.h"
-#include "GaTestSelectionComponent.h"
-#include "GaTestShaderComponent.h"
+#include "GaEnemyComponent.h"
+#include "GaGameComponent.h"
+#include "GaMenuComponent.h"
+#include "GaPlayerComponent.h"
+#include "GaSwarmElementComponent.h"
+#include "GaSwarmManagerComponent.h"
 void AutoGenRegisterReflection()
 {
 	MaAABB::StaticRegisterClass();
@@ -141,11 +141,11 @@ void AutoGenRegisterReflection()
 	SsCore::StaticRegisterClass();
 	SysKernel::StaticRegisterClass();
 	SysSystem::StaticRegisterClass();
-	GaAnimationControllerComponent::StaticRegisterClass();
 	GaCameraComponent::StaticRegisterClass();
-	GaLevelComponent::StaticRegisterClass();
-	GaTestModelComponent::StaticRegisterClass();
-	GaTestParticleComponent::StaticRegisterClass();
-	GaTestSelectionComponent::StaticRegisterClass();
-	GaTestShaderComponent::StaticRegisterClass();
+	GaEnemyComponent::StaticRegisterClass();
+	GaGameComponent::StaticRegisterClass();
+	GaMenuComponent::StaticRegisterClass();
+	GaPlayerComponent::StaticRegisterClass();
+	GaSwarmElementComponent::StaticRegisterClass();
+	GaSwarmManagerComponent::StaticRegisterClass();
 }

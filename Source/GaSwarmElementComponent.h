@@ -1,41 +1,43 @@
 /**************************************************************************
 *
-* File:		GaLevelComponent.h
+* File:		GaSwarmElementComponent.h
 * Author:	Neil Richardson 
-* Ver/Date:	11/01/13	
+* Ver/Date:		
 * Description:
-*		Level component.
+*		
 *		
 *
 *
 * 
 **************************************************************************/
 
-#ifndef __GaLevelComponent_H__
-#define __GaLevelComponent_H__
+#ifndef __GaSwarmElementComponent_H__
+#define __GaSwarmElementComponent_H__
 
 #include "Psybrus.h"
 
-//////////////////////////////////////////////////////////////////////////
-// GaExampleComponentRef
-typedef ReObjectRef< class GaLevelComponent > GaLevelComponentRef;
 
 //////////////////////////////////////////////////////////////////////////
-// GaLevelComponent
-class GaLevelComponent:
+// GaExampleComponentRef
+typedef ReObjectRef< class GaSwarmElementComponent > GaSwarmElementComponentRef;
+
+//////////////////////////////////////////////////////////////////////////
+// GaSwarmElementComponent
+class GaSwarmElementComponent:
 	public ScnComponent
 {
 public:
-	DECLARE_RESOURCE( GaLevelComponent, ScnComponent );
+	DECLARE_RESOURCE( GaSwarmElementComponent, ScnComponent );
 
 	void								initialise( const Json::Value& Object );
 
 	virtual void						update( BcF32 Tick );
-
-	virtual void						onAttach( ScnEntityWeakRef Parent );
 	
-private:
+	virtual void						onAttach( ScnEntityWeakRef Parent );
+	virtual void						onDetach( ScnEntityWeakRef Parent );
 
+private:
+	ReObjectRef< class GaSwarmManagerComponent > Manager_;
 };
 
 #endif

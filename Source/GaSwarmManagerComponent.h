@@ -1,6 +1,6 @@
 /**************************************************************************
 *
-* File:		GaTestModelComponent.h
+* File:		GaSwarmManagerComponent.h
 * Author:	Neil Richardson 
 * Ver/Date:		
 * Description:
@@ -11,25 +11,23 @@
 * 
 **************************************************************************/
 
-#ifndef __GaTestModelComponent_H__
-#define __GaTestModelComponent_H__
+#ifndef __GaSwarmManagerComponent_H__
+#define __GaSwarmManagerComponent_H__
 
 #include "Psybrus.h"
-#include "System/Scene/Rendering/ScnRenderableComponent.h"
-
-#include "System/Scene/Rendering/ScnMaterial.h"
+#include "GaSwarmElementComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // GaExampleComponentRef
-typedef ReObjectRef< class GaTestModelComponent > GaTestModelComponentRef;
+typedef ReObjectRef< class GaSwarmManagerComponent > GaSwarmManagerComponentRef;
 
 //////////////////////////////////////////////////////////////////////////
-// GaTestModelComponent
-class GaTestModelComponent:
-	public ScnRenderableComponent
+// GaSwarmManagerComponent
+class GaSwarmManagerComponent:
+	public ScnComponent
 {
 public:
-	DECLARE_RESOURCE( GaTestModelComponent, ScnRenderableComponent );
+	DECLARE_RESOURCE( GaSwarmManagerComponent, ScnComponent );
 
 	void								initialise( const Json::Value& Object );
 
@@ -37,12 +35,9 @@ public:
 	
 	virtual void						onAttach( ScnEntityWeakRef Parent );
 	virtual void						onDetach( ScnEntityWeakRef Parent );
-	
-	virtual MaAABB						getAABB() const;
 
 private:
-	ScnMaterialRef Material_;
-	ScnMaterialComponentRef MaterialComponent_;
+	
 };
 
 #endif
