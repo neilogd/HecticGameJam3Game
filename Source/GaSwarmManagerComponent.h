@@ -37,7 +37,7 @@ public:
 	virtual void						onDetach( ScnEntityWeakRef Parent );
 
 private:
-	
+	std::vector<GaSwarmElementComponentRef> SwarmElements;
 };
 
 #endif

@@ -68,9 +68,40 @@ void GaSwarmElementComponent::onAttach( ScnEntityWeakRef Parent )
 //////////////////////////////////////////////////////////////////////////
 // onDetach
 //virtual
-void GaSwarmElementComponent::onDetach( ScnEntityWeakRef Parent )
+void GaSwarmElementComponent::onDetach(ScnEntityWeakRef Parent)
 {
-	Super::onDetach( Parent );
-	
+	Super::onDetach(Parent);
+
 	// TODO: Unregister with manager or something.
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+// getUnitMask
+//virtual
+BcU8 GaSwarmElementComponent::getUnitMask()
+{
+	return UnitMask_;
+}
+
+MaVec2d	GaSwarmElementComponent::getAcceleration()
+{
+	return Acceleration_;
+}
+void GaSwarmElementComponent::stageAcceleration(MaVec2d acceleration)
+{
+	StagedAcceleration_ = acceleration;
+}
+MaVec2d GaSwarmElementComponent::getVelocity()
+{
+	return Velocity_;
+}
+void GaSwarmElementComponent::stageVelocity(MaVec2d acceleration)
+{
+	StagedVelocity_ = acceleration;
+}
+void GaSwarmElementComponent::commitChanges()
+{
+	Acceleration_ = StagedAcceleration_;
+	Velocity_ = StagedVelocity_;
 }
