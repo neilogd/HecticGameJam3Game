@@ -17,7 +17,12 @@
 				{
 					"type"					: "ScnCanvasComponent",
 					"noofvertices" 			: 8192,
-					"rendermask"			: 1
+					"rendermask"			: 1,
+					"clear"					: true,
+					"left"					: -1.0,
+					"right"					: 1.0,
+					"top"					: -1.0,
+					"bottom"				: 1.0	
 				},
 
 				{
@@ -77,6 +82,36 @@
 					"type"					: "GaSwarmManagerComponent"
 				}
 
+			]
+		},
+
+		{
+			"name"		:		"PlayerEntity",
+			"type"		:		"ScnEntity",
+
+			"components" : [
+				{
+					"type"					: "GaPlayerComponent"
+				},
+
+				{
+					"type"					: "GaSwarmElementComponent"
+				},
+
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "PlayerMaterialComponent_0",
+					"material"				: "$(ScnMaterial:player.material)",
+					"permutation"			: "2d"
+				},
+
+				{
+					"type"					: "ScnSpriteComponent",
+					"materialcomponent"		: "PlayerMaterialComponent_0",
+					"size"					: "64.0, 64.0",
+					"colour"				: "1.0, 1.0, 1.0, 1.0",
+					"center"				: true
+				}
 			]
 		}
 	]

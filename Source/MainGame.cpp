@@ -47,18 +47,28 @@ void PsyLaunchGame()
 				nullptr
 			};
 
-			auto* CameraEntity = ScnCore::pImpl()->spawnEntity( CameraEntityParams );
+			ScnCore::pImpl()->spawnEntity( CameraEntityParams );
 
 			ScnEntitySpawnParams GameEntityParams =
 			{
 				"default", "GameEntity", "GameEntity_0",
 				MaMat4d(),
 				ParentEntity,
-				nullptr
+				[]( ScnEntity* ParentEntity )
+				{
+					ScnEntitySpawnParams PlayerEntityParams =
+					{
+						"default", "PlayerEntity", "PlayerEntity_0",
+						MaMat4d(),
+						ParentEntity,
+						nullptr
+					};
+
+					ScnCore::pImpl()->spawnEntity( PlayerEntityParams );
+				}
 			};
 
-			auto* GameEntity = ScnCore::pImpl()->spawnEntity( GameEntityParams );
-
+			ScnCore::pImpl()->spawnEntity( GameEntityParams );
 		}
 	};
 
