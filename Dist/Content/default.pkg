@@ -81,7 +81,34 @@
 				{
 					"type"					: "GaSwarmManagerComponent"
 				}
+			]
+		},
 
+		{
+			"name"		:		"TankEntity",
+			"type"		:		"ScnEntity",
+
+			"components" : [
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "WaterMaterial_0",
+					"material"				: "$(ScnMaterial:tank.material)",
+					"permutation"			: "2d"
+				},
+				
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "GlassMaterial_0",
+					"material"				: "$(ScnMaterial:tank.material)",
+					"permutation"			: "2d"
+				},
+
+				{
+					"type"					: "GaTankComponent",
+					"watermaterial"			: "WaterMaterial_0",
+					"glassmaterial"			: "GlassMaterial_0",
+					"dimensions"			: "1024.0, 512.0"
+				}
 			]
 		},
 
@@ -110,7 +137,8 @@
 					"materialcomponent"		: "PlayerMaterialComponent_0",
 					"size"					: "64.0, 64.0",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
-					"center"				: true
+					"center"				: true,
+					"layer"					: 10
 				}
 			]
 		}

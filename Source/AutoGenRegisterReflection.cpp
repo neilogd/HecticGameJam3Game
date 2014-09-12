@@ -67,6 +67,7 @@
 #include "GaPlayerComponent.h"
 #include "GaSwarmElementComponent.h"
 #include "GaSwarmManagerComponent.h"
+#include "GaTankComponent.h"
 void AutoGenRegisterReflection()
 {
 	MaAABB::StaticRegisterClass();
@@ -148,4 +149,5 @@ void AutoGenRegisterReflection()
 	GaPlayerComponent::StaticRegisterClass();
 	GaSwarmElementComponent::StaticRegisterClass();
 	GaSwarmManagerComponent::StaticRegisterClass();
+	GaTankComponent::StaticRegisterClass();
 }

@@ -1,0 +1,24 @@
+{
+	"resources" : [
+		{
+			"type"			: "ScnMaterial",
+			"name"			: "material",
+
+			// Shader
+			"shader"		: "$(ScnShader:shaders.default)",
+
+			// Textures
+			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.default)"
+			},
+
+			// State
+			"state"			: {
+				"depth_write_enable" 		: 0,
+				"depth_test_enable" 		: 0,
+				"depth_test_compare" 		: "lessequal",
+				"blend_mode" 				: "blend"
+			}
+		}
+	]
+}

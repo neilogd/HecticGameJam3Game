@@ -56,6 +56,15 @@ void PsyLaunchGame()
 				ParentEntity,
 				[]( ScnEntity* ParentEntity )
 				{
+					ScnEntitySpawnParams TankEntityParams =
+					{
+						"default", "TankEntity", "TankEntity_0",
+						MaMat4d(),
+						ParentEntity,
+					};
+
+					ScnCore::pImpl()->spawnEntity( TankEntityParams );
+
 					ScnEntitySpawnParams PlayerEntityParams =
 					{
 						"default", "PlayerEntity", "PlayerEntity_0",
