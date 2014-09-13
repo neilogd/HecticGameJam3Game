@@ -107,7 +107,8 @@
 					"type"					: "GaTankComponent",
 					"watermaterial"			: "WaterMaterial_0",
 					"glassmaterial"			: "GlassMaterial_0",
-					"dimensions"			: "2000.0, 1000.0"
+					"dimensions"			: "2000.0, 1000.0",
+					"nooffish"				: 8
 				}
 			]
 		},
@@ -137,7 +138,39 @@
 					"type"					: "ScnSpriteComponent",
 					"materialcomponent"		: "PlayerMaterialComponent_0",
 					"size"					: "64.0, 64.0",
-					"colour"				: "1.0, 1.0, 1.0, 1.0",
+					"colour"				: "0.0, 1.0, 0.0, 1.0",
+					"center"				: true,
+					"layer"					: 20
+				}
+			]
+		},
+
+		{
+			"name"		:		"EnemyEntity",
+			"type"		:		"ScnEntity",
+
+			"components" : [
+				{
+					"type"					: "GaEnemyComponent"
+				},
+
+				{
+					"type"					: "GaSwarmElementComponent",
+					"unitmask"				: 2
+				},
+
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "EnemyMaterialComponent_0",
+					"material"				: "$(ScnMaterial:enemies.material)",
+					"permutation"			: "2d"
+				},
+
+				{
+					"type"					: "ScnSpriteComponent",
+					"materialcomponent"		: "EnemyMaterialComponent_0",
+					"size"					: "64.0, 64.0",
+					"colour"				: "1.0, 0.0, 0.0, 1.0",
 					"center"				: true,
 					"layer"					: 10
 				}

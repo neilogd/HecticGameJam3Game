@@ -20,6 +20,7 @@
 #include "System/Content/CsPackage.h"
 #include "System/Content/CsCore.h"
 
+#include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -35,7 +36,8 @@ void GaTankComponent::StaticRegisterClass()
 		new ReField( "GlassMaterial_", &GaTankComponent::GlassMaterial_, bcRFF_TRANSIENT ),
 		new ReField( "WaterMaterialName_", &GaTankComponent::WaterMaterialName_ ),
 		new ReField( "GlassMaterialName_", &GaTankComponent::GlassMaterialName_ ),
-		new ReField( "Dimensions_", &GaTankComponent::Dimensions_ )
+		new ReField( "Dimensions_", &GaTankComponent::Dimensions_ ),
+		new ReField( "NoofFish_", &GaTankComponent::NoofFish_ )
 	};
 
 	ReRegisterClass< GaTankComponent, Super >( Fields )
@@ -49,6 +51,7 @@ void GaTankComponent::initialise( const Json::Value& Object )
 	WaterMaterialName_ = Object[ "watermaterial" ].asCString();
 	GlassMaterialName_ = Object[ "glassmaterial" ].asCString();
 	Dimensions_ = Object[ "dimensions" ].asCString();
+	NoofFish_ = Object[ "nooffish" ].asUInt();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -88,6 +91,36 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 	// Find a canvas to use for rendering (someone in ours, or our parent's hierarchy).
 	WaterMaterial_ = Parent->getComponentAnyParentByType< ScnMaterialComponent >( WaterMaterialName_ );
 	GlassMaterial_ = Parent->getComponentAnyParentByType< ScnMaterialComponent >( GlassMaterialName_ );
+
+	// Spawn fish.
+	auto TankDimensions = getDimensions();
+	auto CentralPosition = MaVec3d( 
+		TankDimensions.x() * 0.5f,
+		TankDimensions.y() * 0.5f,
+		0.0f );
+
+	BcF32 Rot = 0.0f;
+	BcF32 RotAdv = BcPIMUL2 / BcF32( NoofFish_ );
+	BcF32 Radius = 128.0f;
+	for( BcU32 FishIdx = 0; FishIdx < NoofFish_; ++FishIdx )
+	{
+		ScnEntitySpawnParams EnemyEntityParams =
+		{
+			"default", "EnemyEntity", BcName( "EnemyEntity", FishIdx ),
+			MaMat4d(),
+			Parent,
+			nullptr
+		};
+
+		EnemyEntityParams.Transform_.translation(
+			CentralPosition +
+			MaVec3d( BcCos( Rot ), -BcSin( Rot ), 0.0f ) * Radius );
+
+
+		ScnCore::pImpl()->spawnEntity( EnemyEntityParams );
+
+		Rot += RotAdv;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
