@@ -6,12 +6,12 @@
 
 			"components" : [
 				{
-					"type"					: "GaEnemyComponent"
-				},
-
-				{
 					"type"					: "GaSwarmElementComponent",
 					"unitmask"				: 2
+				},
+				
+				{
+					"type"					: "GaEnemyComponent"
 				},
 
 				{

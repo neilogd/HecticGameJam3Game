@@ -6,12 +6,12 @@
 
 			"components" : [
 				{
-					"type"					: "GaFoodComponent"
+					"type"					: "GaSwarmElementComponent",
+					"unitmask"				: 4
 				},
 
 				{
-					"type"					: "GaSwarmElementComponent",
-					"unitmask"				: 4
+					"type"					: "GaFoodComponent"
 				},
 
 				{

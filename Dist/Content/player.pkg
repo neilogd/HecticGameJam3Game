@@ -6,12 +6,12 @@
 
 			"components" : [
 				{
-					"type"					: "GaPlayerComponent"
+					"type"					: "GaSwarmElementComponent",
+					"unitmask"				: 1
 				},
 
 				{
-					"type"					: "GaSwarmElementComponent",
-					"unitmask"				: 1
+					"type"					: "GaPlayerComponent"
 				},
 
 				{
