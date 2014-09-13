@@ -1,24 +1,35 @@
 {
 	"resources" : [
 		{
-			"type"			: "ScnMaterial",
-			"name"			: "material",
+			"name"		:		"EnemyEntity",
+			"type"		:		"ScnEntity",
 
-			// Shader
-			"shader"		: "$(ScnShader:shaders.default)",
+			"components" : [
+				{
+					"type"					: "GaSwarmElementComponent",
+					"unitmask"				: 2
+				},
+				
+				{
+					"type"					: "GaEnemyComponent"
+				},
 
-			// Textures
-			"textures"		: {
-				"aDiffuseTex"	: "$(ScnTexture:textures.default)"
-			},
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "EnemyMaterialComponent_0",
+					"material"				: "$(ScnMaterial:materials.enemy)",
+					"permutation"			: "2d"
+				},
 
-			// State
-			"state"			: {
-				"depth_write_enable" 		: 0,
-				"depth_test_enable" 		: 0,
-				"depth_test_compare" 		: "lessequal",
-				"blend_mode" 				: "none"
-			}
+				{
+					"type"					: "ScnSpriteComponent",
+					"materialcomponent"		: "EnemyMaterialComponent_0",
+					"size"					: "64.0, 64.0",
+					"colour"				: "1.0, 0.0, 0.0, 1.0",
+					"center"				: true,
+					"layer"					: 10
+				}
+			]
 		}
 	]
 }

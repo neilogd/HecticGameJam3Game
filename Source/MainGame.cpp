@@ -62,7 +62,7 @@ void PsyLaunchGame()
 					{
 						ScnEntitySpawnParams TankEntityParams =
 						{
-							"default", "TankEntity", BcName( "TankEntity", Idx ),
+							"tank", "TankEntity", BcName( "TankEntity", Idx ),
 							MaMat4d(),
 							ParentEntity,
 						};
@@ -75,7 +75,7 @@ void PsyLaunchGame()
 
 					ScnEntitySpawnParams PlayerEntityParams =
 					{
-						"default", "PlayerEntity", "PlayerEntity_0",
+						"player", "PlayerEntity", "PlayerEntity_0",
 						MaMat4d(),
 						ParentEntity,
 						nullptr

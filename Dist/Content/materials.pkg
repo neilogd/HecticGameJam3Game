@@ -111,90 +111,17 @@
 			}
 		},
 
-		{
-			"type"			: "ScnMaterial",
-			"name"			: "hair",
-
-			// Shader
-			"shader"		: "$(ScnShader:shaders.textured)",
-
-			// Textures
-			"textures"		: {
-				"aDiffuseTex"	: "$(ScnTexture:textures.suit)"
-			},
-
-			// State
-			"state"			: {
-				"depth_write_enable" 		: 1,
-				"depth_test_enable" 		: 1,
-				"depth_test_compare" 		: "lessequal",
-				"depth_bias" 				: 0,
-				"alpha_test_enable" 		: 0,
-				"alpha_test_compare" 		: "never",
-				"alpha_test_threshold" 		: 0,
-				"blend_mode" 				: "none"
-			}
-		},
 
 		{
 			"type"			: "ScnMaterial",
-			"name"			: "suite1",
+			"name"			: "tank",
 
 			// Shader
-			"shader"		: "$(ScnShader:shaders.textured)",
+			"shader"		: "$(ScnShader:shaders.default)",
 
 			// Textures
 			"textures"		: {
-				"aDiffuseTex"	: "$(ScnTexture:textures.suit)"
-			},
-
-			// State
-			"state"			: {
-				"depth_write_enable" 		: 1,
-				"depth_test_enable" 		: 1,
-				"depth_test_compare" 		: "lessequal",
-				"depth_bias" 				: 0,
-				"alpha_test_enable" 		: 0,
-				"alpha_test_compare" 		: "never",
-				"alpha_test_threshold" 		: 0,
-				"blend_mode" 				: "none"
-			}
-		},
-
-		{
-			"type"			: "ScnMaterial",
-			"name"			: "testa",
-
-			// Shader
-			"shader"		: "$(ScnShader:shaders.textured)",
-
-			// Textures
-			"textures"		: {
-				"aDiffuseTex"	: "$(ScnTexture:textures.face)"
-			},
-
-			// State
-			"state"			: {
-				"depth_write_enable" 		: 1,
-				"depth_test_enable" 		: 1,
-				"depth_test_compare" 		: "lessequal",
-				"depth_bias" 				: 0,
-				"alpha_test_enable" 		: 0,
-				"alpha_test_compare" 		: "never",
-				"alpha_test_threshold" 		: 0,
-				"blend_mode" 				: "none"
-			}
-		},
-
-		{
-			"type"			: "ScnMaterial",
-			"name"			: "geometry_test",
-
-			// Shader
-			"shader"		: "$(ScnShader:shaders.geometry_test)",
-
-			// Textures
-			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.default)"
 			},
 
 			// State
@@ -202,14 +129,72 @@
 				"depth_write_enable" 		: 0,
 				"depth_test_enable" 		: 0,
 				"depth_test_compare" 		: "lessequal",
-				"depth_bias" 				: 0,
-				"alpha_test_enable" 		: 0,
-				"alpha_test_compare" 		: "never",
-				"alpha_test_threshold" 		: 0,
-				"blend_mode" 				: "none",
-				"fill_mode"					: "wireframe"
+				"blend_mode" 				: "blend"
+			}
+		},
+
+
+		{
+			"type"			: "ScnMaterial",
+			"name"			: "player",
+
+			// Shader
+			"shader"		: "$(ScnShader:shaders.default)",
+
+			// Textures
+			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.default)"
+			},
+
+			// State
+			"state"			: {
+				"depth_write_enable" 		: 0,
+				"depth_test_enable" 		: 0,
+				"depth_test_compare" 		: "lessequal",
+				"blend_mode" 				: "none"
+			}
+		},
+
+		{
+			"type"			: "ScnMaterial",
+			"name"			: "enemy",
+
+			// Shader
+			"shader"		: "$(ScnShader:shaders.default)",
+
+			// Textures
+			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.default)"
+			},
+
+			// State
+			"state"			: {
+				"depth_write_enable" 		: 0,
+				"depth_test_enable" 		: 0,
+				"depth_test_compare" 		: "lessequal",
+				"blend_mode" 				: "none"
+			}
+		},
+
+		{
+			"type"			: "ScnMaterial",
+			"name"			: "food",
+
+			// Shader
+			"shader"		: "$(ScnShader:shaders.default)",
+
+			// Textures
+			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.default)"
+			},
+
+			// State
+			"state"			: {
+				"depth_write_enable" 		: 0,
+				"depth_test_enable" 		: 0,
+				"depth_test_compare" 		: "lessequal",
+				"blend_mode" 				: "none"
 			}
 		}
-
 	]
 }
