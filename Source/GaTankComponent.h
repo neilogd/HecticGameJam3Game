@@ -45,6 +45,7 @@ private:
 	std::string GlassMaterialName_;
 
 	MaVec2d Dimensions_;
+	BcU32 NoofFish_;
 };
 
 #endif
