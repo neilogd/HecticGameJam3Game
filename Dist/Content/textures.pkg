@@ -53,6 +53,27 @@
 			"name"			: "healthbar",
 
 			"source"		: "Content/Source/healthBar.png"
+		},
+
+		{
+			"type"			: "ScnTexture",
+			"name"			: "foodBarBacking",
+
+			"source"		: "Content/Source/foodBarBacking.png"
+		},
+
+		{
+			"type"			: "ScnTexture",
+			"name"			: "foodBarFill",
+
+			"source"		: "Content/Source/foodBarFill.png"
+		},
+
+		{
+			"type"			: "ScnTexture",
+			"name"			: "foodBarBorder",
+
+			"source"		: "Content/Source/foodBarBorder.png"
 		}
 
 	]
