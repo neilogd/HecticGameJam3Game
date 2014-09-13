@@ -184,7 +184,6 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 //virtual
 void GaTankComponent::onDetach( ScnEntityWeakRef Parent )
 {
-	Super::onDetach( Parent );	
 	
 	BcChar buffer[256];
 	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Spawn_Food");
@@ -192,6 +191,7 @@ void GaTankComponent::onDetach( ScnEntityWeakRef Parent )
 	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Reset_Position");
 	DsCore::pImpl()->deregisterFunction( buffer );
 
+	Super::onDetach( Parent );	
 }
 
 //////////////////////////////////////////////////////////////////////////
