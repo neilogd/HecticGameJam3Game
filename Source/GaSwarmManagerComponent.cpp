@@ -192,8 +192,10 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 	{
 		GaPlayerComponentRef Player = Element->getParentEntity()->getComponentByType< GaPlayerComponent >();
 
+		BcBool Attacking = Element->getAttackTarget() != nullptr;
+
 		// Move towards food.
-		if( unitTypeExists( FOOD ) )
+		if( !Attacking && unitTypeExists( FOOD ) )
 		{
 			Move += forceTowardsNearbyUnits( Element, 1, FOOD, 128.0f );
 		}
@@ -202,20 +204,29 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 		Move += getSeparation( Element->getPosition(), ENEMY, SeparationDistance_ ) * 0.01f;
 
 		// Move towards target.
-		BcBool Attacking = Element->getAttackTarget() != nullptr;
 		BcF32 TargetApproachRadius = 32.0f;
+		BcF32 TargetAttackRadius = 256.0f;
 		const auto& PlayerTarget = Attacking ? Element->getAttackTarget()->getPosition() : Player->getTargetPosition();
 		auto TargetVector = ( PlayerTarget - Element->getPosition() );
 		auto TargetDistance = TargetVector.magnitude();
+
+		// When nearing attack, cancel out some of the previous velocity to narrow in a bit harder.
+		BcF32 AttackSpeedMultiplier = 0.2f;
+		if( Attacking && TargetDistance < TargetAttackRadius )
+		{
+			Move *= 0.9f;
+			AttackSpeedMultiplier = 2.0f;
+		}
+
+		// Saunter around the target, or move in for kill.
 		if( TargetDistance > TargetApproachRadius )
 		{
-			Move += ( TargetVector.normal() ) * ( Attacking ? 1.0f : 0.2f );
+			Move += ( TargetVector.normal() ) * ( AttackSpeedMultiplier );
 		}
 		
 		// Slow down a bit.
 		Move = Move - ( Move * 0.01f );
 	}
-
 
 	return Move;
 }
