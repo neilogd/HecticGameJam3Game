@@ -113,7 +113,8 @@ void GaSwarmElementComponent::onDetach(ScnEntityWeakRef Parent)
 	Super::onDetach(Parent);
 
 	// TODO: Unregister with manager or something.
-	Manager_->deregisterElement(this);
+	if (Manager_.isValid())
+		Manager_->deregisterElement(this);
 }
 
 

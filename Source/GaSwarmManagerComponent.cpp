@@ -52,6 +52,8 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 		{
 			move = forceTowardsNearbyUnits(SwarmElements[Idx], 1, FOOD);
 		}
+		move += (this->getAveragePosition(SwarmElements[Idx]->getUnitMask()) - SwarmElements[Idx]->getPosition()).normal() * 0.2f;
+		move += forceAwayFromNearbyUnits(SwarmElements[Idx], 5, SwarmElements[Idx]->getUnitMask()) * 0.4f;
 		SwarmElements[Idx]->stageAcceleration(move);
 		SwarmElements[Idx]->commitChanges();
 	}
@@ -138,13 +140,13 @@ MaVec2d GaSwarmManagerComponent::forceAwayFromNearbyUnits( GaSwarmElementCompone
 MaVec2d GaSwarmManagerComponent::forceTowardsNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask )
 {
 	SwarmElementList elements = getNearbyUnits(Unit->getPosition(), UnitCount, Mask);
-	MaVec2d average;
+	MaVec2d average( 0.0f, 0.0f );
 	for ( BcU32 Idx = 0; Idx < elements.size(); ++Idx )
 	{
 		average += elements[Idx]->getPosition();
 	}
 	average = (average / (BcF32)elements.size());
-	return (Unit->getPosition() - average).normal();
+	return -(Unit->getPosition() - average).normal();
 }
 
 SwarmElementList GaSwarmManagerComponent::getNearbyUnits( MaVec2d Position, BcU8 UnitCount, BcU8 Mask )
