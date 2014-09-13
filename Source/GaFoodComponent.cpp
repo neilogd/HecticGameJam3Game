@@ -19,6 +19,8 @@
 #include "System/Content/CsPackage.h"
 #include "System/Content/CsCore.h"
 
+#include "System/Debug/DsCore.h"
+
 #include "Base/BcProfiler.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -27,15 +29,29 @@ DEFINE_RESOURCE( GaFoodComponent );
 
 void GaFoodComponent::StaticRegisterClass()
 {
-	ReRegisterClass< GaFoodComponent, Super >()
+	ReField* Fields[] =
+	{
+		new ReField( "Size_", &GaFoodComponent::Size_, DsCore::DsCoreSerialised ),
+	};
+	
+	ReRegisterClass< GaFoodComponent, Super >( Fields )
 		.addAttribute( new ScnComponentAttribute( 0 ) );
+}
+
+//////////////////////////////////////////////////////////////////////////
+// initialise
+void GaFoodComponent::initialise()
+{
+	Size_ = 0.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
 // initialise
 void GaFoodComponent::initialise( const Json::Value& Object )
 {
-	
+	initialise();
+
+	Size_ = BcF32( Object[ "size" ].asDouble() );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,4 +78,19 @@ void GaFoodComponent::onDetach( ScnEntityWeakRef Parent )
 {
 	Super::onDetach( Parent );
 
+}
+
+//////////////////////////////////////////////////////////////////////////
+// tryEat
+BcF32 GaFoodComponent::tryEat( BcF32 Amount )
+{
+	if( Amount < Size_ )
+	{
+		Size_ -= Amount;
+		return Amount;
+	}
+
+	ScnCore::pImpl()->removeEntity( getParentEntity() );
+
+	return Size_;
 }

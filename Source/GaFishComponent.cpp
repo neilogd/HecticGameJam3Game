@@ -12,6 +12,7 @@
 **************************************************************************/
 
 #include "GaFishComponent.h"
+#include "GaFoodComponent.h"
 #include "GaSwarmManagerComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
@@ -23,7 +24,7 @@
 #include "System/Debug/DsCore.h"
 
 #include "Base/BcProfiler.h"
-
+ 
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
 DEFINE_RESOURCE( GaFishComponent );
@@ -32,7 +33,9 @@ void GaFishComponent::StaticRegisterClass()
 {
 	ReField* Fields[] =
 	{
-		new ReField( "FishSize_", &GaFishComponent::FishSize_, DsCore::DsCoreSerialised ),
+		new ReField( "Size_", &GaFishComponent::Size_, DsCore::DsCoreSerialised ),
+		new ReField( "EatDistance_", &GaFishComponent::EatDistance_, DsCore::DsCoreSerialised ),
+		new ReField( "EatSpeed_", &GaFishComponent::EatSpeed_, DsCore::DsCoreSerialised ),
 		new ReField( "SwarmManager_", &GaFishComponent::SwarmManager_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised )
 	};
 	
@@ -44,7 +47,8 @@ void GaFishComponent::StaticRegisterClass()
 // initialise
 void GaFishComponent::initialise()
 {
-	FishSize_ = 0.0f;
+	Size_ = 0.0f;
+	EatDistance_ = 0.0f;
 	SwarmManager_ = nullptr;
 }
 
@@ -54,7 +58,9 @@ void GaFishComponent::initialise( const Json::Value& Object )
 {
 	initialise();
 
-	FishSize_ = BcF32( Object[ "fishsize" ].asDouble() );
+	Size_ = BcF32( Object[ "size" ].asDouble() );
+	EatDistance_ = BcF32( Object[ "eatdistance" ].asDouble() );
+	EatSpeed_ = BcF32( Object[ "eatspeed" ].asDouble() );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,10 +72,25 @@ void GaFishComponent::update( BcF32 Tick )
 
 	if( SwarmManager_ != nullptr )
 	{
-		auto Food = SwarmManager_->getNearbyUnits( 
+		auto Foods = SwarmManager_->getNearbyUnits( 
 			MaVec2d( 
 				getParentEntity()->getWorldPosition().x(),
 				getParentEntity()->getWorldPosition().y() ), 1, GaSwarmManagerComponent::FOOD );
+
+		if( Foods.size() > 0 )
+		{
+			auto FoodSwarmElement = Foods[ 0 ];
+			auto Distance = 
+				( FoodSwarmElement->getParentEntity()->getWorldPosition() - getParentEntity()->getWorldPosition() ).magnitude();
+
+			if( Distance < EatDistance_ )
+			{
+				auto Food = FoodSwarmElement->getParentEntity()->getComponentByType< GaFoodComponent >();
+				auto AmountAte = Food->tryEat( Tick * EatSpeed_ );
+
+				Size_ += AmountAte;
+			}
+		}
 	}
 }
 
@@ -89,15 +110,13 @@ void GaFishComponent::onDetach( ScnEntityWeakRef Parent )
 {
 	Super::onDetach( Parent );
 
-
-
 }
 
 //////////////////////////////////////////////////////////////////////////
 // getFishSize
 BcF32 GaFishComponent::getFishSize() const
 {
-	return FishSize_;
+	return Size_;
 }
 
 //////////////////////////////////////////////////////////////////////////
