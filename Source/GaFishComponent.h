@@ -41,7 +41,9 @@ public:
 	void updateSwarmManagerRef( class GaSwarmManagerComponent* SwarmManager );
 
 private:
-	BcF32 FishSize_;
+	BcF32 Size_;
+	BcF32 EatDistance_;
+	BcF32 EatSpeed_;
 	ReObjectRef< class GaSwarmManagerComponent > SwarmManager_;
 };
 
