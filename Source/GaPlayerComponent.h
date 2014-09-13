@@ -43,7 +43,7 @@ public:
 
 	eEvtReturn onMouseDown( EvtID ID, const struct OsEventInputMouse& Event );
 
-	void jumpTank( BcU32 TankIndex );
+	void jumpTank( BcU32 TankIndex, BcBool Force = BcFalse );
 
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
@@ -56,12 +56,21 @@ private:
 	MaVec2d JumpStart_;
 	MaVec2d JumpEnd_;
 
+	BcF32 CannonTimer_;
+	BcF32 CannonSpeed_;
+	BcF32 CannonSuckDistance_;
+	MaVec2d CannonStart_;
+	MaVec2d CannonEnd_;
+
 	BcU32 TankIndex_;
 	ScnEntityRef Tank_;
+	ScnEntityRef Cannon_;
 
 	enum class PlayerState
 	{
 		IDLE,
+		CANNON_SUCK,
+		CANNON_LOAD,
 		JUMP,
 	};
 
