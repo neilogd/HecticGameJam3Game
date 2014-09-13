@@ -78,6 +78,17 @@
 					"type"					: "GaGameComponent"
 				}
 			]
+		},
+		
+		{
+			"name" 		: 		"CustomisationEntity",
+			"type"		:		"ScnEntity",
+			"components" : [
+				{
+					"type"					: "GaCustomisationComponent"
+					
+				}
+			]
 		}
 	]
 }

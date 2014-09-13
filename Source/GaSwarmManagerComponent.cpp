@@ -54,7 +54,19 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 		}
 		move += getAverageVelocity(SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), 250.f).normal();
 		move += (getAveragePosition( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), 250.f ) - SwarmElements[Idx]->getPosition()).normal();
-		move += getSeparation( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), 250.0f ).normal() * 1.2f;
+		move += getSeparation( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), 250.0f ).normal() * 1.01f;
+
+		if (SwarmElements[Idx]->getUnitMask() == ENEMY)
+		{
+			auto player = getNearbyUnits( SwarmElements[Idx]->getPosition(), 1, PLAYER );
+			if ( player.size() > 0 )
+			{
+				if ((player[0]->getPosition() - SwarmElements[Idx]->getPosition()).magnitude() < 25.0f)
+				{
+					move += ((player[0]->getPosition() - SwarmElements[Idx]->getPosition()).normal()) * 1.5f;
+				}
+			}
+		}
 		//move += forceAwayFromNearbyUnits( SwarmElements[Idx], 5, SwarmElements[Idx]->getUnitMask() ) * 0.5f;
 		SwarmElements[Idx]->stageVelocity( move.normal() );
 		SwarmElements[Idx]->commitChanges();
