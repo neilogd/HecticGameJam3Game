@@ -37,7 +37,7 @@ public:
 	virtual void onDetach( ScnEntityWeakRef Parent );
 
 	const MaVec2d& getDimensions() const;
-	void spawnFood( BcF32 X, BcF32 Y );
+	void spawnFood();
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 	ReObjectRef< class ScnMaterialComponent > WaterMaterial_;

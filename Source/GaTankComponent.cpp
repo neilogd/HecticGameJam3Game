@@ -13,6 +13,8 @@
 
 #include "GaTankComponent.h"
 
+#include <functional>
+
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnCanvasComponent.h"
 #include "System/Scene/Rendering/ScnMaterial.h"
@@ -23,7 +25,7 @@
 #include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
 #include "Base/BcRandom.h"
-
+#include "System/Debug/DsCore.h"
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
 DEFINE_RESOURCE( GaTankComponent );
@@ -169,6 +171,7 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 
 		Rot += RotAdv;
 	}
+	DsCore::pImpl()->registerFunction( "SpawnFood", std::bind( &GaTankComponent::spawnFood, this ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -177,6 +180,7 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 void GaTankComponent::onDetach( ScnEntityWeakRef Parent )
 {
 	Super::onDetach( Parent );
+	DsCore::pImpl()->deregisterFunction( "SpawnFood" );
 
 }
 
@@ -188,7 +192,7 @@ const MaVec2d& GaTankComponent::getDimensions() const
 }
 
 
-void GaTankComponent::spawnFood( BcF32 X, BcF32 Y )
+void GaTankComponent::spawnFood()
 {
 	ScnEntitySpawnParams EnemyEntityParams =
 	{
@@ -197,8 +201,12 @@ void GaTankComponent::spawnFood( BcF32 X, BcF32 Y )
 		getParentEntity(),
 		nullptr
 	};
+	auto TankDimensions = getDimensions();
+	auto CentralPosition = MaVec3d(
+		BcRandom::Global.randRealRange( 0.0f, TankDimensions.x() ),
+		TankDimensions.y(),
+		0.0f );
 
-	MaVec2d CentralPosition( X, Y );
 	EnemyEntityParams.Transform_.translation(
 		CentralPosition );
 
