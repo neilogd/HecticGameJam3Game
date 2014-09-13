@@ -105,7 +105,7 @@ void GaTankComponent::update( BcF32 Tick )
 		SpawnTimer_ += SpawnRange;
 
 		// Spawn the food.
-		spawnFood();
+		//spawnFood();
 
 	}/**/
 	SpawnTimer_ -= Tick;
