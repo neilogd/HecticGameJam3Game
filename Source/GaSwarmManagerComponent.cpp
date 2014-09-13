@@ -91,28 +91,10 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 	for ( BcU32 Idx = 0; Idx < size; ++Idx )
 	{
 		MaVec2d move = SwarmElements[Idx]->getVelocity();
-		if (unitTypeExists( FOOD ))
-		{
-			move = forceTowardsNearbyUnits( SwarmElements[Idx], 1, FOOD );
-		}
-		// Adjust towards average velocity of crowd
-		move += getAverageVelocity(SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), VelocityNeighbourDistance_).normal();
-		// Move towards centre of mass of crowd
-		move += (getAveragePosition( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), PositionNeighbourDistance_ ) - SwarmElements[Idx]->getPosition()).normal();
-		// Move away from crowd
-		move += getSeparation( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), SeparationDistance_ ).normal() * 2.01f;
 
-		if (SwarmElements[Idx]->getUnitMask() == ENEMY)
-		{
-			auto player = getNearbyUnits( SwarmElements[Idx]->getPosition(), 1, PLAYER );
-			if ( player.size() > 0 )
-			{
-				if ((player[0]->getPosition() - SwarmElements[Idx]->getPosition()).magnitude() < 25.0f)
-				{
-					move += ((player[0]->getPosition() - SwarmElements[Idx]->getPosition()).normal()) * 1.5f;
-				}
-			}
-		}
+		move = defaultMovement( move, SwarmElements[Idx] );
+
+		// Do tank keeping in!
 		if (hasTank)
 		{
 			if (SwarmElements[Idx]->getPosition().x() - CentralPosition.x() - TankComponent_->getDimensions().x() * 0.5f < EdgeDistance_)
@@ -153,8 +135,39 @@ void GaSwarmManagerComponent::onAttach( ScnEntityWeakRef Parent )
 void GaSwarmManagerComponent::onDetach( ScnEntityWeakRef Parent )
 {
 	Super::onDetach( Parent );
-
 }
+
+//////////////////////////////////////////////////////////////////////////
+// defaultMovement
+MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementComponent* Element )
+{
+	if( unitTypeExists( FOOD ) )
+	{
+		Move = forceTowardsNearbyUnits( Element, 1, FOOD );
+	}
+	// Adjust towards average velocity of crowd
+	Move += getAverageVelocity( Element->getPosition(), Element->getUnitMask(), VelocityNeighbourDistance_ ).normal();
+	// Move towards centre of mass of crowd
+	Move += ( getAveragePosition( Element->getPosition(), Element->getUnitMask(), PositionNeighbourDistance_ ) - Element->getPosition() ).normal();
+	// Move away from crowd
+	Move += getSeparation( Element->getPosition(), Element->getUnitMask(), SeparationDistance_ ).normal() * 2.01f;
+	
+	// If we're an enemy, move to player thing.
+	if( Element->getUnitMask() == ENEMY )
+	{
+		auto player = getNearbyUnits( Element->getPosition(), 1, PLAYER );
+		if( player.size() > 0 )
+		{
+			if( ( player[ 0 ]->getPosition() - Element->getPosition() ).magnitude() < 25.0f )
+			{
+				Move += ( ( player[ 0 ]->getPosition() - Element->getPosition() ).normal() ) * 1.5f;
+			}
+		}
+	}
+
+	return Move;
+}
+
 
 MaVec2d GaSwarmManagerComponent::getAverageVelocity( MaVec2d Position, BcU8 Mask, BcF32 Range )
 {

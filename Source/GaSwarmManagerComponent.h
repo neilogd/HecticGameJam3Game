@@ -41,6 +41,8 @@ public:
 	void								registerElement( GaSwarmElementComponentRef element );
 	void								deregisterElement( GaSwarmElementComponentRef element );
 
+	MaVec2d								defaultMovement( MaVec2d Move, GaSwarmElementComponent* Element );
+
 private:
 	SwarmElementList SwarmElements;
 
