@@ -168,3 +168,21 @@ SwarmElementList GaSwarmManagerComponent::getNearbyUnits( MaVec2d Position, BcU8
 	}
 	return ret;
 }
+
+void GaSwarmManagerComponent::registerElement( GaSwarmElementComponentRef element )
+{
+	SwarmElements.push_back(element);
+}
+
+void GaSwarmManagerComponent::deregisterElement( GaSwarmElementComponentRef element )
+{
+	for ( auto iter = SwarmElements.begin(); iter != SwarmElements.end(); ++iter )
+	{
+		if ((*iter)->getUniqueId() == (*element).getUniqueId())
+		{
+			SwarmElements.erase(iter);
+			return;
+		}
+	}
+
+}

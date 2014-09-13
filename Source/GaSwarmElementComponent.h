@@ -45,6 +45,8 @@ public:
 	void								stageVelocity( MaVec2d acceleration );
 	void								commitChanges();
 	MaVec2d								getPosition();
+
+
 private:
 	ReObjectRef< class GaSwarmManagerComponent > Manager_;
 	BcU8								UnitMask_;

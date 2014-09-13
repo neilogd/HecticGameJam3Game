@@ -98,6 +98,8 @@ void GaSwarmElementComponent::onAttach( ScnEntityWeakRef Parent )
 	Manager_ = Parent->getComponentAnyParentByType< GaSwarmElementComponent >();
 
 	// TODO: Register with manager or something.
+	BcAssert( Manager_ == nullptr );
+	Manager_->registerElement(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -108,6 +110,7 @@ void GaSwarmElementComponent::onDetach(ScnEntityWeakRef Parent)
 	Super::onDetach(Parent);
 
 	// TODO: Unregister with manager or something.
+	Manager_->deregisterElement(this);
 }
 
 

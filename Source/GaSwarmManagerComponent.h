@@ -37,6 +37,10 @@ public:
 	virtual void						onAttach( ScnEntityWeakRef Parent );
 	virtual void						onDetach( ScnEntityWeakRef Parent );
 
+	void								registerElement( GaSwarmElementComponentRef element );
+	void								deregisterElement( GaSwarmElementComponentRef element );
+
+
 private:
 	SwarmElementList SwarmElements;
 
