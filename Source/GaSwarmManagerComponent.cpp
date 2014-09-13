@@ -13,6 +13,7 @@
 
 #include "GaSwarmManagerComponent.h"
 #include "GaPlayerComponent.h"
+#include "GaFishComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnViewComponent.h"

@@ -15,9 +15,6 @@
 #define __GaGuiComponent_H__
 
 #include "Psybrus.h"
-#include "System/Scene/Rendering/ScnRenderableComponent.h"
-#include "GaPlayerComponent.h"
-#include "GaFishComponent.h"
 #include "System/Scene/Rendering/ScnMaterial.h"
 #include "System/Scene/Rendering/ScnSpriteComponent.h"
 
@@ -56,9 +53,8 @@ public:
 
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
-
-	GaPlayerComponentRef Player_;
-	GaFishComponentRef Fish_;
+	ReObjectRef< class GaPlayerComponent > Player_;
+	ReObjectRef< class GaSwarmElementComponent > Swarm_;
 	ScnSpriteComponentRef HealthSprite_;
 	RsBuffer* UniformBuffer_;
 };

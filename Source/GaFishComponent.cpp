@@ -38,9 +38,7 @@ void GaFishComponent::StaticRegisterClass()
 		new ReField( "EatSpeed_", &GaFishComponent::EatSpeed_, DsCore::DsCoreSerialised ),
 		new ReField( "SwarmManager_", &GaFishComponent::SwarmManager_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "Sprites_", &GaFishComponent::Sprites_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
-		new ReField( "SpriteSizes_", &GaFishComponent::SpriteSizes_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
-		new ReField( "Health_", &GaFishComponent::Health_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
-		new ReField( "MaxHealth_", &GaFishComponent::MaxHealth_, DsCore::DsCoreSerialised ),
+		new ReField( "SpriteSizes_", &GaFishComponent::SpriteSizes_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised )
 	};
 	
 	ReRegisterClass< GaFishComponent, Super >( Fields )
@@ -55,8 +53,6 @@ void GaFishComponent::initialise()
 	SizeIncreaseMultiplier_ = 1.0f;
 	EatDistance_ = 0.0f;
 	SwarmManager_ = nullptr;
-	MaxHealth_ = 5;
-	Health_ = MaxHealth_;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -69,8 +65,6 @@ void GaFishComponent::initialise( const Json::Value& Object )
 	SizeIncreaseMultiplier_ = BcF32( Object[ "sizeincreasemultiplier" ].asDouble() );
 	EatDistance_ = BcF32( Object[ "eatdistance" ].asDouble() );
 	EatSpeed_ = BcF32( Object[ "eatspeed" ].asDouble() );
-	MaxHealth_ = Object[ "maxhealth" ].asUInt();
-	Health_ = MaxHealth_;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -142,19 +136,6 @@ BcF32 GaFishComponent::getFishSize() const
 	return Size_;
 }
 
-//////////////////////////////////////////////////////////////////////////
-// getFishSize
-BcU32 GaFishComponent::getMaxHealth() const
-{
-	return MaxHealth_;
-}
-
-//////////////////////////////////////////////////////////////////////////
-// getFishSize
-BcU32 GaFishComponent::getHealth() const
-{
-	return Health_;
-}
 
 //////////////////////////////////////////////////////////////////////////
 // getFishSize

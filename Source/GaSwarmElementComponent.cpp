@@ -41,6 +41,8 @@ void GaSwarmElementComponent::StaticRegisterClass()
 		new ReField( "VelocityDriven_", &GaSwarmElementComponent::VelocityDriven_ ),
 		new ReField( "MaxSpeed_", &GaSwarmElementComponent::MaxSpeed_ ),
 		new ReField( "AttackTarget_", &GaSwarmElementComponent::AttackTarget_ ),
+		new ReField( "Health_", &GaSwarmElementComponent::Health_, DsCore::DsCoreSerialised ),
+		new ReField( "MaxHealth_", &GaSwarmElementComponent::MaxHealth_, DsCore::DsCoreSerialised ),
 	};
 		
 	ReRegisterClass< GaSwarmElementComponent, Super >( Fields )
@@ -70,6 +72,13 @@ void GaSwarmElementComponent::initialise( const Json::Value& Object )
 	{
 		MaxSpeed_ = BcF32( Object[ "maxspeed" ].asDouble() );
 	}
+
+	if( Object[ "maxhealth" ] != Json::ValueType::nullValue )
+	{
+		MaxHealth_ = Object[ "maxhealth" ].asUInt();
+		Health_ = MaxHealth_;
+	}
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -84,6 +93,8 @@ void GaSwarmElementComponent::initialise( )
 	VelocityDriven_ = false;
 	MaxSpeed_ = 1.0f;
 	AttackTarget_ = nullptr;
+	MaxHealth_ = 5;
+	Health_ = MaxHealth_;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -189,4 +200,18 @@ void GaSwarmElementComponent::setAttackTarget( GaSwarmElementComponent* AttackTa
 GaSwarmElementComponent* GaSwarmElementComponent::getAttackTarget() const
 {
 	return AttackTarget_;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// getFishSize
+BcU32 GaSwarmElementComponent::getMaxHealth() const
+{
+	return MaxHealth_;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// getFishSize
+BcU32 GaSwarmElementComponent::getHealth() const
+{
+	return Health_;
 }

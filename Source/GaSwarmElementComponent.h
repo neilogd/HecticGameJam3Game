@@ -48,6 +48,9 @@ public:
 	void setAttackTarget( GaSwarmElementComponent* AttackTarget );
 	GaSwarmElementComponent* getAttackTarget() const;
 	
+	BcU32 getMaxHealth() const;
+	BcU32 getHealth() const;
+
 private:
 	ReObjectRef< class GaSwarmManagerComponent > Manager_;
 	BcU8 UnitMask_;
@@ -59,6 +62,9 @@ private:
 
 	BcBool VelocityDriven_;
 	BcF32 MaxSpeed_;
+
+	BcU32 Health_;
+	BcU32 MaxHealth_;
 
 	GaSwarmElementComponent* AttackTarget_;
 
