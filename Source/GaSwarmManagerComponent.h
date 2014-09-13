@@ -31,6 +31,7 @@ public:
 	DECLARE_RESOURCE( GaSwarmManagerComponent, ScnComponent );
 
 	void								initialise( const Json::Value& Object );
+	void								initialise( );
 
 	virtual void						update( BcF32 Tick );
 	
@@ -42,6 +43,11 @@ public:
 
 private:
 	SwarmElementList SwarmElements;
+
+	BcF32 VelocityNeighbourDistance_;
+	BcF32 PositionNeighbourDistance_;
+	BcF32 SeparationDistance_;
+
 
 public:
 	MaVec2d								getAverageVelocity( MaVec2d Position, BcU8 Mask, BcF32 Range = 250.0f );

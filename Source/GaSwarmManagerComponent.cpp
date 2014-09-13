@@ -18,7 +18,7 @@
 
 #include "System/Content/CsPackage.h"
 #include "System/Content/CsCore.h"
-
+#include "System/Debug/DsCore.h"
 #include "Base/BcProfiler.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -26,8 +26,13 @@
 DEFINE_RESOURCE( GaSwarmManagerComponent );
 
 void GaSwarmManagerComponent::StaticRegisterClass()
-{
-	ReRegisterClass< GaSwarmManagerComponent, Super >()
+{	ReField* Fields[] =
+	{
+		new ReField( "VelocityNeighbourDistance_", &GaSwarmManagerComponent::VelocityNeighbourDistance_ , DsCore::DsCoreSerialised ),
+		new ReField( "PositionNeighbourDistance_", &GaSwarmManagerComponent::PositionNeighbourDistance_ , DsCore::DsCoreSerialised ),
+		new ReField( "SeparationDistance_", &GaSwarmManagerComponent::SeparationDistance_, DsCore::DsCoreSerialised ),
+	};
+	ReRegisterClass< GaSwarmManagerComponent, Super >( Fields )
 		.addAttribute( new ScnComponentAttribute( 0 ) );
 }
 
@@ -35,7 +40,29 @@ void GaSwarmManagerComponent::StaticRegisterClass()
 // initialise
 void GaSwarmManagerComponent::initialise( const Json::Value& Object )
 {
-	
+	initialise( );
+	if (Object["velocityneighbourdistance"] != Json::ValueType::nullValue)
+	{
+		VelocityNeighbourDistance_ = (float)Object["velocityneighbourdistance"].asDouble();
+	}
+
+	if (Object["positionneighbourdistance"] != Json::ValueType::nullValue)
+	{
+		PositionNeighbourDistance_ = (float)Object["positionneighbourdistance"].asDouble();
+	}
+	if (Object["separationdistance"] != Json::ValueType::nullValue)
+	{
+		SeparationDistance_ = (float)Object["separationdistance"].asDouble();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+// initialise
+void GaSwarmManagerComponent::initialise( )
+{
+	VelocityNeighbourDistance_ = 250.0f;
+	PositionNeighbourDistance_ = 250.0f;
+	SeparationDistance_ = 100.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,9 +79,9 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 		{
 			move = forceTowardsNearbyUnits( SwarmElements[Idx], 1, FOOD );
 		}
-		move += getAverageVelocity(SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), 250.f).normal();
-		move += (getAveragePosition( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), 250.f ) - SwarmElements[Idx]->getPosition()).normal();
-		move += getSeparation( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), 250.0f ).normal() * 1.01f;
+		move += getAverageVelocity(SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), VelocityNeighbourDistance_).normal();
+		move += (getAveragePosition( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), PositionNeighbourDistance_ ) - SwarmElements[Idx]->getPosition()).normal();
+		move += getSeparation( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), SeparationDistance_ ).normal() * 2.01f;
 
 		if (SwarmElements[Idx]->getUnitMask() == ENEMY)
 		{

@@ -98,31 +98,14 @@ void GaTankComponent::update( BcF32 Tick )
 	Canvas_->popMatrix();
 
 	// Food spawn logic.
-	/*if( SpawnTimer_ < 0.0f )
+	if( SpawnTimer_ < 0.0f )
 	{
 		// Update timer.
 		BcF32 SpawnRange = BcRandom::Global.randRealRange( SpawnRateMin_, SpawnRateMax_ );
 		SpawnTimer_ += SpawnRange;
 
 		// Spawn the food.
-		auto TankDimensions = getDimensions();
-		auto CentralPosition = MaVec3d(
-			BcRandom::Global.randRealRange( 0.0f, TankDimensions.x() ),
-			TankDimensions.y(),
-			0.0f );
-
-		ScnEntitySpawnParams EnemyEntityParams =
-		{
-			"food", "FoodEntity", BcName( "FoodEntity" ).getUnique(),
-			MaMat4d(),
-			getParentEntity(),
-			nullptr
-		};
-
-		EnemyEntityParams.Transform_.translation(
-			CentralPosition );
-
-		ScnCore::pImpl()->spawnEntity( EnemyEntityParams );
+		//spawnFood();
 
 	}/**/
 	SpawnTimer_ -= Tick;
@@ -171,8 +154,12 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 
 		Rot += RotAdv;
 	}
-	DsCore::pImpl()->registerFunction( "SpawnFood", std::bind( &GaTankComponent::spawnFood, this ) );
-	DsCore::pImpl()->registerFunction( "ResetPosition", std::bind( &GaTankComponent::magicReset, this ) );
+	BcChar buffer[256];
+	BcMemZero(buffer, 256);
+	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Spawn_Food");
+	DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::spawnFood, this ) );
+	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Reset_Position");
+	DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::magicReset, this ) );
 
 	
 	ScnEntitySpawnParams CannonEntityParams =
@@ -197,9 +184,13 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 //virtual
 void GaTankComponent::onDetach( ScnEntityWeakRef Parent )
 {
-	Super::onDetach( Parent );
-	DsCore::pImpl()->deregisterFunction( "SpawnFood" );
-	DsCore::pImpl()->deregisterFunction( "ResetPosition" );
+	Super::onDetach( Parent );	
+	
+	BcChar buffer[256];
+	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Spawn_Food");
+	DsCore::pImpl()->deregisterFunction( buffer );
+	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Reset_Position");
+	DsCore::pImpl()->deregisterFunction( buffer );
 
 }
 
