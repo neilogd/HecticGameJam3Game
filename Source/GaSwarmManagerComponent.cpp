@@ -52,6 +52,8 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 		{
 			move = forceTowardsNearbyUnits(SwarmElements[Idx], 1, FOOD);
 		}
+		move += (this->getAveragePosition(SwarmElements[Idx]->getUnitMask()) - SwarmElements[Idx]->getPosition()).normal() * 0.2f;
+		move += forceAwayFromNearbyUnits(SwarmElements[Idx], 5, SwarmElements[Idx]->getUnitMask()) * 0.4f;
 		SwarmElements[Idx]->stageAcceleration(move);
 		SwarmElements[Idx]->commitChanges();
 	}
