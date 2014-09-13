@@ -1,0 +1,43 @@
+/**************************************************************************
+*
+* File:		GaFoodComponent.h
+* Author:	Neil Richardson 
+* Ver/Date:		
+* Description:
+*		
+*		
+*
+*
+* 
+**************************************************************************/
+
+#ifndef __GaFoodComponent_H__
+#define __GaFoodComponent_H__
+
+#include "Psybrus.h"
+
+//////////////////////////////////////////////////////////////////////////
+// GaExampleComponentRef
+typedef ReObjectRef< class GaFoodComponent > GaFoodComponentRef;
+
+//////////////////////////////////////////////////////////////////////////
+// GaFoodComponent
+class GaFoodComponent:
+	public ScnComponent
+{
+public:
+	DECLARE_RESOURCE( GaFoodComponent, ScnComponent );
+
+	void								initialise( const Json::Value& Object );
+
+	virtual void						update( BcF32 Tick );
+	
+	virtual void						onAttach( ScnEntityWeakRef Parent );
+	virtual void						onDetach( ScnEntityWeakRef Parent );
+
+private:
+
+};
+
+#endif
+
