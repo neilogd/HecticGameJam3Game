@@ -16,7 +16,6 @@
 
 #include "Psybrus.h"
 #include "Math/MaVec2d.h"
-
 //////////////////////////////////////////////////////////////////////////
 // GaExampleComponentRef
 typedef ReObjectRef< class GaSwarmElementComponent > GaSwarmElementComponentRef;
@@ -57,6 +56,7 @@ private:
 	MaVec2d								StagedVelocity_;
 
 	BcBool								VelocityDriven_;
+
 };
 
 #endif

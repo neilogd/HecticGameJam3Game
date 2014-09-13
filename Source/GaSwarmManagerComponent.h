@@ -16,7 +16,7 @@
 
 #include "Psybrus.h"
 #include "GaSwarmElementComponent.h"
-
+#include "GaTankComponent.h"
 //////////////////////////////////////////////////////////////////////////
 // GaExampleComponentRef
 typedef ReObjectRef< class GaSwarmManagerComponent > GaSwarmManagerComponentRef;
@@ -47,7 +47,9 @@ private:
 	BcF32 VelocityNeighbourDistance_;
 	BcF32 PositionNeighbourDistance_;
 	BcF32 SeparationDistance_;
-
+	BcF32 EdgeDistance_;
+	
+	GaTankComponentRef					TankComponent_;
 
 public:
 	MaVec2d								getAverageVelocity( MaVec2d Position, BcU8 Mask, BcF32 Range = 250.0f );

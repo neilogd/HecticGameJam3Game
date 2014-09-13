@@ -247,3 +247,11 @@ void GaTankComponent::registerEnemy(ScnEntityRef entity)
 {
 	Children.push_back( entity );
 }
+
+
+MaVec2d GaTankComponent::getCentralPosition()
+{
+	return MaVec2d( 
+		getDimensions().x() * 0.5f + getParentEntity()->getWorldPosition().x(),
+		getDimensions().y() * 0.5f + getParentEntity()->getWorldPosition().y());
+}

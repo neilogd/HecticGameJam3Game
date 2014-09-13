@@ -31,6 +31,7 @@ void GaSwarmManagerComponent::StaticRegisterClass()
 		new ReField( "VelocityNeighbourDistance_", &GaSwarmManagerComponent::VelocityNeighbourDistance_ , DsCore::DsCoreSerialised ),
 		new ReField( "PositionNeighbourDistance_", &GaSwarmManagerComponent::PositionNeighbourDistance_ , DsCore::DsCoreSerialised ),
 		new ReField( "SeparationDistance_", &GaSwarmManagerComponent::SeparationDistance_, DsCore::DsCoreSerialised ),
+		new ReField( "EdgeDistance_", &GaSwarmManagerComponent::EdgeDistance_, DsCore::DsCoreSerialised ),
 	};
 	ReRegisterClass< GaSwarmManagerComponent, Super >( Fields )
 		.addAttribute( new ScnComponentAttribute( 0 ) );
@@ -53,6 +54,10 @@ void GaSwarmManagerComponent::initialise( const Json::Value& Object )
 	if (Object["separationdistance"] != Json::ValueType::nullValue)
 	{
 		SeparationDistance_ = (float)Object["separationdistance"].asDouble();
+	}	
+	if (Object["edgedistance"] != Json::ValueType::nullValue)
+	{
+		EdgeDistance_ = (float)Object["edgedistance"].asDouble();
 	}
 }
 
@@ -63,6 +68,7 @@ void GaSwarmManagerComponent::initialise( )
 	VelocityNeighbourDistance_ = 250.0f;
 	PositionNeighbourDistance_ = 250.0f;
 	SeparationDistance_ = 100.0f;
+	EdgeDistance_ = 20.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,6 +76,16 @@ void GaSwarmManagerComponent::initialise( )
 //virtual
 void GaSwarmManagerComponent::update( BcF32 Tick )
 {
+	if (!TankComponent_.isValid())
+	{
+		TankComponent_ = getParentEntity()->getParentEntity()->getComponentByType<GaTankComponent>();
+	}
+	bool hasTank = TankComponent_.isValid();
+	MaVec2d CentralPosition;
+	if (TankComponent_.isValid())
+	{
+		CentralPosition = TankComponent_->getCentralPosition();
+	}
 	Super::update( Tick );
 	BcU32 size = this->SwarmElements.size();
 	for ( BcU32 Idx = 0; Idx < size; ++Idx )
@@ -94,6 +110,26 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 				}
 			}
 		}
+		if (hasTank)
+		{
+			if (SwarmElements[Idx]->getPosition().x() - CentralPosition.x() - TankComponent_->getDimensions().x() * 0.5f < EdgeDistance_)
+			{
+				move += MaVec2d(200,0);
+			}
+			if (CentralPosition.x() + TankComponent_->getDimensions().x() * 0.5f  - SwarmElements[Idx]->getPosition().x() < EdgeDistance_)
+			{
+				move += MaVec2d(-200,0);
+			}
+			if (SwarmElements[Idx]->getPosition().y() - CentralPosition.y() - TankComponent_->getDimensions().y() * 0.5f < EdgeDistance_)
+			{
+				move += MaVec2d(0,200);
+			}
+			if (CentralPosition.y() + TankComponent_->getDimensions().y() * 0.5f  - SwarmElements[Idx]->getPosition().y() < EdgeDistance_)
+			{
+				move += MaVec2d(0,-200);
+			}
+		}
+
 		//move += forceAwayFromNearbyUnits( SwarmElements[Idx], 5, SwarmElements[Idx]->getUnitMask() ) * 0.5f;
 		SwarmElements[Idx]->stageVelocity( move.normal() );
 		SwarmElements[Idx]->commitChanges();
@@ -106,7 +142,6 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 void GaSwarmManagerComponent::onAttach( ScnEntityWeakRef Parent )
 {
 	Super::onAttach( Parent );
-
 }
 
 //////////////////////////////////////////////////////////////////////////
