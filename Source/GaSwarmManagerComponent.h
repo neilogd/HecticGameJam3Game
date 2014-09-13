@@ -54,8 +54,9 @@ private:
 	SwarmElementList					getNearbyUnits( MaVec2d Position, BcU8 UnitCount, BcU8 Mask );
 	bool								unitTypeExists( BcU8 Mask );
 public:
-	const BcU8 FOOD = 0x04;
 	const BcU8 PLAYER = 0x01;
+	const BcU8 ENEMY = 0x02;
+	const BcU8 FOOD = 0x04;
 };
 
 #endif
