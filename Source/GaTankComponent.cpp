@@ -131,8 +131,6 @@ void GaTankComponent::update( BcF32 Tick )
 //virtual
 void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 {
-	Super::onAttach( Parent );
-
 	// Find a canvas to use for rendering (someone in ours, or our parent's hierarchy).
 	Canvas_ = Parent->getComponentAnyParentByType< ScnCanvasComponent >( 0 );
 	BcAssertMsg( Canvas_.isValid(), "Sprite component needs to be attached to an entity with a canvas component in any parent!" );
@@ -169,6 +167,22 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 
 		Rot += RotAdv;
 	}
+
+	ScnEntitySpawnParams CannonEntityParams =
+	{
+		"cannon", "CannonEntity", "CannonEntity_0",
+		MaMat4d(),
+		Parent,
+		nullptr
+	};
+
+	CannonEntityParams.Transform_.translation(
+		MaVec3d( 0.0f, 0.0f, 0.0f ) );
+
+	ScnCore::pImpl()->spawnEntity( CannonEntityParams );
+
+	Super::onAttach( Parent );
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -187,7 +201,8 @@ const MaVec2d& GaTankComponent::getDimensions() const
 	return Dimensions_;
 }
 
-
+//////////////////////////////////////////////////////////////////////////
+// spawnFood
 void GaTankComponent::spawnFood( BcF32 X, BcF32 Y )
 {
 	ScnEntitySpawnParams EnemyEntityParams =

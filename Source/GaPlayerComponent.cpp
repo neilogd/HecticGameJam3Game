@@ -45,7 +45,14 @@ void GaPlayerComponent::StaticRegisterClass()
 		new ReField( "JumpSpeed_", &GaPlayerComponent::JumpSpeed_, DsCore::DsCoreSerialised ),
 		new ReField( "JumpStart_", &GaPlayerComponent::JumpStart_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "JumpEnd_", &GaPlayerComponent::JumpEnd_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "CannonTimer_", &GaPlayerComponent::CannonTimer_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "CannonSpeed_", &GaPlayerComponent::CannonSpeed_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "CannonSuckDistance_", &GaPlayerComponent::CannonSuckDistance_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "CannonStart_", &GaPlayerComponent::CannonStart_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "CannonEnd_", &GaPlayerComponent::CannonEnd_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "TankIndex_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "Tank_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT  ),
+		new ReField( "Cannon_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT ),
 	};
 
 	ReRegisterClass< GaPlayerComponent, Super >( Fields )
@@ -65,6 +72,11 @@ void GaPlayerComponent::initialise()
 	JumpStart_ = MaVec2d( 0.0f, 0.0f );
 	JumpEnd_ = MaVec2d( 0.0f, 0.0f );
 
+	CannonTimer_ = 0.0f;
+	CannonSpeed_ = 1.0f;
+	CannonSuckDistance_ = 256.0f;
+	CannonStart_ = MaVec2d( 0.0f, 0.0f );
+	CannonEnd_ = MaVec2d( 0.0f, 0.0f );
 	TankIndex_ = 0;
 }
 
@@ -91,12 +103,57 @@ void GaPlayerComponent::preUpdate( BcF32 Tick )
 //virtual
 void GaPlayerComponent::update( BcF32 Tick )
 {
+	// Player is attached before cannons are to tanks. Need to get rid of the
+	// delayed attachment in the engine to fix this properly.
+	if( Cannon_ == nullptr )
+	{
+		jumpTank( TankIndex_ );
+	}
+
 	switch( PlayerState_ )
 	{
 	case PlayerState::IDLE:
 		{
 			getParentEntity()->setLocalPosition(
 				MaVec3d( TargetPosition_, 0.0f ) );
+
+			if( Cannon_ != nullptr )
+			{
+				BcF32 Distance = ( getParentEntity()->getLocalPosition() - Cannon_->getLocalPosition() ).magnitude();
+
+				if( Distance < CannonSuckDistance_ )
+				{
+					// Do suck later, go straight to load.
+					PlayerState_ = PlayerState::CANNON_LOAD;
+
+					auto TankDimensions = Tank_->getComponentByType< GaTankComponent >()->getDimensions();
+
+					CannonTimer_ = 0.0f;
+					CannonStart_ = MaVec2d(
+						Cannon_->getLocalPosition().x(),
+						Cannon_->getLocalPosition().y() );
+					CannonEnd_ = MaVec2d(
+						Cannon_->getLocalPosition().x(),
+						Cannon_->getLocalPosition().y() + TankDimensions.y() );
+				}
+			}
+		}
+		break;
+
+	case PlayerState::CANNON_SUCK:
+		{
+			// TODO: Pull player into cannon. Might wanna just use the 
+			//       swarm stuff so it looks natural.
+			BcBreakpoint;
+			BcAssert( Cannon_ != nullptr );
+		}
+		break;
+
+	case PlayerState::CANNON_LOAD:
+		{
+			BcAssert( Cannon_ != nullptr );
+			Cannon_->getLocalPosition();
+			
 		}
 		break;
 
@@ -139,8 +196,6 @@ void GaPlayerComponent::postUpdate( BcF32 Tick )
 //virtual
 void GaPlayerComponent::onAttach( ScnEntityWeakRef Parent )
 {
-	Super::onAttach( Parent );
-
 	OsEventInputMouse::Delegate OnMouseDown = OsEventInputMouse::Delegate::bind< GaPlayerComponent, &GaPlayerComponent::onMouseDown >( this );
 	OsCore::pImpl()->subscribe( osEVT_INPUT_MOUSEDOWN, OnMouseDown );
 
@@ -161,6 +216,7 @@ void GaPlayerComponent::onAttach( ScnEntityWeakRef Parent )
 		getParentEntity()->getLocalPosition().x(), 
 		getParentEntity()->getLocalPosition().y() );
 
+	Super::onAttach( Parent );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -205,6 +261,7 @@ eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Ev
 void GaPlayerComponent::jumpTank( BcU32 TankIndex )
 {
 	Tank_ = getParentEntity()->getComponentAnyParentByType< ScnEntity >( BcName( "TankEntity", TankIndex ) );
+	Cannon_ = Tank_->getComponentByType< ScnEntity >( "CannonEntity_0" );
 	if( TankIndex != TankIndex_ )
 	{
 		PlayerState_ = PlayerState::JUMP;
@@ -215,8 +272,12 @@ void GaPlayerComponent::jumpTank( BcU32 TankIndex )
 		auto TankDimensions = Tank_->getComponentByType< GaTankComponent >()->getDimensions();
 
 		JumpTimer_ = 0.0f;
-		JumpStart_ = MaVec2d( getParentEntity()->getLocalPosition().x(), getParentEntity()->getLocalPosition().y() );
-		JumpEnd_ = MaVec2d( Tank_->getLocalPosition().x(), Tank_->getLocalPosition().y() ) + TankDimensions * 0.5f;
+		JumpStart_ = MaVec2d( 
+			getParentEntity()->getLocalPosition().x(), 
+			getParentEntity()->getLocalPosition().y() );
+		JumpEnd_ = MaVec2d( 
+			Tank_->getLocalPosition().x(), 
+			Tank_->getLocalPosition().y() ) + TankDimensions * 0.5f;
 	}
 	else
 	{

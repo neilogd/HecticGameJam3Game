@@ -61,6 +61,7 @@
 #include "System/SysKernel.h"
 #include "System/SysSystem.h"
 #include "GaCameraComponent.h"
+#include "GaCannonComponent.h"
 #include "GaEnemyComponent.h"
 #include "GaFoodComponent.h"
 #include "GaGameComponent.h"
@@ -144,6 +145,7 @@ void AutoGenRegisterReflection()
 	SysKernel::StaticRegisterClass();
 	SysSystem::StaticRegisterClass();
 	GaCameraComponent::StaticRegisterClass();
+	GaCannonComponent::StaticRegisterClass();
 	GaEnemyComponent::StaticRegisterClass();
 	GaFoodComponent::StaticRegisterClass();
 	GaGameComponent::StaticRegisterClass();
