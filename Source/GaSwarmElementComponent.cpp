@@ -80,8 +80,9 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 
 	if ( VelocityDriven_ )
 	{
+		Velocity_ += Acceleration_ * Tick * 20.0f;
 		MaVec2d position = getPosition();
-		position = position + Velocity_;
+		position = position + Velocity_ * Tick * 20.0f;
 	
 		MaVec3d realPos(position, 0.0f);
 		getParentEntity()->setLocalPosition(realPos);
@@ -95,11 +96,13 @@ void GaSwarmElementComponent::onAttach( ScnEntityWeakRef Parent )
 {
 	Super::onAttach( Parent );
 
-	Manager_ = Parent->getComponentAnyParentByType< GaSwarmManagerComponent >();
+	Manager_ = Parent->getParentEntity()->getComponentByType< GaSwarmManagerComponent >();
 
 	// TODO: Register with manager or something.
-	BcAssert( Manager_ == nullptr );
-	Manager_->registerElement(this);
+	//BcAssert( Manager_ != nullptr );
+	// The player won't have a manager to begin with. Derpity derp that later
+	if (Manager_.isValid())
+		Manager_->registerElement(this);
 }
 
 //////////////////////////////////////////////////////////////////////////

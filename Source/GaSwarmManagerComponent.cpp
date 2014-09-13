@@ -48,9 +48,11 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 	for ( BcU32 Idx = 0; Idx < size; ++Idx )
 	{
 		MaVec2d move( 0, 0 );
-		move = (SwarmElements[Idx]->getPosition() - this->getAveragePosition(PLAYER)).normal();
-
-		SwarmElements[Idx]->stageVelocity(move);
+		if (unitTypeExists(FOOD))
+		{
+			move = forceTowardsNearbyUnits(SwarmElements[Idx], 1, FOOD);
+		}
+		SwarmElements[Idx]->stageAcceleration(move);
 		SwarmElements[Idx]->commitChanges();
 	}
 }
@@ -94,7 +96,7 @@ MaVec2d GaSwarmManagerComponent::getAveragePosition( BcU8 Mask )
 	MaVec2d position(0.0f, 0.0f);
 	for (auto u = SwarmElements.begin(); u != SwarmElements.end(); ++u)
 	{
-		if ((*u)->getUnitMask() == Mask)
+		if ((*u)->getUnitMask() & Mask)
 		{
 			MaVec3d pos = (*u)->getParentEntity()->getWorldPosition();
 			position += MaVec2d(pos.x(), pos.y());
@@ -185,4 +187,14 @@ void GaSwarmManagerComponent::deregisterElement( GaSwarmElementComponentRef elem
 		}
 	}
 
+}
+
+bool GaSwarmManagerComponent::unitTypeExists( BcU8 Mask )
+{
+	for ( BcU32 Idx = 0; Idx < SwarmElements.size(); ++Idx )
+	{
+		if ( SwarmElements[Idx]->getUnitMask() & Mask )
+			return true;
+	}
+	return false;
 }
