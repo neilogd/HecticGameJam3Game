@@ -40,6 +40,9 @@ public:
 
 private:
 	BcF32 Size_;
+
+	std::vector< MaVec2d > SpriteSizes_;
+	std::vector< ReObjectRef< class ScnSpriteComponent > > Sprites_;
 };
 
 #endif

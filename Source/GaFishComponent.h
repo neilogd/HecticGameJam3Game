@@ -46,6 +46,9 @@ private:
 	BcF32 EatDistance_;
 	BcF32 EatSpeed_;	
 	ReObjectRef< class GaSwarmManagerComponent > SwarmManager_;
+
+	std::vector< MaVec2d > SpriteSizes_;
+	std::vector< ReObjectRef< class ScnSpriteComponent > > Sprites_;
 };
 
 #endif
