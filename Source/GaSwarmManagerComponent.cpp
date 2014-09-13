@@ -95,8 +95,11 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 		{
 			move = forceTowardsNearbyUnits( SwarmElements[Idx], 1, FOOD );
 		}
+		// Adjust towards average velocity of crowd
 		move += getAverageVelocity(SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), VelocityNeighbourDistance_).normal();
+		// Move towards centre of mass of crowd
 		move += (getAveragePosition( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), PositionNeighbourDistance_ ) - SwarmElements[Idx]->getPosition()).normal();
+		// Move away from crowd
 		move += getSeparation( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), SeparationDistance_ ).normal() * 2.01f;
 
 		if (SwarmElements[Idx]->getUnitMask() == ENEMY)
