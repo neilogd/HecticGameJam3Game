@@ -51,8 +51,9 @@ private:
 	MaVec2d								forceAwayFromNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask = 0xFF );
 	MaVec2d								forceTowardsNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask = 0xFF );
 	SwarmElementList					getNearbyUnits( MaVec2d Position, BcU8 UnitCount, BcU8 Mask );
+	bool								unitTypeExists( BcU8 Mask );
 public:
-	const BcU8 FOOD = 0xFF;
+	const BcU8 FOOD = 0x04;
 	const BcU8 PLAYER = 0x01;
 };
 

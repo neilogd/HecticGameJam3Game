@@ -158,7 +158,8 @@
 
 				{
 					"type"					: "GaSwarmElementComponent",
-					"unitmask"				: 2
+					"unitmask"				: 2,
+					"velocitydriven"	: true
 				},
 
 				{
