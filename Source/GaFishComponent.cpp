@@ -92,6 +92,11 @@ void GaFishComponent::update( BcF32 Tick )
 				auto AmountAte = Food->tryEat( Tick * EatSpeed_ );
 
 				Size_ += AmountAte * SizeIncreaseMultiplier_;
+
+				// Size change, set RS matrix.
+				MaMat4d Scale;
+				Scale.scale( MaVec4d( Size_, Size_, 0.0f, 0.0f ) );
+				//getParentEntity()->setLocalMatrixRS( Scale );
 			}
 		}
 	}
