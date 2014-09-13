@@ -42,8 +42,9 @@ public:
 
 private:
 	BcF32 Size_;
+	BcF32 SizeIncreaseMultiplier_;
 	BcF32 EatDistance_;
-	BcF32 EatSpeed_;
+	BcF32 EatSpeed_;	
 	ReObjectRef< class GaSwarmManagerComponent > SwarmManager_;
 };
 

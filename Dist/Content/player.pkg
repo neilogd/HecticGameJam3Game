@@ -17,6 +17,7 @@
 				{
 					"type"					: "GaFishComponent",
 					"size"					: 64.0,
+					"sizeincreasemultiplier": 1.0,
 					"eatdistance"			: 256.0,
 					"eatspeed"				: 16.0
 				},

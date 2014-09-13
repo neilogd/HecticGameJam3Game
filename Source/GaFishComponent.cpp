@@ -34,6 +34,7 @@ void GaFishComponent::StaticRegisterClass()
 	ReField* Fields[] =
 	{
 		new ReField( "Size_", &GaFishComponent::Size_, DsCore::DsCoreSerialised ),
+		new ReField( "SizeIncreaseMultiplier_", &GaFishComponent::SizeIncreaseMultiplier_, DsCore::DsCoreSerialised ),
 		new ReField( "EatDistance_", &GaFishComponent::EatDistance_, DsCore::DsCoreSerialised ),
 		new ReField( "EatSpeed_", &GaFishComponent::EatSpeed_, DsCore::DsCoreSerialised ),
 		new ReField( "SwarmManager_", &GaFishComponent::SwarmManager_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised )
@@ -48,6 +49,7 @@ void GaFishComponent::StaticRegisterClass()
 void GaFishComponent::initialise()
 {
 	Size_ = 0.0f;
+	SizeIncreaseMultiplier_ = 1.0f;
 	EatDistance_ = 0.0f;
 	SwarmManager_ = nullptr;
 }
@@ -59,6 +61,7 @@ void GaFishComponent::initialise( const Json::Value& Object )
 	initialise();
 
 	Size_ = BcF32( Object[ "size" ].asDouble() );
+	SizeIncreaseMultiplier_ = BcF32( Object[ "sizeincreasemultiplier" ].asDouble() );
 	EatDistance_ = BcF32( Object[ "eatdistance" ].asDouble() );
 	EatSpeed_ = BcF32( Object[ "eatspeed" ].asDouble() );
 }
@@ -88,7 +91,7 @@ void GaFishComponent::update( BcF32 Tick )
 				auto Food = FoodSwarmElement->getParentEntity()->getComponentByType< GaFoodComponent >();
 				auto AmountAte = Food->tryEat( Tick * EatSpeed_ );
 
-				Size_ += AmountAte;
+				Size_ += AmountAte * SizeIncreaseMultiplier_;
 			}
 		}
 	}
