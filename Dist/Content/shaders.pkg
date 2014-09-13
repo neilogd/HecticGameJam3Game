@@ -80,6 +80,26 @@
 				"geometry" : 	"geometryMain",
 				"pixel" :		"pixelMain"
 			}
+		},
+
+		{
+			"type"			: "ScnShader",
+			"name"			: "foodBarShader",
+			"source"		: "Content/Engine/foodbar.hlsl",
+
+			"codetypes"	: [
+				"D3D11_4_0"
+			],
+
+			"backendtypes" : [
+				"D3D11",
+				"GLSL"
+			],
+
+			"entrypoints"		: {
+				"vertex" : 		"vertexMain",
+				"pixel" :		"pixelMain"
+			}
 		}
 	]
 }
