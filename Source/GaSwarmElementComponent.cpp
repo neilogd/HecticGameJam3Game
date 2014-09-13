@@ -95,7 +95,7 @@ void GaSwarmElementComponent::onAttach( ScnEntityWeakRef Parent )
 {
 	Super::onAttach( Parent );
 
-	Manager_ = Parent->getComponentAnyParentByType< GaSwarmElementComponent >();
+	Manager_ = Parent->getComponentAnyParentByType< GaSwarmManagerComponent >();
 
 	// TODO: Register with manager or something.
 	BcAssert( Manager_ == nullptr );

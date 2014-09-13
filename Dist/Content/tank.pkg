@@ -1,24 +1,38 @@
 {
 	"resources" : [
 		{
-			"type"			: "ScnMaterial",
-			"name"			: "material",
+			"name"		:		"TankEntity",
+			"type"		:		"ScnEntity",
 
-			// Shader
-			"shader"		: "$(ScnShader:shaders.default)",
+			"components" : [
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "WaterMaterial_0",
+					"material"				: "$(ScnMaterial:materials.tank)",
+					"permutation"			: "2d"
+				},
+				
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "GlassMaterial_0",
+					"material"				: "$(ScnMaterial:materials.tank)",
+					"permutation"			: "2d"
+				},
 
-			// Textures
-			"textures"		: {
-				"aDiffuseTex"	: "$(ScnTexture:textures.default)"
-			},
+				{
+					"type"					: "GaSwarmManagerComponent"
+				},
 
-			// State
-			"state"			: {
-				"depth_write_enable" 		: 0,
-				"depth_test_enable" 		: 0,
-				"depth_test_compare" 		: "lessequal",
-				"blend_mode" 				: "blend"
-			}
+				{
+					"type"					: "GaTankComponent",
+					"watermaterial"			: "WaterMaterial_0",
+					"glassmaterial"			: "GlassMaterial_0",
+					"dimensions"			: "2000.0, 1000.0",
+					"nooffish"				: 8,
+					"spawnratemin"			: 1.0,
+					"spawnratemax"			: 2.0
+				}
+			]
 		}
 	]
 }

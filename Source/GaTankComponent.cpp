@@ -109,7 +109,7 @@ void GaTankComponent::update( BcF32 Tick )
 
 		ScnEntitySpawnParams EnemyEntityParams =
 		{
-			"default", "FoodEntity", BcName( "FoodEntity" ).getUnique(),
+			"food", "FoodEntity", BcName( "FoodEntity" ).getUnique(),
 			MaMat4d(),
 			getParentEntity(),
 			nullptr
@@ -155,7 +155,7 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 	{
 		ScnEntitySpawnParams EnemyEntityParams =
 		{
-			"default", "EnemyEntity", BcName( "EnemyEntity", FishIdx ),
+			"enemies", "EnemyEntity", BcName( "EnemyEntity", FishIdx ),
 			MaMat4d(),
 			Parent,
 			nullptr
