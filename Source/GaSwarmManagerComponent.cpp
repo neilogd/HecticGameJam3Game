@@ -161,6 +161,12 @@ void GaSwarmManagerComponent::onDetach( ScnEntityWeakRef Parent )
 // defaultMovement
 MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementComponent* Element )
 {
+	// Is attacking?
+	auto AttackElement = Element->getAttackTarget();
+	BcBool Attacking = AttackElement != nullptr;
+	MaVec2d TargetPosition = Attacking ? AttackElement->getPosition() : MaVec2d( 0.0f, 0.0f );
+	BcBool MoveToTarget = BcFalse;
+
 	// If we're an enemy, move to player thing.
 	if( Element->getUnitMask() == ENEMY )
 	{
@@ -185,14 +191,18 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 				Move += ( ( player[ 0 ]->getPosition() - Element->getPosition() ).normal() ) * 1.5f;
 			}
 		}
+
+		// if attacking.
+		if( Attacking )
+		{
+			MoveToTarget = BcTrue;
+		}
 	}
 
 	// if we're a player...
 	if( Element->getUnitMask() == PLAYER )
 	{
 		GaPlayerComponentRef Player = Element->getParentEntity()->getComponentByType< GaPlayerComponent >();
-
-		BcBool Attacking = Element->getAttackTarget() != nullptr;
 
 		// Move towards food.
 		if( !Attacking && unitTypeExists( FOOD ) )
@@ -203,11 +213,21 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 		// Move away from crowd
 		Move += getSeparation( Element->getPosition(), ENEMY, SeparationDistance_ ) * 0.01f;
 
+		MoveToTarget = BcTrue;
+
+		if( !Attacking )
+		{
+			TargetPosition = Player->getTargetPosition();
+		}
+	}
+
+	if( MoveToTarget )
+	{
 		// Move towards target.
 		BcF32 TargetApproachRadius = 32.0f;
 		BcF32 TargetAttackRadius = 256.0f;
-		const auto& PlayerTarget = Attacking ? Element->getAttackTarget()->getPosition() : Player->getTargetPosition();
-		auto TargetVector = ( PlayerTarget - Element->getPosition() );
+
+		auto TargetVector = ( TargetPosition - Element->getPosition() );
 		auto TargetDistance = TargetVector.magnitude();
 
 		// When nearing attack, cancel out some of the previous velocity to narrow in a bit harder.
@@ -223,7 +243,7 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 		{
 			Move += ( TargetVector.normal() ) * ( AttackSpeedMultiplier );
 		}
-		
+
 		// Slow down a bit.
 		Move = Move - ( Move * 0.01f );
 	}
