@@ -39,6 +39,20 @@
 			"name"			: "face",
 
 			"source"		: "Content/Source/undead/text_corpoV.png"
+		},
+
+		{
+			"type"			: "ScnTexture",
+			"name"			: "healthbarBacking",
+
+			"source"		: "Content/Source/healthBarBacking.png"
+		},
+
+		{
+			"type"			: "ScnTexture",
+			"name"			: "healthbar",
+
+			"source"		: "Content/Source/healthBar.png"
 		}
 
 	]

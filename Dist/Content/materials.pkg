@@ -216,6 +216,48 @@
 				"depth_test_compare" 		: "lessequal",
 				"blend_mode" 				: "none"
 			}
+		},
+		
+		{
+			"type"			: "ScnMaterial",
+			"name"			: "healthBar",
+
+			// Shader
+			"shader"		: "$(ScnShader:shaders.textured)",
+
+			// Textures
+			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.healthBar)"
+			},
+
+			// State
+			"state"			: {
+				"depth_write_enable" 		: 0,
+				"depth_test_enable" 		: 0,
+				"depth_test_compare" 		: "lessequal",
+				"blend_mode" 				: "blend"
+			}
+		},
+		
+		{
+			"type"			: "ScnMaterial",
+			"name"			: "healthBarBacking",
+
+			// Shader
+			"shader"		: "$(ScnShader:shaders.textured)",
+
+			// Textures
+			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.healthBarBacking)"
+			},
+
+			// State
+			"state"			: {
+				"depth_write_enable" 		: 0,
+				"depth_test_enable" 		: 0,
+				"depth_test_compare" 		: "lessequal",
+				"blend_mode" 				: "blend"
+			}
 		}
 	]
 }

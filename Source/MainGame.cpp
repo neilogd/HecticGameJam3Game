@@ -78,10 +78,23 @@ void PsyLaunchGame()
 						"player", "PlayerEntity", "PlayerEntity_0",
 						MaMat4d(),
 						ParentEntity,
-						nullptr
+						[]( ScnEntity* ParentEntity )
+						{
+							ScnEntitySpawnParams GuiEntityParams =
+							{
+								"gui", "GuiEntity", "GuiEntity_0",
+								MaMat4d(),
+								ParentEntity,
+								nullptr
+							};
+
+							ScnCore::pImpl()->spawnEntity( GuiEntityParams );
+						}
 					};
 
 					ScnCore::pImpl()->spawnEntity( PlayerEntityParams );
+
+					
 				}
 			};
 

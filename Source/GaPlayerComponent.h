@@ -45,6 +45,8 @@ public:
 
 	void jumpTank( BcU32 TankIndex, BcBool Force = BcFalse );
 
+	BcU32 getMaxHealth();
+	BcU32 getHealth();
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 	MaMat4d ViewMatrix_;
@@ -65,6 +67,9 @@ private:
 	BcU32 TankIndex_;
 	ScnEntityRef Tank_;
 	ScnEntityRef Cannon_;
+
+	BcU32 Health_;
+	BcU32 MaxHealth_;
 
 	enum class PlayerState
 	{

@@ -67,6 +67,7 @@
 #include "GaFishComponent.h"
 #include "GaFoodComponent.h"
 #include "GaGameComponent.h"
+#include "GaGuiComponent.h"
 #include "GaMenuComponent.h"
 #include "GaPlayerComponent.h"
 #include "GaSwarmElementComponent.h"
@@ -153,6 +154,7 @@ void AutoGenRegisterReflection()
 	GaFishComponent::StaticRegisterClass();
 	GaFoodComponent::StaticRegisterClass();
 	GaGameComponent::StaticRegisterClass();
+	GaGuiComponent::StaticRegisterClass();
 	GaMenuComponent::StaticRegisterClass();
 	GaPlayerComponent::StaticRegisterClass();
 	GaSwarmElementComponent::StaticRegisterClass();
