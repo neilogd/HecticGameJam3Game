@@ -196,7 +196,7 @@ void GaTankComponent::spawnFood()
 {
 	ScnEntitySpawnParams EnemyEntityParams =
 	{
-		"default", "FoodEntity", BcName( "FoodEntity" ).getUnique(),
+		"food", "FoodEntity", BcName( "FoodEntity" ).getUnique(),
 		MaMat4d(),
 		getParentEntity(),
 		nullptr
