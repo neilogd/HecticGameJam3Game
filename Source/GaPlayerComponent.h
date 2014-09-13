@@ -47,6 +47,8 @@ public:
 
 	BcU32 getMaxHealth();
 	BcU32 getHealth();
+	const MaVec2d& getTargetPosition() const;
+
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 	MaMat4d ViewMatrix_;

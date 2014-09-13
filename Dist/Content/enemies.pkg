@@ -8,7 +8,9 @@
 				{
 					"type"					: "GaSwarmElementComponent",
 					"unitmask"				: 2,
-					"velocitydriven"		: true
+					"velocitydriven"		: true,
+					"randomvelocity"		: 80.0,
+					"maxspeed"				: 10.0
 				},
 				
 				{

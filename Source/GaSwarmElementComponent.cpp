@@ -39,6 +39,7 @@ void GaSwarmElementComponent::StaticRegisterClass()
 		new ReField( "Velocity_", &GaSwarmElementComponent::Velocity_ , DsCore::DsCoreSerialised),
 		new ReField( "StagedVelocity_", &GaSwarmElementComponent::StagedVelocity_ ),
 		new ReField( "VelocityDriven_", &GaSwarmElementComponent::VelocityDriven_ ),
+		new ReField( "MaxSpeed_", &GaSwarmElementComponent::MaxSpeed_ ),
 	};
 		
 	ReRegisterClass< GaSwarmElementComponent, Super >( Fields )
@@ -58,19 +59,29 @@ void GaSwarmElementComponent::initialise( const Json::Value& Object )
 	{
 		VelocityDriven_ = Object["velocitydriven"].asBool();
 	}
+	if (Object["randomvelocity"] != Json::ValueType::nullValue)
+	{
+		Velocity_ = 
+			MaVec2d( BcRandom::Global.randReal() - 0.5f, BcRandom::Global.randReal() - 0.5f ).normal() *
+			BcF32( Object["randomvelocity"].asDouble() );
+	}
+	if( Object[ "maxspeed" ] != Json::ValueType::nullValue )
+	{
+		MaxSpeed_ = BcF32( Object[ "maxspeed" ].asDouble() );
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
 // initialise
 void GaSwarmElementComponent::initialise( )
 {
-	BcRandom random;
 	UnitMask_ = 0;
 	Acceleration_ = MaVec2d( 0, 0 );
-	Velocity_ = MaVec2d( random.randReal() - 0.5f, random.randReal() - 0.5f);
+	Velocity_ = MaVec2d( 0, 0 );
 	StagedAcceleration_ = MaVec2d( 0, 0 );
 	StagedVelocity_ = MaVec2d( 0, 0 );
 	VelocityDriven_ = false;
+	MaxSpeed_ = 1.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -142,6 +153,12 @@ MaVec2d GaSwarmElementComponent::getVelocity()
 }
 void GaSwarmElementComponent::stageVelocity( MaVec2d acceleration )
 {
+	auto mag = acceleration.magnitude();
+	if( mag > MaxSpeed_ )
+	{
+		acceleration /= mag;
+		acceleration *= MaxSpeed_;
+	}
 	StagedVelocity_ = acceleration;
 }
 void GaSwarmElementComponent::commitChanges()
