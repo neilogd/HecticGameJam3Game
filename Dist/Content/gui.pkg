@@ -22,7 +22,8 @@
 					"size"					: "512.0, 64.0",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
 					"center"				: true,
-					"layer"					: 20
+					"layer"					: 20,
+					"isscreenspace"			: true
 				},
 				
 				{
@@ -39,7 +40,8 @@
 					"size"					: "256.0, 64.0",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
 					"center"				: true,
-					"layer"					: 21
+					"layer"					: 21,
+					"isscreenspace"			: true
 				}
 			]
 		}
