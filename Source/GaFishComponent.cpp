@@ -15,8 +15,7 @@
 #include "GaFoodComponent.h"
 #include "GaSwarmManagerComponent.h"
 
-#include "System/Scene/Rendering/ScnShaderFileData.h"
-#include "System/Scene/Rendering/ScnViewComponent.h"
+#include "System/Scene/Rendering/ScnSpriteComponent.h"
 
 #include "System/Content/CsPackage.h"
 #include "System/Content/CsCore.h"
@@ -37,11 +36,13 @@ void GaFishComponent::StaticRegisterClass()
 		new ReField( "SizeIncreaseMultiplier_", &GaFishComponent::SizeIncreaseMultiplier_, DsCore::DsCoreSerialised ),
 		new ReField( "EatDistance_", &GaFishComponent::EatDistance_, DsCore::DsCoreSerialised ),
 		new ReField( "EatSpeed_", &GaFishComponent::EatSpeed_, DsCore::DsCoreSerialised ),
-		new ReField( "SwarmManager_", &GaFishComponent::SwarmManager_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised )
+		new ReField( "SwarmManager_", &GaFishComponent::SwarmManager_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "Sprites_", &GaFishComponent::Sprites_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "SpriteSizes_", &GaFishComponent::SpriteSizes_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 	};
 	
 	ReRegisterClass< GaFishComponent, Super >( Fields )
-		.addAttribute( new ScnComponentAttribute( 0 ) );
+		.addAttribute( new ScnComponentAttribute( 10 ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -92,13 +93,14 @@ void GaFishComponent::update( BcF32 Tick )
 				auto AmountAte = Food->tryEat( Tick * EatSpeed_ );
 
 				Size_ += AmountAte * SizeIncreaseMultiplier_;
-
-				// Size change, set RS matrix.
-				MaMat4d Scale;
-				Scale.scale( MaVec4d( Size_, Size_, 0.0f, 0.0f ) );
-				//getParentEntity()->setLocalMatrixRS( Scale );
 			}
 		}
+	}
+
+	// Update sprite sizes.
+	for( BcU32 Idx = 0; Idx < Sprites_.size(); ++Idx )
+	{
+		Sprites_[ Idx ]->setSize( SpriteSizes_[ Idx ] * Size_ );
 	}
 }
 
@@ -109,6 +111,13 @@ void GaFishComponent::onAttach( ScnEntityWeakRef Parent )
 {
 	Super::onAttach( Parent );
 
+	// Grab all sprites for scaling.
+	BcU32 Idx = 0;
+	while( auto SpriteComponent = Parent->getComponentByType< ScnSpriteComponent >( Idx++ ) )
+	{
+		Sprites_.push_back( SpriteComponent );
+		SpriteSizes_.push_back( SpriteComponent->getSize() );
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
