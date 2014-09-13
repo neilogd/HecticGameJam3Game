@@ -21,7 +21,8 @@
 					"size"					: 1.0,
 					"sizeincreasemultiplier": 0.1,
 					"eatdistance"			: 256.0,
-					"eatspeed"				: 1.0
+					"eatspeed"				: 1.0,
+					"maxhealth"				: 5
 				},
 
 				{

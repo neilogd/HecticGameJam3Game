@@ -224,8 +224,10 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 	if( MoveToTarget )
 	{
 		// Move towards target.
-		BcF32 TargetApproachRadius = 32.0f;
+		BcF32 TargetApproachRadius = Attacking ? 64.0f : 32.0f;
 		BcF32 TargetAttackRadius = 256.0f;
+
+		//BcF32 
 
 		auto TargetVector = ( TargetPosition - Element->getPosition() );
 		auto TargetDistance = TargetVector.magnitude();

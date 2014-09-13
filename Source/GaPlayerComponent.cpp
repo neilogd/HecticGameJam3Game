@@ -56,8 +56,6 @@ void GaPlayerComponent::StaticRegisterClass()
 		new ReField( "TankIndex_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "Tank_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT  ),
 		new ReField( "Cannon_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT ),
-		new ReField( "Health_", &GaPlayerComponent::Health_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
-		new ReField( "MaxHealth_", &GaPlayerComponent::MaxHealth_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 	};
 
 	ReRegisterClass< GaPlayerComponent, Super >( Fields )
@@ -83,9 +81,6 @@ void GaPlayerComponent::initialise()
 	CannonStart_ = MaVec2d( 0.0f, 0.0f );
 	CannonEnd_ = MaVec2d( 0.0f, 0.0f );
 	TankIndex_ = 0;
-
-	MaxHealth_ = 5;
-	Health_ = MaxHealth_;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -352,15 +347,6 @@ void GaPlayerComponent::jumpTank( BcU32 TankIndex, BcBool Force )
 	{
 		PlayerState_ = PlayerState::IDLE;
 	}
-}
-
-BcU32 GaPlayerComponent::getMaxHealth()
-{
-	return MaxHealth_;
-}
-BcU32 GaPlayerComponent::getHealth()
-{
-	return Health_;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -38,6 +38,9 @@ public:
 
 	BcF32 getFishSize() const;
 
+	BcU32 getMaxHealth() const;
+	BcU32 getHealth() const;
+
 	void updateSwarmManagerRef( class GaSwarmManagerComponent* SwarmManager );
 
 private:
@@ -45,6 +48,9 @@ private:
 	BcF32 SizeIncreaseMultiplier_;
 	BcF32 EatDistance_;
 	BcF32 EatSpeed_;	
+	BcU32 Health_;
+	BcU32 MaxHealth_;
+
 	ReObjectRef< class GaSwarmManagerComponent > SwarmManager_;
 
 	std::vector< MaVec2d > SpriteSizes_;

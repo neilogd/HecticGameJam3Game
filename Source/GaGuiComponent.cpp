@@ -99,11 +99,19 @@ void GaGuiComponent::update( BcF32 Tick )
 
 
 	if (!Player_.isValid())
-		Player_ = ParentEntity_->getParentEntity()->getComponentByType<GaPlayerComponent>();
-	if (Player_.isValid())
 	{
-		BcF32 health = Player_->getHealth();
-		BcF32 maxHealth = Player_->getMaxHealth();
+		Player_ = ParentEntity_->getParentEntity()->getComponentByType<GaPlayerComponent>();
+	}
+
+	if( !Fish_.isValid() )
+	{
+		Fish_ = ParentEntity_->getParentEntity()->getComponentByType<GaFishComponent>();
+	}
+
+	if (Fish_.isValid())
+	{
+		BcF32 health = Fish_->getHealth();
+		BcF32 maxHealth = Fish_->getMaxHealth();
 		float ratio = health / maxHealth;
 		float width = 512.f * ratio;
 		ScnSpriteComponentRef sprite = ParentEntity_->getComponentByType<ScnSpriteComponent>(BcName("HealthBar",0));

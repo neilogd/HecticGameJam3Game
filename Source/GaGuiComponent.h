@@ -17,6 +17,7 @@
 #include "Psybrus.h"
 #include "System/Scene/Rendering/ScnRenderableComponent.h"
 #include "GaPlayerComponent.h"
+#include "GaFishComponent.h"
 #include "System/Scene/Rendering/ScnMaterial.h"
 #include "System/Scene/Rendering/ScnSpriteComponent.h"
 
@@ -57,6 +58,7 @@ private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 
 	GaPlayerComponentRef Player_;
+	GaFishComponentRef Fish_;
 	ScnSpriteComponentRef HealthSprite_;
 	RsBuffer* UniformBuffer_;
 };
