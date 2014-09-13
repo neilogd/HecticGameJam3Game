@@ -171,8 +171,12 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 
 		Rot += RotAdv;
 	}
-	DsCore::pImpl()->registerFunction( "SpawnFood", std::bind( &GaTankComponent::spawnFood, this ) );
-	DsCore::pImpl()->registerFunction( "ResetPosition", std::bind( &GaTankComponent::magicReset, this ) );
+	BcChar buffer[256];
+	BcMemZero(buffer, 256);
+	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Spawn_Food");
+	DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::spawnFood, this ) );
+	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Reset_Position");
+	DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::magicReset, this ) );
 
 	
 	ScnEntitySpawnParams CannonEntityParams =
@@ -197,9 +201,13 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 //virtual
 void GaTankComponent::onDetach( ScnEntityWeakRef Parent )
 {
-	Super::onDetach( Parent );
-	DsCore::pImpl()->deregisterFunction( "SpawnFood" );
-	DsCore::pImpl()->deregisterFunction( "ResetPosition" );
+	Super::onDetach( Parent );	
+	
+	BcChar buffer[256];
+	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Spawn_Food");
+	DsCore::pImpl()->deregisterFunction( buffer );
+	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Reset_Position");
+	DsCore::pImpl()->deregisterFunction( buffer );
 
 }
 
