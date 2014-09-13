@@ -87,7 +87,7 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 		position = position + Velocity_ * Tick * 20.0f;
 	
 		MaVec3d realPos(position, 0.0f);
-		getParentEntity()->setLocalPosition(realPos);
+		getParentEntity()->setWorldPosition(realPos);
 	}
 }
 
@@ -152,6 +152,6 @@ void GaSwarmElementComponent::commitChanges()
 
 MaVec2d GaSwarmElementComponent::getPosition()
 {
-	MaVec3d pos = getParentEntity()->getLocalPosition();
+	MaVec3d pos = getParentEntity()->getWorldPosition();
 	return MaVec2d(pos.x(), pos.y());
 }

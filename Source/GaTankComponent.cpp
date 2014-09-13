@@ -239,13 +239,13 @@ void GaTankComponent::magicReset()
 	auto CentralPosition = MaVec3d( 
 		TankDimensions.x() * 0.5f,
 		TankDimensions.y() * 0.5f,
-		0.0f );
+		0.0f ) + getParentEntity()->getWorldPosition();
 	BcF32 Rot = 0.0f;
 	BcF32 RotAdv = BcPIMUL2 / BcF32( Children.size() );
 	BcF32 Radius = 128.0f;
 	for( BcU32 FishIdx = 0; FishIdx < Children.size(); ++FishIdx )
 	{
-		Children[FishIdx]->setLocalPosition( CentralPosition +
+		Children[FishIdx]->setWorldPosition( CentralPosition +
 			MaVec3d( BcCos( Rot ), -BcSin( Rot ), 0.0f ) * Radius );
 
 		Rot += RotAdv;

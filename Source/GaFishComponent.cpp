@@ -12,6 +12,7 @@
 **************************************************************************/
 
 #include "GaFishComponent.h"
+#include "GaSwarmManagerComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnViewComponent.h"
@@ -31,9 +32,10 @@ void GaFishComponent::StaticRegisterClass()
 {
 	ReField* Fields[] =
 	{
-		new ReField( "FishSize_", &GaFishComponent::FishSize_, DsCore::DsCoreSerialised )
+		new ReField( "FishSize_", &GaFishComponent::FishSize_, DsCore::DsCoreSerialised ),
+		new ReField( "SwarmManager_", &GaFishComponent::SwarmManager_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised )
 	};
-
+	
 	ReRegisterClass< GaFishComponent, Super >( Fields )
 		.addAttribute( new ScnComponentAttribute( 0 ) );
 }
@@ -43,6 +45,7 @@ void GaFishComponent::StaticRegisterClass()
 void GaFishComponent::initialise()
 {
 	FishSize_ = 0.0f;
+	SwarmManager_ = nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,6 +63,14 @@ void GaFishComponent::initialise( const Json::Value& Object )
 void GaFishComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
+
+	if( SwarmManager_ != nullptr )
+	{
+		auto Food = SwarmManager_->getNearbyUnits( 
+			MaVec2d( 
+				getParentEntity()->getWorldPosition().x(),
+				getParentEntity()->getWorldPosition().y() ), 1, GaSwarmManagerComponent::FOOD );
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,6 +89,8 @@ void GaFishComponent::onDetach( ScnEntityWeakRef Parent )
 {
 	Super::onDetach( Parent );
 
+
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -85,4 +98,18 @@ void GaFishComponent::onDetach( ScnEntityWeakRef Parent )
 BcF32 GaFishComponent::getFishSize() const
 {
 	return FishSize_;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// getFishSize
+void GaFishComponent::updateSwarmManagerRef( GaSwarmManagerComponent* SwarmManager )
+{
+	if( SwarmManager != nullptr )
+	{
+		SwarmManager_ = SwarmManager;
+	}
+	else
+	{
+		SwarmManager_ = getParentEntity()->getComponentAnyParentByType< GaSwarmManagerComponent >();
+	}
 }

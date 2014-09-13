@@ -15,6 +15,7 @@
 #include "GaCannonComponent.h"
 #include "GaFishComponent.h"
 #include "GaTankComponent.h"
+#include "GaSwarmManagerComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnCanvasComponent.h"
@@ -116,7 +117,7 @@ void GaPlayerComponent::update( BcF32 Tick )
 	{
 	case PlayerState::IDLE:
 		{
-			getParentEntity()->setLocalPosition(
+			getParentEntity()->setWorldPosition(
 				MaVec3d( TargetPosition_, 0.0f ) );
 
 			if( Cannon_ != nullptr )
@@ -159,7 +160,7 @@ void GaPlayerComponent::update( BcF32 Tick )
 			MaVec2d Position;
 			Position.lerp( CannonStart_, CannonEnd_, ClampedTimer );
 
-			getParentEntity()->setLocalPosition(
+			getParentEntity()->setWorldPosition(
 				MaVec3d( Position, 0.0f ) );
 
 			if( CannonTimer_ > 1.0f )
@@ -193,14 +194,14 @@ void GaPlayerComponent::update( BcF32 Tick )
 
 			Position.y( Position.y() + std::sin( ClampedTimer * BcPI ) * JumpHeight_ );
 
-			getParentEntity()->setLocalPosition(
+			getParentEntity()->setWorldPosition(
 				MaVec3d( Position, 0.0f ) );
 
 			if( JumpTimer_ > 1.0f )
 			{
 				TargetPosition_ = MaVec2d( 
-					getParentEntity()->getLocalPosition().x(), 
-					getParentEntity()->getLocalPosition().y() );
+					getParentEntity()->getWorldPosition().x(), 
+					getParentEntity()->getWorldPosition().y() );
 				PlayerState_ = PlayerState::IDLE;
 			}
 
@@ -235,14 +236,19 @@ void GaPlayerComponent::onAttach( ScnEntityWeakRef Parent )
 	jumpTank( 0 );
 
 	// Start in centre of tank.
-	auto TankDimensions = Tank_->getComponentByType< GaTankComponent >()->getDimensions();
+	auto TankDimensions = 
+		Tank_->getComponentByType< GaTankComponent >()->getDimensions();
 
-	getParentEntity()->setLocalPosition(
-		MaVec3d( TankDimensions.x(), TankDimensions.y(), 0.0f ) * 0.5f );
+	getParentEntity()->setWorldPosition(
+		( MaVec3d( 
+			TankDimensions.x(),
+			TankDimensions.y(), 
+			0.0f ) * 0.5f ) +
+		( Tank_->getParentEntity()->getWorldPosition() ) );
 
 	TargetPosition_ = MaVec2d( 
-		getParentEntity()->getLocalPosition().x(), 
-		getParentEntity()->getLocalPosition().y() );
+		getParentEntity()->getWorldPosition().x(), 
+		getParentEntity()->getWorldPosition().y() );
 
 	Super::onAttach( Parent );
 }
@@ -276,10 +282,6 @@ eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Ev
 	{
 		TargetPosition_ = MousePosition;
 	}
-	else
-	{
-		jumpTank( TankIndex_ + 1 );
-	}
 
 	return evtRET_PASS;
 }
@@ -290,6 +292,10 @@ void GaPlayerComponent::jumpTank( BcU32 TankIndex, BcBool Force )
 {
 	Tank_ = getParentEntity()->getComponentAnyParentByType< ScnEntity >( BcName( "TankEntity", TankIndex ) );
 	Cannon_ = Tank_->getComponentByType< ScnEntity >( "CannonEntity_0" );
+
+	getParentEntity()->getComponentByType< GaFishComponent >()->updateSwarmManagerRef( 
+		Tank_->getComponentAnyParentByType< GaSwarmManagerComponent >() );
+
 	if( TankIndex != TankIndex_ || Force )
 	{
 		PlayerState_ = PlayerState::JUMP;

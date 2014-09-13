@@ -38,8 +38,11 @@ public:
 
 	BcF32 getFishSize() const;
 
+	void updateSwarmManagerRef( class GaSwarmManagerComponent* SwarmManager );
+
 private:
 	BcF32 FishSize_;
+	ReObjectRef< class GaSwarmManagerComponent > SwarmManager_;
 };
 
 #endif

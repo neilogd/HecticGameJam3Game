@@ -12,6 +12,7 @@
 **************************************************************************/
 
 #include "GaEnemyComponent.h"
+#include "GaFishComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnViewComponent.h"
@@ -61,6 +62,9 @@ void GaEnemyComponent::onAttach( ScnEntityWeakRef Parent )
 	{
 		tank->registerEnemy(getParentEntity());
 	}
+
+	getParentEntity()->getComponentByType< GaFishComponent >()->updateSwarmManagerRef( nullptr );
+
 }
 
 //////////////////////////////////////////////////////////////////////////

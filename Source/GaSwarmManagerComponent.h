@@ -40,10 +40,10 @@ public:
 	void								registerElement( GaSwarmElementComponentRef element );
 	void								deregisterElement( GaSwarmElementComponentRef element );
 
-
 private:
 	SwarmElementList SwarmElements;
 
+public:
 	MaVec2d								getAverageVelocity( MaVec2d Position, BcU8 Mask, BcF32 Range = 250.0f );
 	MaVec2d								getAveragePosition( MaVec2d Position, BcU8 Mask, BcF32 Range = 250.0f );
 	MaVec2d								getSeparation(  MaVec2d Position, BcU8 Mask, BcF32 Range = 250.0f );
@@ -54,8 +54,8 @@ private:
 	SwarmElementList					getNearbyUnits( MaVec2d Position, BcU8 UnitCount, BcU8 Mask );
 	bool								unitTypeExists( BcU8 Mask );
 public:
-	const BcU8 FOOD = 0x04;
-	const BcU8 PLAYER = 0x01;
+	static const BcU8 FOOD = 0x04;
+	static const BcU8 PLAYER = 0x01;
 };
 
 #endif
