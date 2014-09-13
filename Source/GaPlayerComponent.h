@@ -45,6 +45,8 @@ public:
 
 	void jumpTank( BcU32 TankIndex, BcBool Force = BcFalse );
 
+	const MaVec2d& getTargetPosition() const;
+
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 	MaMat4d ViewMatrix_;

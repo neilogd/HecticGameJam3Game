@@ -117,8 +117,8 @@ void GaPlayerComponent::update( BcF32 Tick )
 	{
 	case PlayerState::IDLE:
 		{
-			getParentEntity()->setWorldPosition(
-				MaVec3d( TargetPosition_, 0.0f ) );
+			//getParentEntity()->setWorldPosition(
+			//	MaVec3d( TargetPosition_, 0.0f ) );
 
 			if( Cannon_ != nullptr )
 			{
@@ -290,11 +290,24 @@ eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Ev
 // jumpTank
 void GaPlayerComponent::jumpTank( BcU32 TankIndex, BcBool Force )
 {
+	if( Tank_ != nullptr )
+	{
+		Tank_->getComponentByType< GaSwarmManagerComponent >()->deregisterElement( 
+			getParentEntity()->getComponentByType< GaSwarmElementComponent >() );
+	}
+
 	Tank_ = getParentEntity()->getComponentAnyParentByType< ScnEntity >( BcName( "TankEntity", TankIndex ) );
 	Cannon_ = Tank_->getComponentByType< ScnEntity >( "CannonEntity_0" );
 
 	getParentEntity()->getComponentByType< GaFishComponent >()->updateSwarmManagerRef( 
 		Tank_->getComponentAnyParentByType< GaSwarmManagerComponent >() );
+
+	
+	if( Tank_ != nullptr )
+	{
+		Tank_->getComponentByType< GaSwarmManagerComponent >()->registerElement( 
+			getParentEntity()->getComponentByType< GaSwarmElementComponent >() );
+	}
 
 	if( TankIndex != TankIndex_ || Force )
 	{
@@ -317,4 +330,11 @@ void GaPlayerComponent::jumpTank( BcU32 TankIndex, BcBool Force )
 	{
 		PlayerState_ = PlayerState::IDLE;
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+// getTargetPosition
+const MaVec2d& GaPlayerComponent::getTargetPosition() const
+{
+	return TargetPosition_;
 }

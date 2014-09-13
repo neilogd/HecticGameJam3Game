@@ -58,7 +58,7 @@ void PsyLaunchGame()
 				{
 					MaVec3d Position( 0.0f, 0.0f, 0.0f );
 					MaVec3d PositionIncrement( 2200.0f, 0.0f, 0.0f );
-					for( BcU32 Idx = 0; Idx < 10; ++Idx )
+					for( BcU32 Idx = 0; Idx < 5; ++Idx )
 					{
 						ScnEntitySpawnParams TankEntityParams =
 						{

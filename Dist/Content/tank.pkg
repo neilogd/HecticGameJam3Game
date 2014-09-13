@@ -20,7 +20,8 @@
 				},
 
 				{
-					"type"					: "GaSwarmManagerComponent"
+					"type"					: "GaSwarmManagerComponent",
+					"edgedistance"			: 150.0
 				},
 
 				{

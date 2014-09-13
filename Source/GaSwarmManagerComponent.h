@@ -59,8 +59,8 @@ public:
 	MaVec2d								getSeparation(  MaVec2d Position, BcU8 Mask, BcF32 Range = 250.0f );
 	MaVec2d								getAverageAcceleration( BcU8 Mask );
 	MaVec2d								capVector( MaVec2d vector, BcF32 MaxMagnitude );
-	MaVec2d								forceAwayFromNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask = 0xFF );
-	MaVec2d								forceTowardsNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask = 0xFF );
+	MaVec2d								forceAwayFromNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask );
+	MaVec2d								forceTowardsNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask, BcF32 Range );
 	SwarmElementList					getNearbyUnits( MaVec2d Position, BcU8 UnitCount, BcU8 Mask );
 	bool								unitTypeExists( BcU8 Mask );
 public:

@@ -12,6 +12,7 @@
 **************************************************************************/
 
 #include "GaSwarmManagerComponent.h"
+#include "GaPlayerComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnViewComponent.h"
@@ -19,6 +20,7 @@
 #include "System/Content/CsPackage.h"
 #include "System/Content/CsCore.h"
 #include "System/Debug/DsCore.h"
+#include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,7 +80,7 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 {
 	if (!TankComponent_.isValid())
 	{
-		TankComponent_ = getParentEntity()->getParentEntity()->getComponentByType<GaTankComponent>();
+		TankComponent_ = getParentEntity()->getComponentAnyParentByType<GaTankComponent>();
 	}
 	bool hasTank = TankComponent_.isValid();
 	MaVec2d CentralPosition;
@@ -90,33 +92,51 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 	BcU32 size = this->SwarmElements.size();
 	for ( BcU32 Idx = 0; Idx < size; ++Idx )
 	{
-		MaVec2d move = SwarmElements[Idx]->getVelocity();
+		auto SwarmElement = SwarmElements[Idx];
+		MaVec2d move = SwarmElement->getVelocity();
 
-		move = defaultMovement( move, SwarmElements[Idx] );
+		move = defaultMovement( move, SwarmElement );
 
 		// Do tank keeping in!
 		if (hasTank)
 		{
-			if (SwarmElements[Idx]->getPosition().x() - CentralPosition.x() - TankComponent_->getDimensions().x() * 0.5f < EdgeDistance_)
+			BcF32 X = SwarmElement->getPosition().x();
+			BcF32 Y = SwarmElement->getPosition().y();
+			BcF32 TankL = TankComponent_->getParentEntity()->getWorldPosition().x();
+			BcF32 TankR = TankComponent_->getParentEntity()->getWorldPosition().x() + TankComponent_->getDimensions().x();
+			BcF32 TankB = TankComponent_->getParentEntity()->getWorldPosition().y();
+			BcF32 TankT = TankComponent_->getParentEntity()->getWorldPosition().y() + TankComponent_->getDimensions().y();
+			BcF32 TankLInnerEdge = TankL + EdgeDistance_;
+			BcF32 TankRInnerEdge = TankR - EdgeDistance_;
+			BcF32 TankBInnerEdge = TankB + EdgeDistance_;
+			BcF32 TankTInnerEdge = TankT - EdgeDistance_;
+
+			BcF32 PushAmount = 10.0f;
+			if( X < TankLInnerEdge )
 			{
-				move += MaVec2d(200,0);
+				auto Amount = BcClamp( ( TankLInnerEdge - X ) / ( TankLInnerEdge - TankL ), 0.0f, 1.0f );
+				move += MaVec2d( PushAmount, 0.0f ) * Amount;
 			}
-			if (CentralPosition.x() + TankComponent_->getDimensions().x() * 0.5f  - SwarmElements[Idx]->getPosition().x() < EdgeDistance_)
+			if( X > TankRInnerEdge )
 			{
-				move += MaVec2d(-200,0);
+				auto Amount = BcClamp( ( X - TankRInnerEdge ) / ( TankR - TankRInnerEdge ), 0.0f, 1.0f );
+				move -= MaVec2d( PushAmount, 0.0f ) * Amount;
 			}
-			if (SwarmElements[Idx]->getPosition().y() - CentralPosition.y() - TankComponent_->getDimensions().y() * 0.5f < EdgeDistance_)
+
+			if( Y < TankBInnerEdge )
 			{
-				move += MaVec2d(0,200);
+				auto Amount = BcClamp( ( TankBInnerEdge - Y ) / ( TankBInnerEdge - TankB ), 0.0f, 1.0f );
+				move += MaVec2d( 0.0f, PushAmount ) * Amount;
 			}
-			if (CentralPosition.y() + TankComponent_->getDimensions().y() * 0.5f  - SwarmElements[Idx]->getPosition().y() < EdgeDistance_)
+			if( Y > TankTInnerEdge )
 			{
-				move += MaVec2d(0,-200);
+				auto Amount = BcClamp( ( Y - TankTInnerEdge ) / ( TankT - TankTInnerEdge ), 0.0f, 1.0f );
+				move -= MaVec2d( 0.0f, PushAmount ) * Amount;
 			}
 		}
 
 		//move += forceAwayFromNearbyUnits( SwarmElements[Idx], 5, SwarmElements[Idx]->getUnitMask() ) * 0.5f;
-		SwarmElements[Idx]->stageVelocity( move.normal() );
+		SwarmElements[Idx]->stageVelocity( move );
 		SwarmElements[Idx]->commitChanges();
 	}
 }
@@ -141,20 +161,22 @@ void GaSwarmManagerComponent::onDetach( ScnEntityWeakRef Parent )
 // defaultMovement
 MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementComponent* Element )
 {
-	if( unitTypeExists( FOOD ) )
-	{
-		Move = forceTowardsNearbyUnits( Element, 1, FOOD );
-	}
-	// Adjust towards average velocity of crowd
-	Move += getAverageVelocity( Element->getPosition(), Element->getUnitMask(), VelocityNeighbourDistance_ ).normal();
-	// Move towards centre of mass of crowd
-	Move += ( getAveragePosition( Element->getPosition(), Element->getUnitMask(), PositionNeighbourDistance_ ) - Element->getPosition() ).normal();
-	// Move away from crowd
-	Move += getSeparation( Element->getPosition(), Element->getUnitMask(), SeparationDistance_ ).normal() * 2.01f;
-	
 	// If we're an enemy, move to player thing.
 	if( Element->getUnitMask() == ENEMY )
 	{
+		if( unitTypeExists( FOOD ) )
+		{
+			Move += forceTowardsNearbyUnits( Element, 1, FOOD, FLT_MAX );
+		}
+
+		// Move away from crowd
+		Move += getSeparation( Element->getPosition(), Element->getUnitMask() | PLAYER, SeparationDistance_ ) * 0.04f;
+		// Adjust towards average velocity of crowd
+		Move += getAverageVelocity( Element->getPosition(), Element->getUnitMask(), VelocityNeighbourDistance_ ).normal();
+		// Move towards centre of mass of crowd
+		Move += ( ( getAveragePosition( Element->getPosition(), Element->getUnitMask(), PositionNeighbourDistance_ ) - Element->getPosition() ).normal() ) * 0.1f;
+
+		// Move towards player.
 		auto player = getNearbyUnits( Element->getPosition(), 1, PLAYER );
 		if( player.size() > 0 )
 		{
@@ -164,6 +186,35 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 			}
 		}
 	}
+
+	// if we're a player, move to food if near by.
+	if( Element->getUnitMask() == PLAYER )
+	{
+		GaPlayerComponentRef Player = Element->getParentEntity()->getComponentByType< GaPlayerComponent >();
+
+		// Move towards food.
+		if( unitTypeExists( FOOD ) )
+		{
+			Move += forceTowardsNearbyUnits( Element, 1, FOOD, 128.0f );
+		}
+
+		// Move away from crowd
+		Move += getSeparation( Element->getPosition(), ENEMY, SeparationDistance_ ) * 0.05f;
+
+		// Move towards target.
+		BcF32 TargetApproachRadius = 32.0f;
+		const auto& PlayerTarget = Player->getTargetPosition();
+		auto TargetVector = ( PlayerTarget - Element->getPosition() );
+		auto TargetDistance = TargetVector.magnitude();
+		if( TargetDistance > TargetApproachRadius )
+		{
+			Move += ( TargetVector.normal() );
+		}
+
+		// Slow down a bit.
+		Move = Move - ( Move * 0.01f );
+	}
+
 
 	return Move;
 }
@@ -231,20 +282,35 @@ MaVec2d GaSwarmManagerComponent::capVector( MaVec2d vector, BcF32 MaxMagnitude )
 
 MaVec2d GaSwarmManagerComponent::forceAwayFromNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask )
 {
-	return -forceTowardsNearbyUnits( Unit, UnitCount, Mask );
+	return -forceTowardsNearbyUnits( Unit, UnitCount, Mask, FLT_MAX );
 
 }
 
-MaVec2d GaSwarmManagerComponent::forceTowardsNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask )
+MaVec2d GaSwarmManagerComponent::forceTowardsNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask, BcF32 Range )
 {
 	SwarmElementList elements = getNearbyUnits(Unit->getPosition(), UnitCount, Mask);
 	MaVec2d average( 0.0f, 0.0f );
+	BcF32 avgCount = 0.0f;
 	for ( BcU32 Idx = 0; Idx < elements.size(); ++Idx )
 	{
-		average += elements[Idx]->getPosition();
+		BcF32 Distance = (elements[Idx]->getPosition() - average).magnitude();
+		if( Distance < Range )
+		{
+			average += elements[Idx]->getPosition();
+			avgCount += 1.0f;
+		}
 	}
-	average = (average / (BcF32)elements.size());
-	return -(Unit->getPosition() - average).normal();
+	average = (average / avgCount);
+
+	
+	if( avgCount > 0.0f )
+	{
+		return -(Unit->getPosition() - average).normal();
+	}
+	else
+	{
+		return MaVec2d( 0.0f, 0.0f );
+	}
 }
 
 SwarmElementList GaSwarmManagerComponent::getNearbyUnits( MaVec2d Position, BcU8 UnitCount, BcU8 Mask )
@@ -273,6 +339,7 @@ SwarmElementList GaSwarmManagerComponent::getNearbyUnits( MaVec2d Position, BcU8
 
 void GaSwarmManagerComponent::registerElement( GaSwarmElementComponentRef element )
 {
+	BcAssert( element.isValid() );
 	SwarmElements.push_back(element);
 }
 
@@ -299,21 +366,20 @@ bool GaSwarmManagerComponent::unitTypeExists( BcU8 Mask )
 	return false;
 }
 
-MaVec2d GaSwarmManagerComponent::getSeparation(  MaVec2d Position, BcU8 Mask, BcF32 Range )
+MaVec2d GaSwarmManagerComponent::getSeparation( MaVec2d Position, BcU8 Mask, BcF32 Range )
 {
-	int counter = 0;
-	MaVec2d position(0.0f, 0.0f);
+	MaVec2d Output(0.0f, 0.0f);
 	for (auto u = SwarmElements.begin(); u != SwarmElements.end(); ++u)
 	{
-		if (((*u)->getUnitMask() == Mask) && ((Position - (*u)->getPosition()).magnitude() <= Range))
+		MaVec2d AvoidPos = ( *u )->getPosition();
+		auto Distance = ( Position - AvoidPos ).magnitude();
+		if ((((*u)->getUnitMask() & Mask) != 0 ) && Distance <= Range)
 		{
-			MaVec2d pos = (*u)->getPosition();
-			position += MaVec2d(pos.x() - Position.x(), pos.y() - Position.y());
-			++counter;
+			// Divide down to 0-1.
+			Distance /= Range;
+			Output += -( MaVec2d( AvoidPos.x() - Position.x(), AvoidPos.y() - Position.y() ) ) * BcClamp( 1.0f - Distance, 0.0f, 1.0f );
 		}
 	}
-	if (counter == 0) // Just a little hack to stop division by zero
-		counter = 1;
-	counter = -counter;
-	return position / (float)counter;
+
+	return Output;
 }
