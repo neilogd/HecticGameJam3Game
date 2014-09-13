@@ -1,6 +1,6 @@
 /**************************************************************************
 *
-* File:		GaCannonComponent.cpp
+* File:		GaFishComponent.cpp
 * Author:	Neil Richardson 
 * Ver/Date:	
 * Description:
@@ -11,7 +11,7 @@
 * 
 **************************************************************************/
 
-#include "GaCannonComponent.h"
+#include "GaFishComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnViewComponent.h"
@@ -25,40 +25,39 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
-DEFINE_RESOURCE( GaCannonComponent );
+DEFINE_RESOURCE( GaFishComponent );
 
-void GaCannonComponent::StaticRegisterClass()
+void GaFishComponent::StaticRegisterClass()
 {
 	ReField* Fields[] =
 	{
-		new ReField( "RequiredSize_", &GaCannonComponent::RequiredSize_, DsCore::DsCoreSerialised )
+		new ReField( "FishSize_", &GaFishComponent::FishSize_, DsCore::DsCoreSerialised )
 	};
 
-	ReRegisterClass< GaCannonComponent, Super >( Fields )
+	ReRegisterClass< GaFishComponent, Super >( Fields )
 		.addAttribute( new ScnComponentAttribute( 0 ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
 // initialise
-void GaCannonComponent::initialise()
+void GaFishComponent::initialise()
 {
-	RequiredSize_ = 0.0f;
-
+	FishSize_ = 0.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
 // initialise
-void GaCannonComponent::initialise( const Json::Value& Object )
+void GaFishComponent::initialise( const Json::Value& Object )
 {
-	GaCannonComponent::initialise();
+	initialise();
 
-	RequiredSize_ = BcF32( Object[ "requiredsize" ].asDouble() );
+	FishSize_ = BcF32( Object[ "fishsize" ].asDouble() );
 }
 
 //////////////////////////////////////////////////////////////////////////
 // update
 //virtual
-void GaCannonComponent::update( BcF32 Tick )
+void GaFishComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
 }
@@ -66,25 +65,24 @@ void GaCannonComponent::update( BcF32 Tick )
 //////////////////////////////////////////////////////////////////////////
 // onAttach
 //virtual
-void GaCannonComponent::onAttach( ScnEntityWeakRef Parent )
+void GaFishComponent::onAttach( ScnEntityWeakRef Parent )
 {
-
-
-
 	Super::onAttach( Parent );
+
 }
 
 //////////////////////////////////////////////////////////////////////////
 // onDetach
 //virtual
-void GaCannonComponent::onDetach( ScnEntityWeakRef Parent )
+void GaFishComponent::onDetach( ScnEntityWeakRef Parent )
 {
 	Super::onDetach( Parent );
+
 }
 
 //////////////////////////////////////////////////////////////////////////
-// getRequiredSize
-BcF32 GaCannonComponent::getRequiredSize() const
+// getFishSize
+BcF32 GaFishComponent::getFishSize() const
 {
-	return RequiredSize_;
+	return FishSize_;
 }

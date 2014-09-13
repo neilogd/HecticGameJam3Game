@@ -43,7 +43,7 @@ public:
 
 	eEvtReturn onMouseDown( EvtID ID, const struct OsEventInputMouse& Event );
 
-	void jumpTank( BcU32 TankIndex );
+	void jumpTank( BcU32 TankIndex, BcBool Force = BcFalse );
 
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;

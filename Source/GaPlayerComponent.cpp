@@ -12,6 +12,8 @@
 **************************************************************************/
 
 #include "GaPlayerComponent.h"
+#include "GaCannonComponent.h"
+#include "GaFishComponent.h"
 #include "GaTankComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
@@ -66,7 +68,7 @@ void GaPlayerComponent::initialise()
 	TargetPosition_ = MaVec2d( 0.0f, 0.0f );
 	PlayerState_ = PlayerState::IDLE;
 
-	JumpHeight_ = 1024.0f;
+	JumpHeight_ = 512.0f;
 	JumpTimer_ = 0.0f;
 	JumpSpeed_ = 0.5f;
 	JumpStart_ = MaVec2d( 0.0f, 0.0f );
@@ -119,7 +121,7 @@ void GaPlayerComponent::update( BcF32 Tick )
 
 			if( Cannon_ != nullptr )
 			{
-				BcF32 Distance = ( getParentEntity()->getLocalPosition() - Cannon_->getLocalPosition() ).magnitude();
+				BcF32 Distance = ( getParentEntity()->getWorldPosition() - Cannon_->getWorldPosition() ).magnitude();
 
 				if( Distance < CannonSuckDistance_ )
 				{
@@ -130,11 +132,11 @@ void GaPlayerComponent::update( BcF32 Tick )
 
 					CannonTimer_ = 0.0f;
 					CannonStart_ = MaVec2d(
-						Cannon_->getLocalPosition().x(),
-						Cannon_->getLocalPosition().y() );
+						Cannon_->getWorldPosition().x(),
+						Cannon_->getWorldPosition().y() );
 					CannonEnd_ = MaVec2d(
-						Cannon_->getLocalPosition().x(),
-						Cannon_->getLocalPosition().y() + TankDimensions.y() );
+						Cannon_->getWorldPosition().x(),
+						Cannon_->getWorldPosition().y() + TankDimensions.y() );
 				}
 			}
 		}
@@ -152,8 +154,34 @@ void GaPlayerComponent::update( BcF32 Tick )
 	case PlayerState::CANNON_LOAD:
 		{
 			BcAssert( Cannon_ != nullptr );
-			Cannon_->getLocalPosition();
-			
+						
+			BcF32 ClampedTimer = BcSmoothStep( std::min( CannonTimer_, 1.0f ) );
+			MaVec2d Position;
+			Position.lerp( CannonStart_, CannonEnd_, ClampedTimer );
+
+			getParentEntity()->setLocalPosition(
+				MaVec3d( Position, 0.0f ) );
+
+			if( CannonTimer_ > 1.0f )
+			{
+				TargetPosition_ = MaVec2d(
+					getParentEntity()->getLocalPosition().x(),
+					getParentEntity()->getLocalPosition().y() );
+
+				auto FishComponent = getParentEntity()->getComponentByType< GaFishComponent >();
+				auto CannonComponent = Cannon_->getComponentByType< GaCannonComponent >();
+
+				if( FishComponent->getFishSize() < CannonComponent->getRequiredSize() )
+				{
+					jumpTank( TankIndex_, BcTrue );
+				}
+				else
+				{
+					jumpTank( TankIndex_ + 1, BcTrue );
+				}
+			}
+
+			CannonTimer_ += Tick * CannonSpeed_;
 		}
 		break;
 
@@ -258,11 +286,11 @@ eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Ev
 
 //////////////////////////////////////////////////////////////////////////
 // jumpTank
-void GaPlayerComponent::jumpTank( BcU32 TankIndex )
+void GaPlayerComponent::jumpTank( BcU32 TankIndex, BcBool Force )
 {
 	Tank_ = getParentEntity()->getComponentAnyParentByType< ScnEntity >( BcName( "TankEntity", TankIndex ) );
 	Cannon_ = Tank_->getComponentByType< ScnEntity >( "CannonEntity_0" );
-	if( TankIndex != TankIndex_ )
+	if( TankIndex != TankIndex_ || Force )
 	{
 		PlayerState_ = PlayerState::JUMP;
 		TankIndex_ = TankIndex;

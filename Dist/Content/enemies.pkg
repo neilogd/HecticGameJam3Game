@@ -16,6 +16,11 @@
 				},
 
 				{
+					"type"					: "GaFishComponent",
+					"fishsize"				: 64.0
+				},
+
+				{
 					"type"					: "ScnMaterialComponent",
 					"name"					: "EnemyMaterialComponent_0",
 					"material"				: "$(ScnMaterial:materials.enemy)",

@@ -6,7 +6,8 @@
 
 			"components" : [
 				{
-					"type"					: "GaCannonComponent"
+					"type"					: "GaCannonComponent",
+					"requiredsize"			: 10.0
 				},
 
 				{

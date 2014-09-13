@@ -1,6 +1,6 @@
 /**************************************************************************
 *
-* File:		GaCannonComponent.h
+* File:		GaFishComponent.h
 * Author:	Neil Richardson 
 * Ver/Date:		
 * Description:
@@ -11,22 +11,22 @@
 * 
 **************************************************************************/
 
-#ifndef __GaCannonComponent_H__
-#define __GaCannonComponent_H__
+#ifndef __GaFishComponent_H__
+#define __GaFishComponent_H__
 
 #include "Psybrus.h"
 
 //////////////////////////////////////////////////////////////////////////
 // GaExampleComponentRef
-typedef ReObjectRef< class GaCannonComponent > GaCannonComponentRef;
+typedef ReObjectRef< class GaFishComponent > GaFishComponentRef;
 
 //////////////////////////////////////////////////////////////////////////
-// GaCannonComponent
-class GaCannonComponent:
+// GaFishComponent
+class GaFishComponent:
 	public ScnComponent
 {
 public:
-	DECLARE_RESOURCE( GaCannonComponent, ScnComponent );
+	DECLARE_RESOURCE( GaFishComponent, ScnComponent );
 
 	void initialise();
 	void initialise( const Json::Value& Object );
@@ -36,11 +36,10 @@ public:
 	virtual void onAttach( ScnEntityWeakRef Parent );
 	virtual void onDetach( ScnEntityWeakRef Parent );
 
-	BcF32 getRequiredSize() const;
+	BcF32 getFishSize() const;
 
 private:
-	BcF32 RequiredSize_;
-
+	BcF32 FishSize_;
 };
 
 #endif
