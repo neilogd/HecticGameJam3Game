@@ -90,7 +90,7 @@ MaVec2d GaSwarmManagerComponent::getAveragePosition( BcU8 Mask )
 	MaVec2d position(0.0f, 0.0f);
 	for (auto u = SwarmElements.begin(); u != SwarmElements.end(); ++u)
 	{
-		if ((*u)->getUnitMask() & Mask)
+		if ((*u)->getUnitMask() == Mask)
 		{
 			MaVec3d pos = (*u)->getParentEntity()->getWorldPosition();
 			position += MaVec2d(pos.x(), pos.y());
