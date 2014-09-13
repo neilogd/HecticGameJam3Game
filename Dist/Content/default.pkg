@@ -76,10 +76,6 @@
 			"components" : [
 				{
 					"type"					: "GaGameComponent"
-				},
-
-				{
-					"type"					: "GaSwarmManagerComponent"
 				}
 			]
 		},
@@ -109,6 +105,10 @@
 					"glassmaterial"			: "GlassMaterial_0",
 					"dimensions"			: "2000.0, 1000.0",
 					"nooffish"				: 8
+				},
+
+				{
+					"type"					: "GaSwarmManagerComponent"
 				}
 			]
 		},

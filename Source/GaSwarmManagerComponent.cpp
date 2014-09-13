@@ -44,10 +44,14 @@ void GaSwarmManagerComponent::initialise( const Json::Value& Object )
 void GaSwarmManagerComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
-	BcF32 size = this->SwarmElements.size();
-	for ( int Idx = 0; Idx < size; ++Idx )
+	BcU32 size = this->SwarmElements.size();
+	for ( BcU32 Idx = 0; Idx < size; ++Idx )
 	{
-		
+		MaVec2d move( 0, 0 );
+		move = (SwarmElements[Idx]->getPosition() - this->getAveragePosition(PLAYER)).normal();
+
+		SwarmElements[Idx]->stageVelocity(move);
+		SwarmElements[Idx]->commitChanges();
 	}
 }
 
