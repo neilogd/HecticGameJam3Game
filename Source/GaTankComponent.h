@@ -38,6 +38,9 @@ public:
 
 	const MaVec2d& getDimensions() const;
 	void spawnFood();
+	void magicReset();
+
+	void registerEnemy(ScnEntityRef entity);
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 	ReObjectRef< class ScnMaterialComponent > WaterMaterial_;
@@ -51,6 +54,9 @@ private:
 	BcF32 SpawnRateMin_;
 	BcF32 SpawnRateMax_;
 	BcF32 SpawnTimer_;
+
+	std::vector<ScnEntity*> Children;
+
 };
 
 #endif

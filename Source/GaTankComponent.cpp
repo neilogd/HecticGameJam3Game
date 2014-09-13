@@ -26,6 +26,8 @@
 #include "Base/BcProfiler.h"
 #include "Base/BcRandom.h"
 #include "System/Debug/DsCore.h"
+
+#include "GaSwarmElementComponent.h"
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
 DEFINE_RESOURCE( GaTankComponent );
@@ -172,6 +174,7 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 		Rot += RotAdv;
 	}
 	DsCore::pImpl()->registerFunction( "SpawnFood", std::bind( &GaTankComponent::spawnFood, this ) );
+	DsCore::pImpl()->registerFunction( "ResetPosition", std::bind( &GaTankComponent::magicReset, this ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -181,6 +184,7 @@ void GaTankComponent::onDetach( ScnEntityWeakRef Parent )
 {
 	Super::onDetach( Parent );
 	DsCore::pImpl()->deregisterFunction( "SpawnFood" );
+	DsCore::pImpl()->deregisterFunction( "ResetPosition" );
 
 }
 
@@ -210,6 +214,29 @@ void GaTankComponent::spawnFood()
 	EnemyEntityParams.Transform_.translation(
 		CentralPosition );
 
-	ScnCore::pImpl()->spawnEntity( EnemyEntityParams );
+	ScnCore::pImpl()->spawnEntity( EnemyEntityParams ) ;
+}
 
+void GaTankComponent::magicReset()
+{
+	auto TankDimensions = getDimensions();
+	auto CentralPosition = MaVec3d( 
+		TankDimensions.x() * 0.5f,
+		TankDimensions.y() * 0.5f,
+		0.0f );
+	BcF32 Rot = 0.0f;
+	BcF32 RotAdv = BcPIMUL2 / BcF32( Children.size() );
+	BcF32 Radius = 128.0f;
+	for( BcU32 FishIdx = 0; FishIdx < Children.size(); ++FishIdx )
+	{
+		Children[FishIdx]->setLocalPosition( CentralPosition +
+			MaVec3d( BcCos( Rot ), -BcSin( Rot ), 0.0f ) * Radius );
+
+		Rot += RotAdv;
+	}
+}
+
+void GaTankComponent::registerEnemy(ScnEntityRef entity)
+{
+	Children.push_back( entity );
 }

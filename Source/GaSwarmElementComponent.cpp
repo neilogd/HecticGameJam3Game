@@ -20,6 +20,7 @@
 #include "System/Content/CsCore.h"
 
 #include "Base/BcProfiler.h"
+#include "Base/BcRandom.h"
 #include "System/Debug/DsCore.h"
 #include "GaSwarmManagerComponent.h"
 
@@ -63,9 +64,10 @@ void GaSwarmElementComponent::initialise( const Json::Value& Object )
 // initialise
 void GaSwarmElementComponent::initialise( )
 {
+	BcRandom random;
 	UnitMask_ = 0;
 	Acceleration_ = MaVec2d( 0, 0 );
-	Velocity_ = MaVec2d( 0, 0 );
+	Velocity_ = MaVec2d( random.randReal() - 0.5f, random.randReal() - 0.5f);
 	StagedAcceleration_ = MaVec2d( 0, 0 );
 	StagedVelocity_ = MaVec2d( 0, 0 );
 	VelocityDriven_ = false;
@@ -80,7 +82,7 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 
 	if ( VelocityDriven_ )
 	{
-		Velocity_ += Acceleration_ * Tick * 20.0f;
+		//Velocity_ += Acceleration_ * Tick * 20.0f;
 		MaVec2d position = getPosition();
 		position = position + Velocity_ * Tick * 20.0f;
 	

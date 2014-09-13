@@ -47,14 +47,16 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 	BcU32 size = this->SwarmElements.size();
 	for ( BcU32 Idx = 0; Idx < size; ++Idx )
 	{
-		MaVec2d move( 0, 0 );
-		if (unitTypeExists(FOOD))
+		MaVec2d move = SwarmElements[Idx]->getVelocity();
+		if (unitTypeExists( FOOD ))
 		{
-			move = forceTowardsNearbyUnits(SwarmElements[Idx], 1, FOOD);
+			move = forceTowardsNearbyUnits( SwarmElements[Idx], 1, FOOD );
 		}
-		move += (this->getAveragePosition(SwarmElements[Idx]->getUnitMask()) - SwarmElements[Idx]->getPosition()).normal() * 0.2f;
-		move += forceAwayFromNearbyUnits(SwarmElements[Idx], 5, SwarmElements[Idx]->getUnitMask()) * 0.4f;
-		SwarmElements[Idx]->stageAcceleration(move);
+		move += getAverageVelocity(SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), 250.f).normal();
+		move += (getAveragePosition( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), 250.f ) - SwarmElements[Idx]->getPosition()).normal();
+		move += getSeparation( SwarmElements[Idx]->getPosition(), SwarmElements[Idx]->getUnitMask(), 250.0f ).normal() * 1.2f;
+		//move += forceAwayFromNearbyUnits( SwarmElements[Idx], 5, SwarmElements[Idx]->getUnitMask() ) * 0.5f;
+		SwarmElements[Idx]->stageVelocity( move.normal() );
 		SwarmElements[Idx]->commitChanges();
 	}
 }
@@ -77,34 +79,38 @@ void GaSwarmManagerComponent::onDetach( ScnEntityWeakRef Parent )
 
 }
 
-MaVec2d GaSwarmManagerComponent::getAverageVelocity( BcU8 Mask )
+MaVec2d GaSwarmManagerComponent::getAverageVelocity( MaVec2d Position, BcU8 Mask, BcF32 Range )
 {
 	int counter = 0;
 	MaVec2d velocity(0.0f, 0.0f);
 	for (auto u = SwarmElements.begin(); u != SwarmElements.end(); ++u)
 	{
-		if ((*u)->getUnitMask() == Mask)
+		if (((*u)->getUnitMask() == Mask) && ((Position - (*u)->getPosition()).magnitude() <= Range))
 		{
 			velocity += (*u)->getVelocity();
 			++counter;
 		}
 	}
+	if (counter == 0) // Just a little hack to stop division by zero
+		counter = 1;
 	return velocity / (float)counter;
 }
 
-MaVec2d GaSwarmManagerComponent::getAveragePosition( BcU8 Mask )
+MaVec2d GaSwarmManagerComponent::getAveragePosition( MaVec2d Position, BcU8 Mask, BcF32 Range )
 {
 	int counter = 0;
 	MaVec2d position(0.0f, 0.0f);
 	for (auto u = SwarmElements.begin(); u != SwarmElements.end(); ++u)
 	{
-		if ((*u)->getUnitMask() & Mask)
+		if (((*u)->getUnitMask() == Mask) && ((Position - (*u)->getPosition()).magnitude() <= Range))
 		{
-			MaVec3d pos = (*u)->getParentEntity()->getWorldPosition();
+			MaVec2d pos = (*u)->getPosition();
 			position += MaVec2d(pos.x(), pos.y());
 			++counter;
 		}
 	}
+	if (counter == 0) // Just a little hack to stop division by zero
+		counter = 1;
 	return position / (float)counter;
 }
 
@@ -120,6 +126,8 @@ MaVec2d GaSwarmManagerComponent::getAverageAcceleration( BcU8 Mask )
 			++counter;
 		}
 	}
+	if (counter == 0) // Just a little hack to stop division by zero
+		counter = 1;
 	return velocity / (float)counter;
 
 }
@@ -199,4 +207,23 @@ bool GaSwarmManagerComponent::unitTypeExists( BcU8 Mask )
 			return true;
 	}
 	return false;
+}
+
+MaVec2d GaSwarmManagerComponent::getSeparation(  MaVec2d Position, BcU8 Mask, BcF32 Range )
+{
+	int counter = 0;
+	MaVec2d position(0.0f, 0.0f);
+	for (auto u = SwarmElements.begin(); u != SwarmElements.end(); ++u)
+	{
+		if (((*u)->getUnitMask() == Mask) && ((Position - (*u)->getPosition()).magnitude() <= Range))
+		{
+			MaVec2d pos = (*u)->getPosition();
+			position += MaVec2d(pos.x() - Position.x(), pos.y() - Position.y());
+			++counter;
+		}
+	}
+	if (counter == 0) // Just a little hack to stop division by zero
+		counter = 1;
+	counter = -counter;
+	return position / (float)counter;
 }

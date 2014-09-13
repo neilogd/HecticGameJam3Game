@@ -21,6 +21,8 @@
 
 #include "Base/BcProfiler.h"
 
+#include "GaTankComponent.h"
+
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
 DEFINE_RESOURCE( GaEnemyComponent );
@@ -53,6 +55,12 @@ void GaEnemyComponent::onAttach( ScnEntityWeakRef Parent )
 {
 	Super::onAttach( Parent );
 
+	GaTankComponentRef tank = getParentEntity()->getParentEntity()->getComponentByType< GaTankComponent >();
+
+	if (tank.isValid())
+	{
+		tank->registerEnemy(getParentEntity());
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
