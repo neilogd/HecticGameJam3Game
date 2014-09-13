@@ -45,7 +45,9 @@ public:
 	void commitChanges();
 	MaVec2d getPosition();
 
-
+	void setAttackTarget( GaSwarmElementComponent* AttackTarget );
+	GaSwarmElementComponent* getAttackTarget() const;
+	
 private:
 	ReObjectRef< class GaSwarmManagerComponent > Manager_;
 	BcU8 UnitMask_;
@@ -57,6 +59,8 @@ private:
 
 	BcBool VelocityDriven_;
 	BcF32 MaxSpeed_;
+
+	GaSwarmElementComponent* AttackTarget_;
 
 };
 

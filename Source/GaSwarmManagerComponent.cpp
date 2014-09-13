@@ -170,11 +170,11 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 		}
 
 		// Move away from crowd
-		Move += getSeparation( Element->getPosition(), Element->getUnitMask() | PLAYER, SeparationDistance_ ) * 0.04f;
+		Move += getSeparation( Element->getPosition(), Element->getUnitMask() | PLAYER, SeparationDistance_ ) * 0.05f;
 		// Adjust towards average velocity of crowd
-		Move += getAverageVelocity( Element->getPosition(), Element->getUnitMask(), VelocityNeighbourDistance_ ).normal();
+		Move += getAverageVelocity( Element->getPosition(), Element->getUnitMask(), VelocityNeighbourDistance_ ).normal() * 0.01f;
 		// Move towards centre of mass of crowd
-		Move += ( ( getAveragePosition( Element->getPosition(), Element->getUnitMask(), PositionNeighbourDistance_ ) - Element->getPosition() ).normal() ) * 0.1f;
+		Move += ( ( getAveragePosition( Element->getPosition(), Element->getUnitMask(), PositionNeighbourDistance_ ) - Element->getPosition() ).normal() ) * 0.075f;
 
 		// Move towards player.
 		auto player = getNearbyUnits( Element->getPosition(), 1, PLAYER );
@@ -187,7 +187,7 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 		}
 	}
 
-	// if we're a player, move to food if near by.
+	// if we're a player...
 	if( Element->getUnitMask() == PLAYER )
 	{
 		GaPlayerComponentRef Player = Element->getParentEntity()->getComponentByType< GaPlayerComponent >();
@@ -199,18 +199,19 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 		}
 
 		// Move away from crowd
-		Move += getSeparation( Element->getPosition(), ENEMY, SeparationDistance_ ) * 0.05f;
+		Move += getSeparation( Element->getPosition(), ENEMY, SeparationDistance_ ) * 0.01f;
 
 		// Move towards target.
+		BcBool Attacking = Element->getAttackTarget() != nullptr;
 		BcF32 TargetApproachRadius = 32.0f;
-		const auto& PlayerTarget = Player->getTargetPosition();
+		const auto& PlayerTarget = Attacking ? Element->getAttackTarget()->getPosition() : Player->getTargetPosition();
 		auto TargetVector = ( PlayerTarget - Element->getPosition() );
 		auto TargetDistance = TargetVector.magnitude();
 		if( TargetDistance > TargetApproachRadius )
 		{
-			Move += ( TargetVector.normal() );
+			Move += ( TargetVector.normal() ) * ( Attacking ? 1.0f : 0.2f );
 		}
-
+		
 		// Slow down a bit.
 		Move = Move - ( Move * 0.01f );
 	}
@@ -313,7 +314,7 @@ MaVec2d GaSwarmManagerComponent::forceTowardsNearbyUnits( GaSwarmElementComponen
 	}
 }
 
-SwarmElementList GaSwarmManagerComponent::getNearbyUnits( MaVec2d Position, BcU8 UnitCount, BcU8 Mask )
+SwarmElementList GaSwarmManagerComponent::getNearbyUnits( MaVec2d Position, BcU8 UnitCount, BcU8 Mask, BcF32 Range )
 {
 	SwarmElementList units;
 	SwarmElementList ret;
@@ -332,7 +333,11 @@ SwarmElementList GaSwarmManagerComponent::getNearbyUnits( MaVec2d Position, BcU8
 	});
 	for ( BcU32 Idx = 0; (Idx < units.size()) && ( Idx < UnitCount); ++Idx )
 	{
-		ret.push_back(units[Idx]);
+		MaVec2d vec = units[Idx]->getPosition() - Position;
+		if( vec.magnitude() < Range )
+		{
+			ret.push_back(units[Idx]);
+		}
 	}
 	return ret;
 }

@@ -40,6 +40,7 @@ void GaSwarmElementComponent::StaticRegisterClass()
 		new ReField( "StagedVelocity_", &GaSwarmElementComponent::StagedVelocity_ ),
 		new ReField( "VelocityDriven_", &GaSwarmElementComponent::VelocityDriven_ ),
 		new ReField( "MaxSpeed_", &GaSwarmElementComponent::MaxSpeed_ ),
+		new ReField( "AttackTarget_", &GaSwarmElementComponent::AttackTarget_ ),
 	};
 		
 	ReRegisterClass< GaSwarmElementComponent, Super >( Fields )
@@ -82,6 +83,7 @@ void GaSwarmElementComponent::initialise( )
 	StagedVelocity_ = MaVec2d( 0, 0 );
 	VelocityDriven_ = false;
 	MaxSpeed_ = 1.0f;
+	AttackTarget_ = nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -159,6 +161,11 @@ void GaSwarmElementComponent::stageVelocity( MaVec2d acceleration )
 		acceleration /= mag;
 		acceleration *= MaxSpeed_;
 	}
+	else if( mag > ( MaxSpeed_ * 0.5f ) )
+	{
+		mag *= 0.9f;
+	}
+
 	StagedVelocity_ = acceleration;
 }
 void GaSwarmElementComponent::commitChanges()
@@ -171,4 +178,15 @@ MaVec2d GaSwarmElementComponent::getPosition()
 {
 	MaVec3d pos = getParentEntity()->getWorldPosition();
 	return MaVec2d(pos.x(), pos.y());
+}
+
+
+void GaSwarmElementComponent::setAttackTarget( GaSwarmElementComponent* AttackTarget )
+{
+	AttackTarget_ = AttackTarget;
+}
+
+GaSwarmElementComponent* GaSwarmElementComponent::getAttackTarget() const
+{
+	return AttackTarget_;
 }
