@@ -152,6 +152,6 @@ void GaSwarmElementComponent::commitChanges()
 
 MaVec2d GaSwarmElementComponent::getPosition()
 {
-	MaVec3d pos = getParentEntity()->getLocalPosition();
+	MaVec3d pos = getParentEntity()->getWorldPosition();
 	return MaVec2d(pos.x(), pos.y());
 }
