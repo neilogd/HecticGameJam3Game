@@ -136,14 +136,14 @@
 
 		{
 			"type"			: "ScnMaterial",
-			"name"			: "player",
+			"name"			: "fish",
 
 			// Shader
-			"shader"		: "$(ScnShader:shaders.default)",
+			"shader"		: "$(ScnShader:shaders.textured)",
 
 			// Textures
 			"textures"		: {
-				"aDiffuseTex"	: "$(ScnTexture:textures.default)"
+				"aDiffuseTex"	: "$(ScnTexture:textures.fishsheet)"
 			},
 
 			// State
@@ -151,28 +151,7 @@
 				"depth_write_enable" 		: 0,
 				"depth_test_enable" 		: 0,
 				"depth_test_compare" 		: "lessequal",
-				"blend_mode" 				: "none"
-			}
-		},
-
-		{
-			"type"			: "ScnMaterial",
-			"name"			: "enemy",
-
-			// Shader
-			"shader"		: "$(ScnShader:shaders.default)",
-
-			// Textures
-			"textures"		: {
-				"aDiffuseTex"	: "$(ScnTexture:textures.default)"
-			},
-
-			// State
-			"state"			: {
-				"depth_write_enable" 		: 0,
-				"depth_test_enable" 		: 0,
-				"depth_test_compare" 		: "lessequal",
-				"blend_mode" 				: "none"
+				"blend_mode" 				: "blend"
 			}
 		},
 

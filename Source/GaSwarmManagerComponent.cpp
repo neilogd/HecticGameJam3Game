@@ -228,7 +228,6 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 		Move = Move - ( Move * 0.01f );
 	}
 
-
 	return Move;
 }
 

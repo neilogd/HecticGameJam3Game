@@ -74,6 +74,16 @@
 			"name"			: "foodBarBorder",
 
 			"source"		: "Content/Source/foodBarBorder.png"
+		},
+
+		{
+			"type"			: "ScnTextureAtlas",
+			"name"			: "fishsheet",
+			"tileatlas"		: true,
+			"tilewidth"		: 256,
+			"tileheight"	: 256,
+
+			"source"		: "Content/Source/spritesheets/fish sheet.png"
 		}
 
 	]
