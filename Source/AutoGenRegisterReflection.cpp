@@ -62,6 +62,7 @@
 #include "System/SysSystem.h"
 #include "GaCameraComponent.h"
 #include "GaEnemyComponent.h"
+#include "GaFoodComponent.h"
 #include "GaGameComponent.h"
 #include "GaMenuComponent.h"
 #include "GaPlayerComponent.h"
@@ -144,6 +145,7 @@ void AutoGenRegisterReflection()
 	SysSystem::StaticRegisterClass();
 	GaCameraComponent::StaticRegisterClass();
 	GaEnemyComponent::StaticRegisterClass();
+	GaFoodComponent::StaticRegisterClass();
 	GaGameComponent::StaticRegisterClass();
 	GaMenuComponent::StaticRegisterClass();
 	GaPlayerComponent::StaticRegisterClass();

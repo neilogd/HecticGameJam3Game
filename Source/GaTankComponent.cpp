@@ -22,6 +22,7 @@
 
 #include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
+#include "Base/BcRandom.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
@@ -37,7 +38,10 @@ void GaTankComponent::StaticRegisterClass()
 		new ReField( "WaterMaterialName_", &GaTankComponent::WaterMaterialName_ ),
 		new ReField( "GlassMaterialName_", &GaTankComponent::GlassMaterialName_ ),
 		new ReField( "Dimensions_", &GaTankComponent::Dimensions_ ),
-		new ReField( "NoofFish_", &GaTankComponent::NoofFish_ )
+		new ReField( "NoofFish_", &GaTankComponent::NoofFish_ ),
+		new ReField( "SpawnRateMin_", &GaTankComponent::SpawnRateMin_ ),
+		new ReField( "SpawnRateMax_", &GaTankComponent::SpawnRateMax_ ),
+		new ReField( "SpawnTimer_", &GaTankComponent::SpawnTimer_, bcRFF_TRANSIENT )
 	};
 
 	ReRegisterClass< GaTankComponent, Super >( Fields )
@@ -46,12 +50,27 @@ void GaTankComponent::StaticRegisterClass()
 
 //////////////////////////////////////////////////////////////////////////
 // initialise
+void GaTankComponent::initialise()
+{
+	Dimensions_ = MaVec2d( 0.0f, 0.0f );
+	NoofFish_ = 0;
+	SpawnRateMin_ = 1.0f;
+	SpawnRateMax_ = 2.0f;
+	SpawnTimer_ = SpawnRateMin_;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// initialise
 void GaTankComponent::initialise( const Json::Value& Object )
 {
+	initialise();
 	WaterMaterialName_ = Object[ "watermaterial" ].asCString();
 	GlassMaterialName_ = Object[ "glassmaterial" ].asCString();
 	Dimensions_ = Object[ "dimensions" ].asCString();
 	NoofFish_ = Object[ "nooffish" ].asUInt();
+	SpawnRateMin_ = BcF32( Object[ "spawnratemin" ].asDouble() );
+	SpawnRateMax_ = BcF32( Object[ "spawnratemax" ].asDouble() );
+	SpawnTimer_ = SpawnRateMin_;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -73,6 +92,36 @@ void GaTankComponent::update( BcF32 Tick )
 		0 );
 
 	Canvas_->popMatrix();
+
+	// Food spawn logic.
+	if( SpawnTimer_ < 0.0f )
+	{
+		// Update timer.
+		BcF32 SpawnRange = BcRandom::Global.randRealRange( SpawnRateMin_, SpawnRateMax_ );
+		SpawnTimer_ += SpawnRange;
+
+		// Spawn the food.
+		auto TankDimensions = getDimensions();
+		auto CentralPosition = MaVec3d(
+			BcRandom::Global.randRealRange( 0.0f, TankDimensions.x() ),
+			TankDimensions.y(),
+			0.0f );
+
+		ScnEntitySpawnParams EnemyEntityParams =
+		{
+			"default", "FoodEntity", BcName( "FoodEntity" ).getUnique(),
+			MaMat4d(),
+			getParentEntity(),
+			nullptr
+		};
+
+		EnemyEntityParams.Transform_.translation(
+			CentralPosition );
+
+		ScnCore::pImpl()->spawnEntity( EnemyEntityParams );
+
+	}
+	SpawnTimer_ -= Tick;
 
 	Super::update( Tick );
 }
@@ -115,7 +164,6 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 		EnemyEntityParams.Transform_.translation(
 			CentralPosition +
 			MaVec3d( BcCos( Rot ), -BcSin( Rot ), 0.0f ) * Radius );
-
 
 		ScnCore::pImpl()->spawnEntity( EnemyEntityParams );
 

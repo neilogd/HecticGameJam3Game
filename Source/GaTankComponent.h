@@ -28,6 +28,7 @@ class GaTankComponent:
 public:
 	DECLARE_RESOURCE( GaTankComponent, ScnComponent );
 
+	void initialise();
 	void initialise( const Json::Value& Object );
 
 	virtual void update( BcF32 Tick );
@@ -46,6 +47,10 @@ private:
 
 	MaVec2d Dimensions_;
 	BcU32 NoofFish_;
+
+	BcF32 SpawnRateMin_;
+	BcF32 SpawnRateMax_;
+	BcF32 SpawnTimer_;
 };
 
 #endif
