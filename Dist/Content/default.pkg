@@ -100,15 +100,15 @@
 				},
 
 				{
+					"type"					: "GaSwarmManagerComponent"
+				},
+
+				{
 					"type"					: "GaTankComponent",
 					"watermaterial"			: "WaterMaterial_0",
 					"glassmaterial"			: "GlassMaterial_0",
 					"dimensions"			: "2000.0, 1000.0",
 					"nooffish"				: 8
-				},
-
-				{
-					"type"					: "GaSwarmManagerComponent"
 				}
 			]
 		},
