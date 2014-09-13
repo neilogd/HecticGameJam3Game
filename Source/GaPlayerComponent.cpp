@@ -344,9 +344,12 @@ BcU32 GaPlayerComponent::getMaxHealth()
 BcU32 GaPlayerComponent::getHealth()
 {
 	return Health_;
+}
+
 //////////////////////////////////////////////////////////////////////////
 // getTargetPosition
 const MaVec2d& GaPlayerComponent::getTargetPosition() const
 {
 	return TargetPosition_;
 }
+
