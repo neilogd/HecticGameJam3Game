@@ -283,10 +283,27 @@ eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Ev
 	InverseViewMatrix.inverse();
 	MousePosition = MousePosition * InverseViewMatrix;
 
+	auto SwarmElement = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
+
+	// Target position.
 	if( Event.ButtonCode_ == 0 )
 	{
 		TargetPosition_ = MousePosition;
+
+		SwarmElement->setAttackTarget( nullptr );
 	}
+
+	// Check if we're touching an enemy.
+	if( Tank_ != nullptr )
+	{
+		auto SwarmManager = Tank_->getComponentAnyParentByType< GaSwarmManagerComponent >();
+		auto Units = SwarmManager->getNearbyUnits( MousePosition, 1, GaSwarmManagerComponent::ENEMY, 64.0f );
+		if( Units.size() > 0 )
+		{
+			SwarmElement->setAttackTarget( Units[ 0 ] );
+		}
+	}
+
 
 	return evtRET_PASS;
 }
