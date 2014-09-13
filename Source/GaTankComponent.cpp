@@ -98,31 +98,14 @@ void GaTankComponent::update( BcF32 Tick )
 	Canvas_->popMatrix();
 
 	// Food spawn logic.
-	/*if( SpawnTimer_ < 0.0f )
+	if( SpawnTimer_ < 0.0f )
 	{
 		// Update timer.
 		BcF32 SpawnRange = BcRandom::Global.randRealRange( SpawnRateMin_, SpawnRateMax_ );
 		SpawnTimer_ += SpawnRange;
 
 		// Spawn the food.
-		auto TankDimensions = getDimensions();
-		auto CentralPosition = MaVec3d(
-			BcRandom::Global.randRealRange( 0.0f, TankDimensions.x() ),
-			TankDimensions.y(),
-			0.0f );
-
-		ScnEntitySpawnParams EnemyEntityParams =
-		{
-			"food", "FoodEntity", BcName( "FoodEntity" ).getUnique(),
-			MaMat4d(),
-			getParentEntity(),
-			nullptr
-		};
-
-		EnemyEntityParams.Transform_.translation(
-			CentralPosition );
-
-		ScnCore::pImpl()->spawnEntity( EnemyEntityParams );
+		spawnFood();
 
 	}/**/
 	SpawnTimer_ -= Tick;
