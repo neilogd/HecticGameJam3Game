@@ -25,6 +25,15 @@
 typedef ReObjectRef< class GaGuiComponent > GaGuiComponentRef;
 
 //////////////////////////////////////////////////////////////////////////
+// ScnShaderAlphaTestUniformBlockData
+struct GaGuiShaderUniformBlockData
+{
+	REFLECTION_DECLARE_BASIC( GaGuiShaderUniformBlockData );
+	GaGuiShaderUniformBlockData(){};
+
+	MaVec4d VariableNameHere_;
+};
+//////////////////////////////////////////////////////////////////////////
 // GaGuiComponent
 class GaGuiComponent:
 	public ScnComponent
@@ -49,7 +58,7 @@ private:
 
 	GaPlayerComponentRef Player_;
 	ScnSpriteComponentRef HealthSprite_;
-
+	RsBuffer* UniformBuffer_;
 };
 
 #endif

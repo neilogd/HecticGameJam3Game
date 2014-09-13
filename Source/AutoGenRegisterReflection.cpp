@@ -154,6 +154,7 @@ void AutoGenRegisterReflection()
 	GaFishComponent::StaticRegisterClass();
 	GaFoodComponent::StaticRegisterClass();
 	GaGameComponent::StaticRegisterClass();
+	GaGuiShaderUniformBlockData::StaticRegisterClass();
 	GaGuiComponent::StaticRegisterClass();
 	GaMenuComponent::StaticRegisterClass();
 	GaPlayerComponent::StaticRegisterClass();

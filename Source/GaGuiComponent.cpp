@@ -47,10 +47,28 @@ void GaGuiComponent::StaticRegisterClass()
 }
 
 //////////////////////////////////////////////////////////////////////////
+// ScnShaderViewUniformBlockData
+REFLECTION_DEFINE_BASIC( GaGuiShaderUniformBlockData );
+
+void GaGuiShaderUniformBlockData::StaticRegisterClass()
+{
+	ReField* Fields[] = 
+	{
+		new ReField( "VariableNameHere_",				&GaGuiShaderUniformBlockData::VariableNameHere_ )/*,
+		new ReField( "ProjectionTransform_",			&ScnShaderViewUniformBlockData::ProjectionTransform_ ),
+		new ReField( "InverseViewTransform_",			&ScnShaderViewUniformBlockData::InverseViewTransform_ ),
+		new ReField( "ViewTransform_",					&ScnShaderViewUniformBlockData::ViewTransform_ ),
+		new ReField( "ClipTransform_",					&ScnShaderViewUniformBlockData::ClipTransform_ )/**/
+	};
+		
+	ReRegisterClass< GaGuiShaderUniformBlockData >( Fields );
+}
+
+//////////////////////////////////////////////////////////////////////////
 // initialise
 void GaGuiComponent::initialise()
 {
-
+	UniformBuffer_ = nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -94,6 +112,18 @@ void GaGuiComponent::update( BcF32 Tick )
 			sprite->setSize(MaVec2d(width, 64.0f));
 		}
 	}
+	/*
+	GaGuiShaderUniformBlockData block;
+	block.VariableNameHere_ = MaVec4d(0.5f, 0,0,0);
+	RsCore::pImpl()->updateBuffer( 
+		UniformBuffer_,
+		0, sizeof( block ),
+		RsResourceUpdateFlags::ASYNC,
+		[ block ]( RsBuffer* Buffer, const RsBufferLock& Lock )
+		{
+			BcMemCopy( Lock.Buffer_, &block, sizeof( block ) );
+		} );
+		*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -113,6 +143,18 @@ void GaGuiComponent::onAttach( ScnEntityWeakRef Parent )
 	Super::onAttach( Parent );
 
 	Player_ = ParentEntity_->getParentEntity()->getComponentByType<GaPlayerComponent>();
+
+	ScnMaterialComponentRef MaterialComponent_ =  ParentEntity_->getComponentByType<ScnMaterialComponent>("GuiMaterialComponent_3");
+
+
+	UniformBuffer_ = RsCore::pImpl()->createBuffer( 
+		RsBufferDesc(
+			RsBufferType::UNIFORM,
+			RsResourceCreationFlags::STREAM,
+			sizeof( GaGuiShaderUniformBlockData ) ) );
+	auto UniformBlock = MaterialComponent_->findUniformBlock( "GuiUniformBlock" );
+	BcAssert( UniformBlock != BcErrorCode );
+	MaterialComponent_->setUniformBlock( UniformBlock, UniformBuffer_ );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -120,6 +162,8 @@ void GaGuiComponent::onAttach( ScnEntityWeakRef Parent )
 //virtual
 void GaGuiComponent::onDetach( ScnEntityWeakRef Parent )
 {
+
+	RsCore::pImpl()->destroyResource( UniformBuffer_ );
 	Super::onDetach( Parent );
 
 }

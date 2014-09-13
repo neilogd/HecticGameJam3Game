@@ -4,6 +4,12 @@
 // VS_INPUT
 #define VS_INPUT		VertexDefault
 
+///////////////////////////////////////////////////////////////////////
+// GuiUniformBlock
+BEGIN_CBUFFER( GuiUniformBlock )
+	float4 VariableNameHere_;
+END_CBUFFER
+
 ////////////////////////////////////////////////////////////////////////
 // VS_OUTPUT
 struct VS_OUTPUT
@@ -44,5 +50,6 @@ PS_OUTPUT pixelMain( VS_OUTPUT i )
 	PS_OUTPUT o = (PS_OUTPUT)0;
 	float4 Colour = aDiffuseTex.Sample( sDiffuseTex, i.TexCoord0_.xy );
 	o.Colour_ = Colour * i.Colour_;
+	o.Colour_.a = VariableNameHere_.x;
 	return o;
 }
