@@ -59,6 +59,11 @@ private:
 	GaPlayerComponentRef Player_;
 	ScnSpriteComponentRef HealthSprite_;
 	RsBuffer* UniformBuffer_;
+	MaVec2d AssetOffset_;
+
+	ScnSpriteComponentRef Background_;
+	ScnSpriteComponentRef HealthBar_;
+	ScnSpriteComponentRef Pointer_;
 };
 
 #endif

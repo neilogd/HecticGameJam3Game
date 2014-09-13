@@ -6,7 +6,8 @@
 
 			"components" : [
 				{
-					"type"					: "GaGuiComponent"
+					"type"					: "GaGuiComponent",
+					"assetoffset"			: "0, 10",
 				},
 				
 				{

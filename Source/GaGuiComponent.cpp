@@ -69,6 +69,7 @@ void GaGuiShaderUniformBlockData::StaticRegisterClass()
 void GaGuiComponent::initialise()
 {
 	UniformBuffer_ = nullptr;
+	AssetOffset_ = MaVec2d( 0, 0 );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,6 +77,10 @@ void GaGuiComponent::initialise()
 void GaGuiComponent::initialise( const Json::Value& Object )
 {
 	initialise();
+	if (Object[ "assetoffset" ].type() != Json::nullValue )
+	{
+		AssetOffset_ = MaVec2d( Object[ "assetoffset" ].asCString() );
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -102,14 +107,16 @@ void GaGuiComponent::update( BcF32 Tick )
 		Player_ = ParentEntity_->getParentEntity()->getComponentByType<GaPlayerComponent>();
 	if (Player_.isValid())
 	{
+		HealthBar_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "HealthBar", 0 ) );
+		Background_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "HealthBar", 0 ) );
+		Background_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "HealthBar", 0 ) );
 		BcF32 health = Player_->getHealth();
 		BcF32 maxHealth = Player_->getMaxHealth();
 		float ratio = health / maxHealth;
 		float width = 512.f * ratio;
-		ScnSpriteComponentRef sprite = ParentEntity_->getComponentByType<ScnSpriteComponent>(BcName("HealthBar",0));
-		if (sprite.isValid())
+		if (HealthBar_.isValid())
 		{
-			sprite->setSize(MaVec2d(width, 64.0f));
+			HealthBar_->setSize( MaVec2d( width, 64.0f ) );
 		}
 	}
 	/*
@@ -155,6 +162,7 @@ void GaGuiComponent::onAttach( ScnEntityWeakRef Parent )
 	auto UniformBlock = MaterialComponent_->findUniformBlock( "GuiUniformBlock" );
 	BcAssert( UniformBlock != BcErrorCode );
 	MaterialComponent_->setUniformBlock( UniformBlock, UniformBuffer_ );
+
 }
 
 //////////////////////////////////////////////////////////////////////////
