@@ -41,6 +41,8 @@ public:
 	void magicReset();
 
 	void registerEnemy(ScnEntityRef entity);
+
+	MaVec2d getCentralPosition();
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 	ReObjectRef< class ScnMaterialComponent > WaterMaterial_;
@@ -49,6 +51,7 @@ private:
 	std::string GlassMaterialName_;
 
 	MaVec2d Dimensions_;
+	MaVec2d CentralPosition_;
 	BcU32 NoofFish_;
 
 	BcF32 SpawnRateMin_;
