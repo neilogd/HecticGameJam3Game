@@ -222,6 +222,13 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 		}
 	}
 
+	// if we're food...
+	if( Element->getUnitMask() == FOOD )
+	{
+		Move *= 0.1f;
+	}
+
+
 	if( MoveToTarget )
 	{
 		// Move towards target.

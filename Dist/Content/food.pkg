@@ -7,7 +7,9 @@
 			"components" : [
 				{
 					"type"					: "GaSwarmElementComponent",
-					"unitmask"				: 4
+					"unitmask"				: 4,
+					"velocitydriven"		: true,
+					"maxspeed"				: 20.0
 				},
 
 				{
