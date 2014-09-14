@@ -52,7 +52,7 @@
 					"type"					: "GaSpeechBubbleComponent",
 					"text" 					: "DERP",
 					"visible"				: false,
-					"visibletime"			: 50
+					"visibletime"			: 5
 				}
 			]
 		},
