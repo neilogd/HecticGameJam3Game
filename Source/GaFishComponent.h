@@ -50,6 +50,8 @@ private:
 
 	std::vector< MaVec2d > SpriteSizes_;
 	std::vector< ReObjectRef< class ScnSpriteComponent > > Sprites_;
+
+	BcF32 XScale_;
 };
 
 #endif

@@ -14,6 +14,7 @@
 #include "GaFishComponent.h"
 #include "GaFoodComponent.h"
 #include "GaSwarmManagerComponent.h"
+#include "GaSwarmElementComponent.h"
 
 #include "System/Scene/Rendering/ScnSpriteComponent.h"
 
@@ -22,6 +23,7 @@
 
 #include "System/Debug/DsCore.h"
 
+#include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
  
 //////////////////////////////////////////////////////////////////////////
@@ -97,10 +99,31 @@ void GaFishComponent::update( BcF32 Tick )
 		}
 	}
 
+	// Do the flip and stuff.
+	auto Element = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
+	if( Element != nullptr )
+	{
+		BcF32 MoveTurnVelocity = 1.0f;
+		if( Element->getVelocity().x() < -MoveTurnVelocity )
+		{
+			XScale_ += Tick * 16.0f;
+		}
+		else if( Element->getVelocity().x() > MoveTurnVelocity )
+		{
+			XScale_ -= Tick * 16.0f;
+		}
+
+		XScale_ = BcClamp( XScale_, -1.0f, 1.0f );
+	}
+	
 	// Update sprite sizes.
 	for( BcU32 Idx = 0; Idx < Sprites_.size(); ++Idx )
 	{
-		Sprites_[ Idx ]->setSize( SpriteSizes_[ Idx ] * Size_ );
+		auto NewSize = SpriteSizes_[ Idx ] * Size_;
+
+		NewSize.x( NewSize.x() * XScale_ );
+
+		Sprites_[ Idx ]->setSize( NewSize );
 	}
 }
 
