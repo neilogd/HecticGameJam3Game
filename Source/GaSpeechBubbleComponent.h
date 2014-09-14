@@ -38,7 +38,8 @@ public:
 	virtual void onDetach( ScnEntityWeakRef Parent );
 
 	BcF32 getRequiredSize() const;
-
+	void show();
+	void setText(std::string Text);
 private:
 	BcF32 RequiredSize_;
 	BcBool Visible_;
@@ -48,6 +49,9 @@ private:
 	ScnFontComponentRef FontComponent_;
 	ScnCanvasComponentRef Canvas_;
 	std::vector<std::string> Text_;
+	MaVec2d FontOffset_;
+	BcF32 VisibleTime_;
+	BcF32 TimeBeenVisible_;
 };
 
 #endif

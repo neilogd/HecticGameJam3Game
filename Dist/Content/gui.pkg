@@ -89,7 +89,8 @@
 					"isscreenspace"			: false
 				},
 				{
-					"type"					: "GaSpeechBubbleComponent"
+					"type"					: "GaSpeechBubbleComponent",
+					"text" : "Help! I'm/stuck in a/cage"
 				}
 				
 			]

@@ -13,6 +13,9 @@
 
 #include "GaSpeechBubbleComponent.h"
 
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
+
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnViewComponent.h"
 
@@ -31,7 +34,11 @@ void GaSpeechBubbleComponent::StaticRegisterClass()
 {
 	ReField* Fields[] =
 	{
-		new ReField( "Visible_", &GaSpeechBubbleComponent::Visible_, DsCore::DsCoreSerialised )
+		new ReField( "Visible_", &GaSpeechBubbleComponent::Visible_, DsCore::DsCoreSerialised ),
+		new ReField( "FontOffset_", &GaSpeechBubbleComponent::FontOffset_, DsCore::DsCoreSerialised ),
+		new ReField( "VisibleTime_", &GaSpeechBubbleComponent::VisibleTime_, DsCore::DsCoreSerialised ),
+		new ReField( "TimeBeenVisible_", &GaSpeechBubbleComponent::TimeBeenVisible_, DsCore::DsCoreSerialised ),
+		new ReField( "Text_", &GaSpeechBubbleComponent::Text_, DsCore::DsCoreSerialised )
 	};
 
 	ReRegisterClass< GaSpeechBubbleComponent, Super >( Fields )
@@ -42,10 +49,16 @@ void GaSpeechBubbleComponent::StaticRegisterClass()
 // initialise
 void GaSpeechBubbleComponent::initialise()
 {
+	VisibleTime_ = 5.0f;
+	TimeBeenVisible_ = 0.0f;
 	RequiredSize_ = 0.0f;
 	Visible_ = true;
-	Text_.push_back("LIne 1");
-	Text_.push_back("Line 2");
+	/*Text_.push_back(" ");
+	Text_.push_back("I must escape");
+	Text_.push_back("escape this");
+	Text_.push_back("cage!");/**/
+
+	FontOffset_ = MaVec2d( -165.0f, -210.0f );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,7 +67,21 @@ void GaSpeechBubbleComponent::initialise( const Json::Value& Object )
 {
 	GaSpeechBubbleComponent::initialise();
 
-	RequiredSize_ = BcF32( Object[ "requiredsize" ].asDouble() );
+	if ( Object[ "requiredSize" ].type() != Json::nullValue )
+		RequiredSize_ = BcF32( Object[ "requiredsize" ].asDouble() );
+
+	if ( Object[ "visibletime" ].type() != Json::nullValue )
+		VisibleTime_ = BcF32( Object[ "visibletime" ].asDouble() );
+
+	if ( Object[ "visible" ].type() != Json::nullValue )
+		Visible_ = BcF32( Object[ "visible" ].asBool() );
+
+	if ( Object[ "text" ].type() != Json::nullValue )
+	{
+		std::string text = Object[ "text" ].asString();
+		setText(text);
+		
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -79,27 +106,39 @@ void GaSpeechBubbleComponent::update( BcF32 Tick )
 
 	MaMat4d TextScaleMatrix;
 	//TextScaleMatrix.scale( MaVec4d( 0.04f, 0.04f, 1.0f, 1.0f ) );
-	TextScaleMatrix.scale( MaVec4d( 1.04f, 1.04f, 1.0f, 1.0f ) );
+	TextScaleMatrix.scale( MaVec4d( 1.00f, -1.00f, 1.0f, 1.0f ) );
 
 	FontComponent_->setAlphaTestStepping( MaVec2d( 0.4f, 0.45f ) );
 
-	Canvas_->pushMatrix( TextScaleMatrix );
 
-	MaVec2d Position( 0.0f, 0.0f );
-	MaVec2d Size;
-	MaVec3d worldPos = getParentEntity()->getWorldPosition();
-	MaVec2d localPos( worldPos.x(), worldPos.y() );
-	for( BcU32 Idx = 0; Idx < Text_.size(); ++Idx )
+	if (Visible_)
 	{
-		const auto& Option( Text_[ Idx ] );
-		const auto Colour = RsColour::BLUE;
-		Size = FontComponent_->drawCentered( Canvas_, /*localPos + /**/ Position, Text_[ Idx ] , Colour, 280 );
-		Position += MaVec2d( 0.0f, Size.y() );
+		TimeBeenVisible_ += Tick;
+		if ( TimeBeenVisible_ > VisibleTime_ )
+			Visible_ = false;
+		//MaMat4d Matrix = getParentEntity()->getWorldMatrix();
+		//Matrix = Canvas_->popMatrix();
+		Canvas_->pushMatrix( TextScaleMatrix );
+	
+		MaVec2d Size;
+		MaVec3d worldPos = getParentEntity()->getWorldPosition();
+		MaVec2d Position( 0 , 0 );
+		MaVec2d localPos  = SpeechBubble_->getPosition();
+		localPos  = MaVec2d(worldPos.x(), -worldPos.y() ) + FontOffset_;
+		for( BcU32 Idx = 0; Idx < Text_.size(); ++Idx )
+		{
+			const auto& Option( Text_[ Idx ] );
+			const auto Colour = RsColour::BLACK;
+			Size = FontComponent_->drawCentered( Canvas_, localPos + Position, Text_[ Idx ] , Colour, 280 );
+			Position += MaVec2d( 0.0f, Size.y() );
+		}
+
+
+
+		Canvas_->popMatrix();
 	}
-
-
-
-	Canvas_->popMatrix();
+	//Canvas_->pushMatrix( Matrix );
+	//Canvas_->setMatrix( Matrix );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -128,4 +167,18 @@ void GaSpeechBubbleComponent::onDetach( ScnEntityWeakRef Parent )
 BcF32 GaSpeechBubbleComponent::getRequiredSize() const
 {
 	return RequiredSize_;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// show
+void GaSpeechBubbleComponent::show()
+{
+	Visible_ = true;
+	TimeBeenVisible_ = 0.0f;
+}
+
+void GaSpeechBubbleComponent::setText(std::string Text)
+{
+	Text_.clear();
+	boost::split(Text_, Text, boost::is_any_of("/"));
 }
