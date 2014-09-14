@@ -69,7 +69,17 @@
 			"tilewidth"		: 256,
 			"tileheight"	: 256,
 
-			"source"		: "Content/Source/spritesheets/fish sheet.png"
+			"source"		: "Content/Source/spritesheets/fish sheet V005-01.png"
+		},
+
+		{
+			"type"			: "ScnTextureAtlas",
+			"name"			: "tanksheet",
+			"tileatlas"		: true,
+			"tilewidth"		: 768,
+			"tileheight"	: 512,
+
+			"source"		: "Content/Source/spritesheets/tank sheet V004-01.png"
 		}
 
 	]

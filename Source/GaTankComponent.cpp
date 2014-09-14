@@ -87,6 +87,7 @@ void GaTankComponent::update( BcF32 Tick )
 	const MaMat4d& Matrix = Entity->getWorldMatrix();
 
 	// Push matrix onto canvas.
+	/*
 	Canvas_->pushMatrix( Matrix );
 
 	Canvas_->setMaterialComponent( GlassMaterial_ );
@@ -95,8 +96,8 @@ void GaTankComponent::update( BcF32 Tick )
 		Dimensions_,
 		RsColour( 0.5f, 1.0f, 1.0f, 0.2f ),
 		0 );
-
 	Canvas_->popMatrix();
+	*/
 
 	// Food spawn logic.
 	if( SpawnTimer_ < 0.0f )
