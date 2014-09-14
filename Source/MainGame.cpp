@@ -49,17 +49,17 @@ void PsyLaunchGame()
 
 			ScnCore::pImpl()->spawnEntity( CameraEntityParams );
 
-			/*ScnEntitySpawnParams SpeechBubbleEntityParams =
+			ScnEntitySpawnParams StartGameEntityParams =
 			{
-				"default", "SpeechBubbleEntity", "SpeechBubbleEntity_0",
+				"default", "CustomisationEntity", "CustomisationEntity_0",
 				MaMat4d(),
 				ParentEntity,
 				nullptr
 			};
 
-			ScnCore::pImpl()->spawnEntity( SpeechBubbleEntityParams );/**/
+			ScnCore::pImpl()->spawnEntity( StartGameEntityParams );
 
-			ScnEntitySpawnParams GameEntityParams =
+			/*ScnEntitySpawnParams GameEntityParams =
 			{
 				"default", "GameEntity", "GameEntity_0",
 				MaMat4d(),
@@ -123,7 +123,7 @@ void PsyLaunchGame()
 				}
 			};
 
-			ScnCore::pImpl()->spawnEntity( GameEntityParams );
+			ScnCore::pImpl()->spawnEntity( GameEntityParams );/**/
 		}
 	};
 
