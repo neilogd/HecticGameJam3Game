@@ -79,25 +79,30 @@ void GaFishComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
 
-	if( SwarmManager_ != nullptr )
+	auto Element = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
+
+	if( Element->getUnitMask() != GaSwarmManagerComponent::DEAD )
 	{
-		auto Foods = SwarmManager_->getNearbyUnits( 
-			MaVec2d( 
-				getParentEntity()->getWorldPosition().x(),
-				getParentEntity()->getWorldPosition().y() ), 1, GaSwarmManagerComponent::FOOD );
-
-		if( Foods.size() > 0 )
+		if( SwarmManager_ != nullptr )
 		{
-			auto FoodSwarmElement = Foods[ 0 ];
-			auto Distance = 
-				( FoodSwarmElement->getParentEntity()->getWorldPosition() - getParentEntity()->getWorldPosition() ).magnitude();
+			auto Foods = SwarmManager_->getNearbyUnits( 
+				MaVec2d( 
+					getParentEntity()->getWorldPosition().x(),
+					getParentEntity()->getWorldPosition().y() ), 1, GaSwarmManagerComponent::FOOD );
 
-			if( Distance < EatDistance_ )
+			if( Foods.size() > 0 )
 			{
-				auto Food = FoodSwarmElement->getParentEntity()->getComponentByType< GaFoodComponent >();
-				auto AmountAte = Food->tryEat( Tick * EatSpeed_ );
+				auto FoodSwarmElement = Foods[ 0 ];
+				auto Distance = 
+					( FoodSwarmElement->getParentEntity()->getWorldPosition() - getParentEntity()->getWorldPosition() ).magnitude();
 
-				Size_ += AmountAte * SizeIncreaseMultiplier_;
+				if( Distance < EatDistance_ )
+				{
+					auto Food = FoodSwarmElement->getParentEntity()->getComponentByType< GaFoodComponent >();
+					auto AmountAte = Food->tryEat( Tick * EatSpeed_ );
+
+					Size_ += AmountAte * SizeIncreaseMultiplier_;
+				}
 			}
 		}
 	}
@@ -109,7 +114,6 @@ void GaFishComponent::update( BcF32 Tick )
 	Size_ = BcClamp( Size_, 0.75f, 2.0f );
 
 	// Do the flip and stuff.
-	auto Element = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
 	MaVec2d Velocity;
 	if( Element != nullptr )
 	{
@@ -138,7 +142,14 @@ void GaFishComponent::update( BcF32 Tick )
 		auto FishVelRot = BcAtan2( Velocity.y(), BcAbs( Velocity.x() ) ) * 0.3f;
 
 		// Interpolate for turning.
-		FishVelRot = BcLerp( -FishVelRot, FishVelRot, ( XScale_ + 1.0f ) * 0.5f );
+		if( Element->getUnitMask() == GaSwarmManagerComponent::DEAD )
+		{
+			FishVelRot += BcPIDIV2;
+		}
+		else
+		{
+			FishVelRot = BcLerp( -FishVelRot, FishVelRot, ( XScale_ + 1.0f ) * 0.5f );
+		}
 
 		Sprites_[ Idx ]->setSize( NewSize );
 		Rotation_ = 

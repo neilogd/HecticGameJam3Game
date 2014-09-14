@@ -132,6 +132,11 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 		getParentEntity()->setWorldPosition(realPos);
 	}
 
+	if( UnitMask_ == GaSwarmManagerComponent::DEAD )
+	{
+		return;
+	}
+
 	auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
 
 	// Check target for attack.
@@ -148,9 +153,15 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 					// TODO: Animation thing.
 					if( --getAttackTarget()->Health_ == 0 )
 					{
-						// Kill it.
-						ScnCore::pImpl()->removeEntity( getAttackTarget()->getParentEntity() );
-
+						//ScnCore::pImpl()->removeEntity( getAttackTarget()->getParentEntity() );
+						if( ( getAttackTarget()->UnitMask_ & GaSwarmManagerComponent::PLAYER ) != 0 )
+						{
+							auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+							GameComponent->stopAllSounds();
+							GameComponent->playSound( "MusicLose", BcFalse );
+						}
+						getAttackTarget()->UnitMask_ = GaSwarmManagerComponent::DEAD;
+						
 						// No more targetting.
 						setAttackTarget( nullptr );
 
