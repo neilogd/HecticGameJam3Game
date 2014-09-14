@@ -72,7 +72,7 @@ private:
 	BcU32 TankIndex_;
 	ScnEntityRef Tank_;
 	ScnEntityRef Cannon_;
-
+	bool FirstUpdate_;
 	enum class PlayerState
 	{
 		IDLE,

@@ -43,6 +43,7 @@ public:
 	void registerEnemy(ScnEntityRef entity);
 
 	MaVec2d getCentralPosition();
+	void receiveFish();
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 	ReObjectRef< class ScnMaterialComponent > SeaweedMaterial_;
@@ -63,7 +64,7 @@ private:
 	std::vector< BcU32 > SeaweedSprites_;
 
 	std::vector<ScnEntity*> Children;
-
+	std::vector<std::string> Messages_;
 };
 
 #endif

@@ -29,6 +29,30 @@
 					"type"					: "ScnFontComponent",
 					"font"					: "$(ScnFont:fonts.courier)",
 					"material"				: "$(ScnMaterial:materials.font)"
+				},
+				
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "GuiMaterialComponent_3",
+					"material"				: "$(ScnMaterial:materials.speechBubble)",
+					"permutation"			: "2d"
+				},
+				{
+					"type"					: "ScnSpriteComponent",
+					"name"					: "SpeechBubbleComponent_0",
+					"materialcomponent"		: "GuiMaterialComponent_3",
+					"size"					: "350.0, -350.0",
+					"colour"				: "1.0, 1.0, 1.0, 1.0",
+					"position"				: "-330, 330",
+					"center"				: false,
+					"layer"					: 221,
+					"isscreenspace"			: false
+				},
+				{
+					"type"					: "GaSpeechBubbleComponent",
+					"text" 					: "DERP",
+					"visible"				: false,
+					"visibletime"			: 50
 				}
 			]
 		},
@@ -88,6 +112,14 @@
 					"type"					: "GaCustomisationComponent"
 					
 				}
+			]
+		},
+				
+		{
+			"name" 		: 		"SpeechBubbleEntity",
+			"type"		:		"ScnEntity",
+			"components" : [
+					
 			]
 		}
 	]

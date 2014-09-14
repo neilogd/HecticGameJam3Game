@@ -28,6 +28,7 @@
 #include "System/Debug/DsCore.h"
 
 #include "GaSwarmElementComponent.h"
+#include "GaSpeechBubbleComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
@@ -335,4 +336,12 @@ MaVec2d GaTankComponent::getCentralPosition()
 	return MaVec2d( 
 		getDimensions().x() * 0.5f + getParentEntity()->getWorldPosition().x(),
 		getDimensions().y() * 0.5f + getParentEntity()->getWorldPosition().y());
+}
+
+void GaTankComponent::receiveFish()
+{
+	GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
+	bubble->setTarget(Children[0]);
+	bubble->setText("We don't like/your kinda/round here");
+	bubble->show();
 }
