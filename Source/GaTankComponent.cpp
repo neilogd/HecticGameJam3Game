@@ -46,7 +46,8 @@ void GaTankComponent::StaticRegisterClass()
 		new ReField( "NoofFish_", &GaTankComponent::NoofFish_ ),
 		new ReField( "SpawnRateMin_", &GaTankComponent::SpawnRateMin_ ),
 		new ReField( "SpawnRateMax_", &GaTankComponent::SpawnRateMax_ ),
-		new ReField( "SpawnTimer_", &GaTankComponent::SpawnTimer_, bcRFF_TRANSIENT )
+		new ReField( "SpawnTimer_", &GaTankComponent::SpawnTimer_, bcRFF_TRANSIENT ),
+		new ReField( "CannonPosition_", &GaTankComponent::CannonPosition_ ),
 	};
 
 	ReRegisterClass< GaTankComponent, Super >( Fields )
@@ -76,6 +77,7 @@ void GaTankComponent::initialise( const Json::Value& Object )
 	SpawnRateMin_ = BcF32( Object[ "spawnratemin" ].asDouble() );
 	SpawnRateMax_ = BcF32( Object[ "spawnratemax" ].asDouble() );
 	SpawnTimer_ = SpawnRateMin_;
+	CannonPosition_ = Object[ "cannonposition" ].asCString();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -173,7 +175,7 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 	};
 
 	CannonEntityParams.Transform_.translation(
-		MaVec3d( 0.0f, 0.0f, 0.0f ) );
+		CannonPosition_ );
 
 	ScnCore::pImpl()->spawnEntity( CannonEntityParams );
 

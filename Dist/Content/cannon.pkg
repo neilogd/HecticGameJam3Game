@@ -13,17 +13,19 @@
 				{
 					"type"					: "ScnMaterialComponent",
 					"name"					: "CannonMaterialComponent_0",
-					"material"				: "$(ScnMaterial:materials.cannon)",
+					"material"				: "$(ScnMaterial:materials.tanksheet2)",
 					"permutation"			: "2d"
 				},
 
 				{
 					"type"					: "ScnSpriteComponent",
 					"materialcomponent"		: "CannonMaterialComponent_0",
-					"size"					: "128.0, 1000.0",
+					"size"					: "512.0, -1536.0",
+					"position"				: "0.0, 1536.0",
 					"colour"				: "0.0, 1.0, 1.0, 1.0",
 					"center"				: false,
-					"layer"					: 12
+					"layer"					: 12,
+					"index"					: 0
 				}
 			]
 		}

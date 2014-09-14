@@ -14,39 +14,40 @@
 				
 				{
 					"type"					: "GaSwarmManagerComponent",
-					"edgedistance"			: 150.0
+					"edgedistance"			: 250.0
 				},
 
 				{
 					"type"					: "GaTankComponent",
 					"watermaterial"			: "WaterMaterial_0",
 					"glassmaterial"			: "GlassMaterial_0",
-					"dimensions"			: "1536.0, 900.0",
+					"dimensions"			: "1024.0, 900.0",
 					"nooffish"				: 0,
 					"spawnratemin"			: 2.0,
-					"spawnratemax"			: 4.0
+					"spawnratemax"			: 4.0,
+					"cannonposition"		: "80.0, 80.0, 0.0"
 				},
 
 				{
 					"type"					: "ScnSpriteComponent",
 					"materialcomponent"		: "TankMaterial_0",
 					"size"					: "1536.0, -1024.0",
-					"position"				: "0.0, 1024.0",
+					"position"				: "512.0, 512.0",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
-					"center"				: false,
+					"center"				: true,
 					"layer"					: 0,
-					"index"					: 4
+					"index"					: 0
 				},
 
 				{
 					"type"					: "ScnSpriteComponent",
 					"materialcomponent"		: "TankMaterial_0",
 					"size"					: "1536.0, -1024.0",
-					"position"				: "0.0, 1024.0",
+					"position"				: "512.0, 512.0",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
-					"center"				: false,
+					"center"				: true,
 					"layer"					: 190,
-					"index"					: 10
+					"index"					: 1
 				}
 			]
 		},
@@ -73,18 +74,19 @@
 					"watermaterial"			: "WaterMaterial_0",
 					"glassmaterial"			: "GlassMaterial_0",
 					"dimensions"			: "1536.0, 900.0",
-					"nooffish"				: 0,
+					"nooffish"				: 8,
 					"spawnratemin"			: 4.0,
-					"spawnratemax"			: 8.0
+					"spawnratemax"			: 8.0,
+					"cannonposition"		: "0.0, 0.0, 0.0"
 				},
 
 				{
 					"type"					: "ScnSpriteComponent",
 					"materialcomponent"		: "TankMaterial_0",
 					"size"					: "1536.0, -1024.0",
-					"position"				: "0.0, 1024.0",
+					"position"				: "768.0, 512.0",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
-					"center"				: false,
+					"center"				: true,
 					"layer"					: 0,
 					"index"					: 4
 				},
@@ -93,9 +95,9 @@
 					"type"					: "ScnSpriteComponent",
 					"materialcomponent"		: "TankMaterial_0",
 					"size"					: "1536.0, -1024.0",
-					"position"				: "0.0, 1024.0",
+					"position"				: "768.0, 512.0",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
-					"center"				: false,
+					"center"				: true,
 					"layer"					: 190,
 					"index"					: 10
 				}

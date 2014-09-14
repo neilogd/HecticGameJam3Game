@@ -80,7 +80,16 @@
 			"tileheight"	: 512,
 
 			"source"		: "Content/Source/spritesheets/tank sheet V004-01.png"
-		}
+		},
 
+		{
+			"type"			: "ScnTextureAtlas",
+			"name"			: "tanksheet2",
+			"tileatlas"		: true,
+			"tilewidth"		: 256,
+			"tileheight"	: 768,
+
+			"source"		: "Content/Source/spritesheets/tank sheet V004-02.png"
+		}
 	]
 }
