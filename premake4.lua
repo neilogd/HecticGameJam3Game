@@ -21,7 +21,7 @@ solution "HecticGameJam3Game"
 	boostInclude = boostRoot .. "/include/boost-1_56"
 	boostLib = boostRoot .. "/lib"
 	location ( "Build/" .. action )
-	configurations { "Debug", "Release", "Production" }
+	configurations { "Debug", "Release", "Production", "ProductionSymbols" }
 
 	configuration "vs*"
 		defines { "STATICLIB", "_CRT_SECURE_NO_WARNINGS", "_STATIC_CPPLIB" }	
@@ -40,6 +40,11 @@ solution "HecticGameJam3Game"
 		targetdir ( "Build/" .. action .. "/bin/Production" )
 		defines { "STATICLIB", "WINDOWS", "_WIN32", "WIN32", "NDEBUG", "PSY_PRODUCTION" }
 		flags { "StaticRuntime", "EnableSSE", "EnableSSE2", "FloatFast", "NativeWChar", "NoFramePointer", "Optimize" }
+
+	configuration "ProductionSymbols"
+		targetdir ( "Build/" .. action .. "/bin/Production" )
+		defines { "STATICLIB", "WINDOWS", "_WIN32", "WIN32", "NDEBUG", "PSY_PRODUCTION" }
+		flags { "StaticRuntime", "EnableSSE", "EnableSSE2", "FloatFast", "NativeWChar", "NoFramePointer", "Optimize", "Symbols" }
 
 	-- Build externals.
 	dofile (psybrusSDK .. "/External/premake4.lua")

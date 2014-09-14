@@ -58,6 +58,7 @@ void GaFishComponent::initialise()
 	RotationTimer_ = 0.0f;
 	RotationSpeed_ = 1.0f;
 	Rotation_ = 0.0f;
+	XScale_ = -1.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
