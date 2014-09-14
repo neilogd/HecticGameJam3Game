@@ -161,17 +161,10 @@ void GaCustomisationComponent::spawnGame()
 			{
 				"SpawnTankEntity",
 				"TankEntity_0",
-				"WinnerTankEntity",
 				"TankEntity_1",
 				"TankEntity_1",
 				"TankEntity_1",
 				"WinnerTankEntity",
-				"TankEntity_0",
-				"TankEntity_0",
-				"TankEntity_0",
-				"TankEntity_0",
-				"TankEntity_0",
-				"TankEntity_0",
 			};
 
 

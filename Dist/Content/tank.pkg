@@ -194,7 +194,7 @@
 					"type"					: "GaTankComponent",
 					"seaweedmaterial"		: "SeaweedMaterial_0",
 					"dimensions"			: "1536.0, 900.0",
-					"nooffish"				: 4,
+					"nooffish"				: 6,
 					"spawnratemin"			: 4.0,
 					"spawnratemax"			: 8.0,
 					"cannonposition"		: "0.0, 0.0, 0.0"
