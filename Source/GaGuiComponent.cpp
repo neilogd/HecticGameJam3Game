@@ -16,6 +16,7 @@
 #include "GaPlayerComponent.h"
 #include "GaFishComponent.h"
 #include "GaSwarmElementComponent.h"
+#include "GaCannonComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnSpriteComponent.h"
@@ -146,6 +147,19 @@ void GaGuiComponent::update( BcF32 Tick )
 		HealthBar_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "HealthBar", 0 ) );
 		Background_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "Background", 0 ) );
 		Pointer_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "FoodPointer", 0 ) );
+		Fish_ = ParentEntity_->getParentEntity()->getComponentByType<GaFishComponent>( );
+		GaCannonComponentRef cannon = Player_->getCannon()->getComponentByType<GaCannonComponent>( );
+
+		RotationAmount_ = 0.0f;
+		if ( cannon.isValid() )
+		{
+			BcF32 requiredSize = cannon->getRequiredSize();
+			BcF32 currentSize = Fish_->getFishSize();
+			RotationAmount_ = BcClamp(currentSize / requiredSize, 0.0f, 1.0f);
+			
+		}
+
+
 		BcF32 health = Swarm_->getHealth();
 		BcF32 maxHealth = Swarm_->getMaxHealth();
 		float ratio = health / maxHealth;

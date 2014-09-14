@@ -359,3 +359,7 @@ const MaVec2d& GaPlayerComponent::getTargetPosition() const
 	return TargetPosition_;
 }
 
+ScnEntityRef GaPlayerComponent::getCannon()
+{
+	return Cannon_;
+}

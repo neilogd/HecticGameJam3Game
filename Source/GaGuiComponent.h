@@ -55,6 +55,7 @@ private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 	ReObjectRef< class GaPlayerComponent > Player_;
 	ReObjectRef< class GaSwarmElementComponent > Swarm_;
+	ReObjectRef< class GaFishComponent > Fish_;
 	ScnSpriteComponentRef HealthSprite_;
 	RsBuffer* UniformBuffer_;
 	MaVec2d AssetOffset_;
