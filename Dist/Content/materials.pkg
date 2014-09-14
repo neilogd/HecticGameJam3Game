@@ -321,6 +321,48 @@
 				"depth_test_compare" 		: "lessequal",
 				"blend_mode" 				: "blend"
 			}
+		},
+		
+		{
+			"type"			: "ScnMaterial",
+			"name"			: "customisationMaterial",
+
+			// Shader
+			"shader"		: "$(ScnShader:shaders.textured)",
+
+			// Textures
+			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.customisationTexture)"
+			},
+
+			// State
+			"state"			: {
+				"depth_write_enable" 		: 0,
+				"depth_test_enable" 		: 0,
+				"depth_test_compare" 		: "lessequal",
+				"blend_mode" 				: "blend"
+			}
+		},
+		
+		{
+			"type"			: "ScnMaterial",
+			"name"			: "creditMaterial",
+
+			// Shader
+			"shader"		: "$(ScnShader:shaders.textured)",
+
+			// Textures
+			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.creditTexture)"
+			},
+
+			// State
+			"state"			: {
+				"depth_write_enable" 		: 0,
+				"depth_test_enable" 		: 0,
+				"depth_test_compare" 		: "lessequal",
+				"blend_mode" 				: "blend"
+			}
 		}
 	]
 }

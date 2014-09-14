@@ -70,6 +70,20 @@
 		},
 
 		{
+			"type"			: "ScnTexture",
+			"name"			: "customisationTexture",
+
+			"source"		: "Content/Source/CHOICE-01.png"
+		},
+
+		{
+			"type"			: "ScnTexture",
+			"name"			: "creditTexture",
+
+			"source"		: "Content/Source/CHOICE-02.png"
+		},
+
+		{
 			"type"			: "ScnTextureAtlas",
 			"name"			: "fishsheet",
 			"tileatlas"		: true,

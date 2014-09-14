@@ -377,8 +377,11 @@ void GaTankComponent::receiveFish()
 			break;
 		}
 	}
-	GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
-	bubble->setTarget(first);
-	bubble->setText(Messages_[message]);
-	bubble->show();
+	if (first.isValid())
+	{
+		GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
+		bubble->setTarget(first);
+		bubble->setText(Messages_[message]);
+		bubble->show();
+	}
 }
