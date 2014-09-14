@@ -358,6 +358,13 @@ const MaVec2d& GaPlayerComponent::getTargetPosition() const
 }
 
 //////////////////////////////////////////////////////////////////////////
+// getCannon
+ScnEntityRef GaPlayerComponent::getCannon()
+{
+	return Cannon_;
+}
+
+//////////////////////////////////////////////////////////////////////////
 // getPosition
 MaVec2d GaPlayerComponent::getPosition() const
 {

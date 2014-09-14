@@ -70,6 +70,7 @@
 #include "GaGuiComponent.h"
 #include "GaMenuComponent.h"
 #include "GaPlayerComponent.h"
+#include "GaSpeechBubbleComponent.h"
 #include "GaSwarmElementComponent.h"
 #include "GaSwarmManagerComponent.h"
 #include "GaTankComponent.h"
@@ -158,6 +159,7 @@ void AutoGenRegisterReflection()
 	GaGuiComponent::StaticRegisterClass();
 	GaMenuComponent::StaticRegisterClass();
 	GaPlayerComponent::StaticRegisterClass();
+	GaSpeechBubbleComponent::StaticRegisterClass();
 	GaSwarmElementComponent::StaticRegisterClass();
 	GaSwarmManagerComponent::StaticRegisterClass();
 	GaTankComponent::StaticRegisterClass();

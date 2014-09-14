@@ -47,8 +47,10 @@ public:
 
 	const MaVec2d& getTargetPosition() const;
 
+	ScnEntityRef getCannon();
 	MaVec2d getPosition() const;
 	MaVec2d getCannonPosition() const;
+
 
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;

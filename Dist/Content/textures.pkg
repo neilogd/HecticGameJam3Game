@@ -63,6 +63,13 @@
 		},
 
 		{
+			"type"			: "ScnTexture",
+			"name"			: "speechBubbleTexture",
+
+			"source"		: "Content/Source/GUI Assests-04.png"
+		},
+
+		{
 			"type"			: "ScnTextureAtlas",
 			"name"			: "fishsheet",
 			"tileatlas"		: true,
