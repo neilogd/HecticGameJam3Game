@@ -107,7 +107,7 @@ void GaSpeechBubbleComponent::update( BcF32 Tick )
 	}
 	if ( SpeechBubble_.isValid() )
 	{
-		SpeechBubble_->setColour( RsColour( 1, 1, 1, Visible_ ? 1 : 0 ) );
+		SpeechBubble_->setColour( RsColour( 1, 1, 1, Visible_ ? 0.8 : 0 ) );
 	}
 	if ( !TargetEntity_.isValid() )
 	{
