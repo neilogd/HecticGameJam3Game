@@ -37,94 +37,29 @@ void PsyLaunchGame()
 		"default", "ScreenEntity", "ScreenEntity_0",
 		MaMat4d(),
 		nullptr,
-		[]( ScnEntity* ParentEntity )
+	};
+
+	ScreenEntityParams.OnSpawn_ = []( ScnEntity* ParentEntity )
+	{
+		ScnEntitySpawnParams CameraEntityParams =
 		{
-			ScnEntitySpawnParams CameraEntityParams =
-			{
-				"default", "CameraEntity", "CameraEntity_0",
-				MaMat4d(),
-				ParentEntity,
-				nullptr
-			};
+			"default", "CameraEntity", "CameraEntity_0",
+			MaMat4d(),
+			ParentEntity,
+			nullptr
+		};
 
-			ScnCore::pImpl()->spawnEntity( CameraEntityParams );
+		ScnCore::pImpl()->spawnEntity( CameraEntityParams );
 
-			ScnEntitySpawnParams StartGameEntityParams =
-			{
-				"default", "CustomisationEntity", "CustomisationEntity_0",
-				MaMat4d(),
-				ParentEntity,
-				nullptr
-			};
+		ScnEntitySpawnParams StartGameEntityParams =
+		{
+			"default", "CustomisationEntity", "CustomisationEntity_0",
+			MaMat4d(),
+			ParentEntity,
+			nullptr
+		};
 
-			ScnCore::pImpl()->spawnEntity( StartGameEntityParams );
-
-			/*ScnEntitySpawnParams GameEntityParams =
-			{
-				"default", "GameEntity", "GameEntity_0",
-				MaMat4d(),
-				ParentEntity,
-				[]( ScnEntity* ParentEntity )
-				{
-					MaVec3d Position( 0.0f, 0.0f, 0.0f );
-					MaVec3d PositionIncrement( 2200.0f, 0.0f, 0.0f );
-
-					const std::string Tanks[] =
-					{
-						"SpawnTankEntity",
-						"TankEntity_0",
-						"TankEntity_1",
-						"WinnerTankEntity",
-						"TankEntity_0",
-						"TankEntity_0",
-						"TankEntity_0",
-						"TankEntity_0",
-						"TankEntity_0",
-						"TankEntity_0",
-					};
-
-					for( BcU32 Idx = 0; Idx < 4; ++Idx )
-					{
-						ScnEntitySpawnParams TankEntityParams =
-						{
-							"tank", Tanks[ Idx ], BcName( "TankEntity", Idx ),
-							MaMat4d(),
-							ParentEntity,
-						};
-
-						TankEntityParams.Transform_.translation( Position );
-						Position += PositionIncrement;
-
-						ScnCore::pImpl()->spawnEntity( TankEntityParams );
-					}
-
-					ScnEntitySpawnParams PlayerEntityParams =
-					{
-						"player", "PlayerEntity", "PlayerEntity_0",
-						MaMat4d(),
-						ParentEntity,
-						[]( ScnEntity* ParentEntity )
-						{
-							ScnEntitySpawnParams GuiEntityParams =
-							{
-								"gui", "GuiEntity", "GuiEntity_0",
-								MaMat4d(),
-								ParentEntity,
-								nullptr
-							};
-
-							ScnCore::pImpl()->spawnEntity( GuiEntityParams );
-						}
-					};
-
-					ScnCore::pImpl()->spawnEntity( PlayerEntityParams );
-
-					
-				}
-			};
-
-			ScnCore::pImpl()->spawnEntity( GameEntityParams );/**/
-		}
+		ScnCore::pImpl()->spawnEntity( StartGameEntityParams );
 	};
 
 	ScnCore::pImpl()->spawnEntity( ScreenEntityParams );
