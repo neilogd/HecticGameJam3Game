@@ -24,7 +24,7 @@
 					"position"				: "0.0, 1536.0",
 					"colour"				: "0.0, 1.0, 1.0, 1.0",
 					"center"				: false,
-					"layer"					: 12,
+					"layer"					: 40,
 					"index"					: 0
 				}
 			]

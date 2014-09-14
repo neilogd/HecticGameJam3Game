@@ -12,6 +12,7 @@
 **************************************************************************/
 
 #include "GaPlayerComponent.h"
+#include "GaGameComponent.h"
 #include "GaCannonComponent.h"
 #include "GaFishComponent.h"
 #include "GaTankComponent.h"
@@ -149,6 +150,8 @@ void GaPlayerComponent::update( BcF32 Tick )
 			BcF32 Distance = ( getPosition() - getCannonPosition() ).magnitude();
 			if( Distance < 70.0f )
 			{
+				auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+				GameComponent->playSound( "SoundSuck", BcFalse );
 				PlayerState_ = PlayerState::CANNON_LOAD;
 			}			
 		}
@@ -281,6 +284,9 @@ eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Ev
 
 	auto SwarmElement = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
 	
+	// Do die sound.
+	auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+	
 	// Target position.
 	if( Event.ButtonCode_ == 0 )
 	{
@@ -297,6 +303,11 @@ eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Ev
 		if( Units.size() > 0 )
 		{
 			SwarmElement->setAttackTarget( Units[ 0 ] );
+			GameComponent->playSound( "SoundAggro", BcFalse );
+		}
+		else
+		{
+			GameComponent->playSound( "SoundMove", BcFalse );
 		}
 	}
 
@@ -329,6 +340,9 @@ void GaPlayerComponent::jumpTank( BcU32 TankIndex, BcBool Force )
 
 	if( TankIndex != TankIndex_ || Force )
 	{
+		auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+		GameComponent->playSound( "SoundCannon", BcFalse );
+
 		PlayerState_ = PlayerState::JUMP;
 		TankIndex_ = TankIndex;
 

@@ -12,6 +12,7 @@
 **************************************************************************/
 
 #include "GaSwarmElementComponent.h"
+#include "GaGameComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnSpriteComponent.h"
@@ -131,6 +132,8 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 		getParentEntity()->setWorldPosition(realPos);
 	}
 
+	auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+
 	// Check target for attack.
 	if( getAttackTarget() != nullptr )
 	{
@@ -150,6 +153,9 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 
 						// No more targetting.
 						setAttackTarget( nullptr );
+
+						// Do die sound.
+						GameComponent->playSound( "SoundDie", BcFalse );
 					}
 
 					// Grab all sprites for scaling.
@@ -158,6 +164,10 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 					{
 						SpriteComponent->setAnimation( "attack" );
 					}
+
+					// Do hit sound.
+					GameComponent->playSound( "SoundHit", BcFalse );
+
 				}
 				AttackTimer_ = 1.0f;
 			}
