@@ -169,7 +169,6 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 						GameComponent->playSound( "SoundDie", BcFalse );
 					}
 
-					// Grab all sprites for scaling.
 					BcU32 Idx = 0;
 					while( auto SpriteComponent = getParentEntity()->getComponentByType< ScnSpriteComponent >( Idx++ ) )
 					{

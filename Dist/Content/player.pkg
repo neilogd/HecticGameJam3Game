@@ -10,7 +10,7 @@
 					"unitmask"				: 1,
 					"velocitydriven"		: true,
 					"maxspeed"				: 20.0,
-					"maxhealth"				: 10,
+					"maxhealth"				: 20,
 					"attackspeed"			: 1.7,
 					"attackdistance"		: 80.0
 				},
@@ -67,6 +67,10 @@
 						"none" : {
 							"keys" : [ -1, -1 ],
 							"next" : "none"
+						},
+						"dead" : {
+							"keys" : [ -1, -1 ],
+							"next" : "dead"
 						},
 						"idle" : {
 							"keys" : [ 1, 1 ],

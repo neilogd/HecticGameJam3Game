@@ -168,6 +168,13 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 	MaVec2d TargetPosition = Attacking ? AttackElement->getPosition() : MaVec2d( 0.0f, 0.0f );
 	BcBool MoveToTarget = BcFalse;
 
+	if( Element->getUnitMask() == WINNER )
+	{
+		Move.x( 0.0f );
+		Move.y( 0.0f );
+		return Move;
+	}
+
 	if( Element->getUnitMask() == DEAD )
 	{
 		Move.x( 0.0f );

@@ -107,6 +107,13 @@
 			"tileheight"	: 768,
 
 			"source"		: "Content/Source/spritesheets/tank sheet V004-02.png"
+		},
+
+		{
+			"type"			: "ScnTexture",
+			"name"			: "winnertank",
+
+			"source"		: "Content/Source/spritesheets/CHOICE-03.png"
 		}
 	]
 }

@@ -44,11 +44,12 @@ public:
 
 	MaVec2d getCentralPosition();
 	void receiveFish();
-private:
+public:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 	ReObjectRef< class ScnMaterialComponent > SeaweedMaterial_;
 	std::string SeaweedMaterialName_;
 
+	BcBool HasCannon_;
 	MaVec2d Dimensions_;
 	MaVec2d CentralPosition_;
 	BcU32 NoofFish_;

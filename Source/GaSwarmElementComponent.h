@@ -51,7 +51,7 @@ public:
 	BcU32 getMaxHealth() const;
 	BcU32 getHealth() const;
 
-private:
+public:
 	ReObjectRef< class GaSwarmManagerComponent > Manager_;
 	BcU8 UnitMask_;
 	MaVec2d Acceleration_;

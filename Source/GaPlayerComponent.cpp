@@ -17,6 +17,7 @@
 #include "GaFishComponent.h"
 #include "GaTankComponent.h"
 #include "GaSwarmManagerComponent.h"
+#include "GaSwarmElementComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnCanvasComponent.h"
@@ -125,7 +126,7 @@ void GaPlayerComponent::update( BcF32 Tick )
 	}
 	// Player is attached before cannons are to tanks. Need to get rid of the
 	// delayed attachment in the engine to fix this properly.
-	if( Cannon_ == nullptr )
+	if( Cannon_ == nullptr && Tank_->getComponentByType< GaTankComponent >()->HasCannon_ )
 	{
 		jumpTank( TankIndex_ );
 	}
@@ -227,6 +228,22 @@ void GaPlayerComponent::update( BcF32 Tick )
 					getParentEntity()->getWorldPosition().y() );
 				PlayerState_ = PlayerState::IDLE;
 				Tank_->getComponentByType<GaTankComponent>()->receiveFish();
+
+				if( !Tank_->getComponentByType< GaTankComponent >()->HasCannon_ )
+				{
+					auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+					GameComponent->stopAllSounds();
+					GameComponent->playSound( "MusicWin", BcFalse );
+
+					getParentEntity()->getComponentByType< GaSwarmElementComponent >()->UnitMask_ = GaSwarmManagerComponent::WINNER;
+
+					BcU32 Idx = 0;
+					while( auto SpriteComponent = getParentEntity()->getComponentByType< ScnSpriteComponent >( Idx++ ) )
+					{
+						SpriteComponent->setAnimation( "none" );
+						SpriteComponent->setAnimation( "dead" );
+					}
+				}
 			}
 
 			JumpTimer_ += Tick * JumpSpeed_;

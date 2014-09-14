@@ -23,6 +23,7 @@
 
 #include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
+#include "Base/BcRandom.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
@@ -70,6 +71,7 @@ void GaFoodComponent::update( BcF32 Tick )
 	// Update sprite sizes.
 	for( BcU32 Idx = 0; Idx < Sprites_.size(); ++Idx )
 	{
+		Sprites_[ Idx ]->setIndex( Sprite_ );
 		Sprites_[ Idx ]->setSize( SpriteSizes_[ Idx ] * Size_ );
 		Sprites_[ Idx ]->setColour( RsColour( 1.0f, 1.0f, 1.0f, BcClamp( Life_ * 2.0f, 0.0f, 1.0f ) ) );
 	}
@@ -86,6 +88,9 @@ void GaFoodComponent::update( BcF32 Tick )
 void GaFoodComponent::onAttach( ScnEntityWeakRef Parent )
 {
 	Super::onAttach( Parent );
+
+	Sprite_ = BcRandom::Global.randRange( 0, 17 );
+
 
 	// Grab all sprites for scaling.
 	BcU32 Idx = 0;

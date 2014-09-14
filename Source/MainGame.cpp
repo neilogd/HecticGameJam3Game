@@ -72,18 +72,18 @@ void PsyLaunchGame()
 					const std::string Tanks[] =
 					{
 						"SpawnTankEntity",
-						"TankEntity",
-						"TankEntity",
-						"TankEntity",
-						"TankEntity",
-						"TankEntity",
-						"TankEntity",
-						"TankEntity",
-						"TankEntity",
-						"TankEntity",
+						"TankEntity_0",
+						"TankEntity_1",
+						"WinnerTankEntity",
+						"TankEntity_0",
+						"TankEntity_0",
+						"TankEntity_0",
+						"TankEntity_0",
+						"TankEntity_0",
+						"TankEntity_0",
 					};
 
-					for( BcU32 Idx = 0; Idx < 5; ++Idx )
+					for( BcU32 Idx = 0; Idx < 4; ++Idx )
 					{
 						ScnEntitySpawnParams TankEntityParams =
 						{

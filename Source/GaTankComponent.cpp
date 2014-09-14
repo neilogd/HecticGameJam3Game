@@ -50,6 +50,7 @@ void GaTankComponent::StaticRegisterClass()
 		new ReField( "AnimationTimer_", &GaTankComponent::AnimationTimer_, bcRFF_TRANSIENT ),
 		new ReField( "SeaweedPositions_", &GaTankComponent::SeaweedPositions_, bcRFF_TRANSIENT ),
 		new ReField( "Messages_", &GaTankComponent::Messages_, bcRFF_TRANSIENT ),
+		new ReField( "HasCannon_", &GaTankComponent::HasCannon_ ),
 	};
 
 	ReRegisterClass< GaTankComponent, Super >( Fields )
@@ -76,6 +77,7 @@ void GaTankComponent::initialise()
 	Messages_.push_back(" / /We accept you");
 	Messages_.push_back("You made/some choices/be happy");
 	Messages_.push_back("Welcome...");
+	HasCannon_ = BcFalse;
 
 
 
@@ -93,7 +95,11 @@ void GaTankComponent::initialise( const Json::Value& Object )
 	SpawnRateMin_ = BcF32( Object[ "spawnratemin" ].asDouble() );
 	SpawnRateMax_ = BcF32( Object[ "spawnratemax" ].asDouble() );
 	SpawnTimer_ = SpawnRateMin_;
-	CannonPosition_ = Object[ "cannonposition" ].asCString();
+	if( Object[ "cannonposition" ].type() != Json::nullValue )
+	{
+		CannonPosition_ = Object[ "cannonposition" ].asCString();
+		HasCannon_ = BcTrue;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -195,7 +201,10 @@ void GaTankComponent::update( BcF32 Tick )
 		SpawnTimer_ += SpawnRange;
 
 		// Spawn the food.
-		spawnFood( 8 );
+		if( HasCannon_ )
+		{
+			spawnFood( 8 );
+		}
 
 	}
 	SpawnTimer_ -= Tick;
@@ -229,7 +238,7 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 	{
 		ScnEntitySpawnParams EnemyEntityParams =
 		{
-			"enemies", "EnemyEntity", BcName( "EnemyEntity", FishIdx ),
+			"enemies", BcName( "EnemyEntity", getName().getID() ), BcName( "EnemyEntity", FishIdx ),
 			MaMat4d(),
 			Parent,
 			nullptr
@@ -250,27 +259,30 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Reset_Position");
 	DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::magicReset, this ) );
 
-	for( BcU32 Idx = 0; Idx < 8; ++Idx )
+	if( HasCannon_ )
 	{
-		MaVec2d Position;
-		Position.x( BcRandom::Global.randRealRange( 150.0f, Dimensions_.x() - 150.0f ) );
-		Position.y( BcRandom::Global.randRealRange( 32, 100 ) );
-		SeaweedPositions_.push_back( Position );
-		SeaweedSprites_.push_back( BcRandom::Global.randRange( 1, 15 ) );
+		for( BcU32 Idx = 0; Idx < 8; ++Idx )
+		{
+			MaVec2d Position;
+			Position.x( BcRandom::Global.randRealRange( 150.0f, Dimensions_.x() - 150.0f ) );
+			Position.y( BcRandom::Global.randRealRange( 32, 100 ) );
+			SeaweedPositions_.push_back( Position );
+			SeaweedSprites_.push_back( BcRandom::Global.randRange( 1, 15 ) );
+		}
+
+		ScnEntitySpawnParams CannonEntityParams =
+		{
+			"cannon", "CannonEntity", "CannonEntity_0",
+			MaMat4d(),
+			Parent,
+			nullptr
+		};
+
+		CannonEntityParams.Transform_.translation(
+			CannonPosition_ );
+
+		ScnCore::pImpl()->spawnEntity( CannonEntityParams );
 	}
-
-	ScnEntitySpawnParams CannonEntityParams =
-	{
-		"cannon", "CannonEntity", "CannonEntity_0",
-		MaMat4d(),
-		Parent,
-		nullptr
-	};
-
-	CannonEntityParams.Transform_.translation(
-		CannonPosition_ );
-
-	ScnCore::pImpl()->spawnEntity( CannonEntityParams );
 
 	Super::onAttach( Parent );
 
