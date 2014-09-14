@@ -63,6 +63,10 @@ private:
 	ScnSpriteComponentRef Background_;
 	ScnSpriteComponentRef HealthBar_;
 	ScnSpriteComponentRef Pointer_;
+
+	BcF32 RotationAmount_;
+	BcF32 RotateLeft_;
+	BcF32 RotateRight_;
 };
 
 #endif
