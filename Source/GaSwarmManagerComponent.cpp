@@ -168,12 +168,31 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 	MaVec2d TargetPosition = Attacking ? AttackElement->getPosition() : MaVec2d( 0.0f, 0.0f );
 	BcBool MoveToTarget = BcFalse;
 
+	if( Element->getUnitMask() == DEAD )
+	{
+		Move.x( 0.0f );
+		Move.y( 3.0f );
+		return Move;
+	}
+
 	// If we're an enemy, move to player thing.
 	if( Element->getUnitMask() == ENEMY )
 	{
 		if( unitTypeExists( FOOD ) )
 		{
 			Move += forceTowardsNearbyUnits( Element, 1, FOOD, FLT_MAX );
+			Element->setAttackTarget( nullptr );
+		}
+		else
+		{
+			auto player = getNearbyUnits( Element->getPosition(), 1, PLAYER );
+			if( player.size() > 0 )
+			{
+				if( ( player[ 0 ]->getPosition() - Element->getPosition() ).magnitude() < 128.0f )
+				{
+					Element->setAttackTarget( player[ 0 ] );
+				}				
+			}
 		}
 
 		// Move away from crowd
@@ -183,15 +202,6 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 		// Move towards centre of mass of crowd
 		Move += ( ( getAveragePosition( Element->getPosition(), Element->getUnitMask(), PositionNeighbourDistance_ ) - Element->getPosition() ).normal() ) * 0.075f;
 
-		// Move towards player.
-		auto player = getNearbyUnits( Element->getPosition(), 1, PLAYER );
-		if( player.size() > 0 )
-		{
-			if( ( player[ 0 ]->getPosition() - Element->getPosition() ).magnitude() < 25.0f )
-			{
-				Move += ( ( player[ 0 ]->getPosition() - Element->getPosition() ).normal() ) * 1.5f;
-			}
-		}
 
 		// if attacking.
 		if( Attacking )

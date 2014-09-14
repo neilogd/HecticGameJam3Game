@@ -17,6 +17,13 @@
 		},
 
 		{
+			"name"		:		"MusicLose",
+			"type"		:		"ScnSound",
+			"source"	:		"Content/Source/music/Hectic_lose_v1.ogg",
+			"isstream" : true
+		},
+
+		{
 			"name"		:		"SoundAggro",
 			"type"		:		"ScnSound",
 			"source"	:		"Content/Source/sounds/Hectic_aggro_v1.ogg"

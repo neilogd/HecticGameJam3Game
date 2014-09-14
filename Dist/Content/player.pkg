@@ -10,7 +10,7 @@
 					"unitmask"				: 1,
 					"velocitydriven"		: true,
 					"maxspeed"				: 20.0,
-					"maxhealth"				: 5,
+					"maxhealth"				: 10,
 					"attackspeed"			: 1.7,
 					"attackdistance"		: 80.0
 				},
@@ -24,7 +24,7 @@
 					"size"					: 0.5,
 					"sizeincreasemultiplier": 0.5,
 					"eatdistance"			: 64.0,
-					"eatspeed"				: 1.0
+					"eatspeed"				: 0.5
 				},
 
 				{

@@ -67,6 +67,7 @@ public:
 	static const BcU8 PLAYER = 0x01;
 	static const BcU8 ENEMY = 0x02;
 	static const BcU8 FOOD = 0x04;
+	static const BcU8 DEAD = 0x10;
 };
 
 #endif
