@@ -16,6 +16,7 @@
 
 #include "Psybrus.h"
 #include "System/Scene/Rendering/ScnSpriteComponent.h"
+#include "System/Scene/Rendering/ScnFont.h"
 //////////////////////////////////////////////////////////////////////////
 // GaExampleComponentRef
 typedef ReObjectRef< class GaSpeechBubbleComponent > GaSpeechBubbleComponentRef;
@@ -43,6 +44,10 @@ private:
 	BcBool Visible_;
 
 	ScnSpriteComponentRef SpeechBubble_;
+	
+	ScnFontComponentRef FontComponent_;
+	ScnCanvasComponentRef Canvas_;
+	std::vector<std::string> Text_;
 };
 
 #endif

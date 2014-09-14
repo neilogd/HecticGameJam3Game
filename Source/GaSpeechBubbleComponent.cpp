@@ -22,7 +22,7 @@
 #include "System/Debug/DsCore.h"
 
 #include "Base/BcProfiler.h"
-
+#include "GaPlayerComponent.h"
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
 DEFINE_RESOURCE( GaSpeechBubbleComponent );
@@ -44,6 +44,8 @@ void GaSpeechBubbleComponent::initialise()
 {
 	RequiredSize_ = 0.0f;
 	Visible_ = true;
+	Text_.push_back("LIne 1");
+	Text_.push_back("Line 2");
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -61,7 +63,11 @@ void GaSpeechBubbleComponent::initialise( const Json::Value& Object )
 void GaSpeechBubbleComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
-
+	if ( !FontComponent_.isValid() )
+	{
+		Canvas_ = ParentEntity_->getComponentAnyParentByType< ScnCanvasComponent >();
+		FontComponent_ = ParentEntity_->getComponentAnyParentByType< ScnFontComponent >();
+	}
 	if ( !SpeechBubble_.isValid() )
 	{
 		SpeechBubble_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "SpeechBubbleComponent", 0 ) );
@@ -70,6 +76,30 @@ void GaSpeechBubbleComponent::update( BcF32 Tick )
 	{
 		SpeechBubble_->setColour( RsColour( 1, 1, 1, Visible_ ? 1 : 0 ) );
 	}
+
+	MaMat4d TextScaleMatrix;
+	//TextScaleMatrix.scale( MaVec4d( 0.04f, 0.04f, 1.0f, 1.0f ) );
+	TextScaleMatrix.scale( MaVec4d( 1.04f, 1.04f, 1.0f, 1.0f ) );
+
+	FontComponent_->setAlphaTestStepping( MaVec2d( 0.4f, 0.45f ) );
+
+	Canvas_->pushMatrix( TextScaleMatrix );
+
+	MaVec2d Position( 0.0f, 0.0f );
+	MaVec2d Size;
+	MaVec3d worldPos = getParentEntity()->getWorldPosition();
+	MaVec2d localPos( worldPos.x(), worldPos.y() );
+	for( BcU32 Idx = 0; Idx < Text_.size(); ++Idx )
+	{
+		const auto& Option( Text_[ Idx ] );
+		const auto Colour = RsColour::BLUE;
+		Size = FontComponent_->drawCentered( Canvas_, /*localPos + /**/ Position, Text_[ Idx ] , Colour, 280 );
+		Position += MaVec2d( 0.0f, Size.y() );
+	}
+
+
+
+	Canvas_->popMatrix();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -81,6 +111,8 @@ void GaSpeechBubbleComponent::onAttach( ScnEntityWeakRef Parent )
 
 
 	Super::onAttach( Parent );
+	Canvas_ = Parent->getComponentAnyParentByType< ScnCanvasComponent >();
+	FontComponent_ = ParentEntity_->getComponentAnyParentByType<ScnFontComponent>();
 }
 
 //////////////////////////////////////////////////////////////////////////
