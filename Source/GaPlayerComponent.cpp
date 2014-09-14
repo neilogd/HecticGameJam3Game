@@ -309,6 +309,15 @@ void GaPlayerComponent::onDetach( ScnEntityWeakRef Parent )
 // onMouseDown
 eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Event )
 {
+	GaSwarmElementComponentRef ref = getParentEntity()->getComponentByType<GaSwarmElementComponent>();
+	if ( ref.isValid() )
+	{
+		if ((ref->UnitMask_ ==GaSwarmManagerComponent::DEAD) || (ref->UnitMask_ == GaSwarmManagerComponent::WINNER))
+		{
+			// Load game
+		}
+	}
+
 	// Offset mouse postion.
 	MaVec2d MousePosition( MaVec2d( BcF32( Event.MouseX_ ), BcF32( Event.MouseY_ ) ) );
 	
