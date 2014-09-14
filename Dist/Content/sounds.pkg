@@ -5,7 +5,8 @@
 			"name"		:		"MusicGame",
 			"type"		:		"ScnSound",
 			"source"	:		"Content/Source/music/Hectic_v1.ogg",
-			"isstream" : true
+			"isstream" : true,
+			"isloop" : true
 		},
 
 		{
