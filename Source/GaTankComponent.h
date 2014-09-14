@@ -45,10 +45,8 @@ public:
 	MaVec2d getCentralPosition();
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
-	ReObjectRef< class ScnMaterialComponent > WaterMaterial_;
-	ReObjectRef< class ScnMaterialComponent > GlassMaterial_;
-	std::string WaterMaterialName_;
-	std::string GlassMaterialName_;
+	ReObjectRef< class ScnMaterialComponent > SeaweedMaterial_;
+	std::string SeaweedMaterialName_;
 
 	MaVec2d Dimensions_;
 	MaVec2d CentralPosition_;
@@ -59,6 +57,10 @@ private:
 	BcF32 SpawnTimer_;
 
 	MaVec3d CannonPosition_;
+
+	BcF32 AnimationTimer_;
+	std::vector< MaVec2d > SeaweedPositions_;
+	std::vector< BcU32 > SeaweedSprites_;
 
 	std::vector<ScnEntity*> Children;
 

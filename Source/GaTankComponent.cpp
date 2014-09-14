@@ -38,16 +38,16 @@ void GaTankComponent::StaticRegisterClass()
 	ReField* Fields[] =
 	{
 		new ReField( "Canvas_", &GaTankComponent::Canvas_, bcRFF_TRANSIENT ),
-		new ReField( "WaterMaterial_", &GaTankComponent::WaterMaterial_, bcRFF_TRANSIENT ),
-		new ReField( "GlassMaterial_", &GaTankComponent::GlassMaterial_, bcRFF_TRANSIENT ),
-		new ReField( "WaterMaterialName_", &GaTankComponent::WaterMaterialName_ ),
-		new ReField( "GlassMaterialName_", &GaTankComponent::GlassMaterialName_ ),
+		new ReField( "SeaweedMaterial_", &GaTankComponent::SeaweedMaterial_, bcRFF_TRANSIENT ),
+		new ReField( "SeaweedMaterialName_", &GaTankComponent::SeaweedMaterialName_ ),
 		new ReField( "Dimensions_", &GaTankComponent::Dimensions_ ),
 		new ReField( "NoofFish_", &GaTankComponent::NoofFish_ ),
 		new ReField( "SpawnRateMin_", &GaTankComponent::SpawnRateMin_ ),
 		new ReField( "SpawnRateMax_", &GaTankComponent::SpawnRateMax_ ),
 		new ReField( "SpawnTimer_", &GaTankComponent::SpawnTimer_, bcRFF_TRANSIENT ),
 		new ReField( "CannonPosition_", &GaTankComponent::CannonPosition_ ),
+		new ReField( "AnimationTimer_", &GaTankComponent::AnimationTimer_, bcRFF_TRANSIENT ),
+		new ReField( "SeaweedPositions_", &GaTankComponent::SeaweedPositions_, bcRFF_TRANSIENT ),
 	};
 
 	ReRegisterClass< GaTankComponent, Super >( Fields )
@@ -63,6 +63,7 @@ void GaTankComponent::initialise()
 	SpawnRateMin_ = 1.0f;
 	SpawnRateMax_ = 2.0f;
 	SpawnTimer_ = SpawnRateMin_;
+	AnimationTimer_ = 0.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,8 +71,7 @@ void GaTankComponent::initialise()
 void GaTankComponent::initialise( const Json::Value& Object )
 {
 	initialise();
-	WaterMaterialName_ = Object[ "watermaterial" ].asCString();
-	GlassMaterialName_ = Object[ "glassmaterial" ].asCString();
+	SeaweedMaterialName_ = Object[ "seaweedmaterial" ].asCString();
 	Dimensions_ = Object[ "dimensions" ].asCString();
 	NoofFish_ = Object[ "nooffish" ].asUInt();
 	SpawnRateMin_ = BcF32( Object[ "spawnratemin" ].asDouble() );
@@ -89,17 +89,87 @@ void GaTankComponent::update( BcF32 Tick )
 	const MaMat4d& Matrix = Entity->getWorldMatrix();
 
 	// Push matrix onto canvas.
-	/*
 	Canvas_->pushMatrix( Matrix );
 
-	Canvas_->setMaterialComponent( GlassMaterial_ );
-	Canvas_->drawBox( 
-		MaVec2d( 0.0f, 0.0f ), 
-		Dimensions_,
-		RsColour( 0.5f, 1.0f, 1.0f, 0.2f ),
-		0 );
+	Canvas_->setMaterialComponent( SeaweedMaterial_ );
+
+	auto Texture = SeaweedMaterial_->getTexture( SeaweedMaterial_->findTextureSlot( "aDiffuseTex" ) );
+
+	ScnCanvasComponentVertex* FirstVertex = Canvas_->allocVertices( 16 * SeaweedPositions_.size() );
+	ScnCanvasComponentVertex* Vertex = FirstVertex;
+	MaVec2d HalfDimensions( MaVec2d( 256.0f, 768.0f ) * 0.85f );
+	for( BcU32 Idx = 0; Idx < SeaweedPositions_.size(); ++Idx )
+	{
+		auto SeaweedPosition = SeaweedPositions_[ Idx ];
+		auto TextureRect = Texture->getRect( SeaweedSprites_[ Idx ] );
+		ScnCanvasComponentVertex* PrimitiveVertex = Vertex;
+
+		// 0
+		Vertex[ 0 ].X_ = -HalfDimensions.x() + SeaweedPosition.x();
+		Vertex[ 0 ].Y_ = 0.0f + SeaweedPosition.y();
+		Vertex[ 0 ].Z_ = 0.0f;
+		Vertex[ 0 ].ABGR_ = 0xffffffff;
+		Vertex[ 0 ].U_ = TextureRect.X_;
+		Vertex[ 0 ].V_ = TextureRect.Y_ + TextureRect.H_;
+		
+		// 1	   
+		Vertex[ 1 ].X_ = HalfDimensions.x() + SeaweedPosition.x();
+		Vertex[ 1 ].Y_ = 0.0f + SeaweedPosition.y();
+		Vertex[ 1 ].Z_ = 0.0f;
+		Vertex[ 1 ].ABGR_ = 0xffffffff;
+		Vertex[ 1 ].U_ = TextureRect.X_ + TextureRect.W_;
+		Vertex[ 1 ].V_ = TextureRect.Y_ + TextureRect.H_;
+		
+		// 14	   
+		Vertex[ 14 ].X_ = -HalfDimensions.x() + SeaweedPosition.x();
+		Vertex[ 14 ].Y_ = HalfDimensions.y() + SeaweedPosition.y();
+		Vertex[ 14 ].Z_ = 0.0f;
+		Vertex[ 14 ].ABGR_ = 0xffffffff;
+		Vertex[ 14 ].U_ = TextureRect.X_;
+		Vertex[ 14 ].V_ = TextureRect.Y_ + ( TextureRect.H_ * 0.4f );
+		
+		// 15
+		Vertex[ 15 ].X_ = HalfDimensions.x() + SeaweedPosition.x();
+		Vertex[ 15 ].Y_ = HalfDimensions.y() + SeaweedPosition.y();
+		Vertex[ 15 ].Z_ = 0.0f;
+		Vertex[ 15 ].ABGR_ = 0xffffffff;
+		Vertex[ 15 ].U_ = TextureRect.X_ + TextureRect.W_;
+		Vertex[ 15 ].V_ = TextureRect.Y_ + ( TextureRect.H_ * 0.4f );
+
+		for( BcU32 VertIdx = 2; VertIdx < 16; VertIdx  += 2 )
+		{
+			BcF32 LerpVal = BcF32( VertIdx ) / 16.0f;
+			BcF32 XOffset = BcSin( LerpVal * BcPIMUL2 + ( AnimationTimer_ + BcF32( Idx ) ) ) * 16.0f;
+
+			if( VertIdx < 4 )
+			{
+				XOffset = 0.0f;
+			}
+
+			Vertex[ VertIdx ].X_ = BcLerp( Vertex[ 0 ].X_, Vertex[ 14 ].X_, LerpVal ) + XOffset;
+			Vertex[ VertIdx ].Y_ = BcLerp( Vertex[ 0 ].Y_, Vertex[ 14 ].Y_, LerpVal );
+			Vertex[ VertIdx ].Z_ = 0.0f;
+			Vertex[ VertIdx ].ABGR_ = 0xffffffff;
+			Vertex[ VertIdx ].U_ = BcLerp( Vertex[ 0 ].U_, Vertex[ 14 ].U_, LerpVal );
+			Vertex[ VertIdx ].V_ = BcLerp( Vertex[ 0 ].V_, Vertex[ 14 ].V_, LerpVal );
+
+			// 1	   
+			Vertex[ VertIdx + 1 ].X_ = BcLerp( Vertex[ 1 ].X_, Vertex[ 15 ].X_, LerpVal ) + XOffset;
+			Vertex[ VertIdx + 1 ].Y_ = BcLerp( Vertex[ 1 ].Y_, Vertex[ 15 ].Y_, LerpVal );
+			Vertex[ VertIdx + 1 ].Z_ = 0.0f;
+			Vertex[ VertIdx + 1 ].ABGR_ = 0xffffffff;
+			Vertex[ VertIdx + 1 ].U_ = BcLerp( Vertex[ 1 ].U_, Vertex[ 15 ].U_, LerpVal );
+			Vertex[ VertIdx + 1 ].V_ = BcLerp( Vertex[ 1 ].V_, Vertex[ 15 ].V_, LerpVal );
+
+		}
+
+		Canvas_->addPrimitive( RsTopologyType::TRIANGLE_STRIP, PrimitiveVertex, 16, ( Idx % 3 ) * 10 + 3, BcTrue );
+		Vertex += 16;
+	}
+
+	AnimationTimer_ += Tick;
+
 	Canvas_->popMatrix();
-	*/
 
 	// Food spawn logic.
 	if( SpawnTimer_ < 0.0f )
@@ -127,8 +197,7 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 	BcAssertMsg( Canvas_.isValid(), "Sprite component needs to be attached to an entity with a canvas component in any parent!" );
 
 	// Find a canvas to use for rendering (someone in ours, or our parent's hierarchy).
-	WaterMaterial_ = Parent->getComponentAnyParentByType< ScnMaterialComponent >( WaterMaterialName_ );
-	GlassMaterial_ = Parent->getComponentAnyParentByType< ScnMaterialComponent >( GlassMaterialName_ );
+	SeaweedMaterial_ = Parent->getComponentAnyParentByType< ScnMaterialComponent >( SeaweedMaterialName_ );
 
 	// Spawn fish.
 	auto TankDimensions = getDimensions();
@@ -165,7 +234,15 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Reset_Position");
 	DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::magicReset, this ) );
 
-	
+	for( BcU32 Idx = 0; Idx < 8; ++Idx )
+	{
+		MaVec2d Position;
+		Position.x( BcRandom::Global.randRealRange( 150.0f, Dimensions_.x() - 150.0f ) );
+		Position.y( BcRandom::Global.randRealRange( 32, 100 ) );
+		SeaweedPositions_.push_back( Position );
+		SeaweedSprites_.push_back( BcRandom::Global.randRange( 1, 15 ) );
+	}
+
 	ScnEntitySpawnParams CannonEntityParams =
 	{
 		"cannon", "CannonEntity", "CannonEntity_0",
