@@ -49,6 +49,7 @@ void GaTankComponent::StaticRegisterClass()
 		new ReField( "CannonPosition_", &GaTankComponent::CannonPosition_ ),
 		new ReField( "AnimationTimer_", &GaTankComponent::AnimationTimer_, bcRFF_TRANSIENT ),
 		new ReField( "SeaweedPositions_", &GaTankComponent::SeaweedPositions_, bcRFF_TRANSIENT ),
+		new ReField( "Messages_", &GaTankComponent::Messages_, bcRFF_TRANSIENT ),
 	};
 
 	ReRegisterClass< GaTankComponent, Super >( Fields )
@@ -65,6 +66,20 @@ void GaTankComponent::initialise()
 	SpawnRateMax_ = 2.0f;
 	SpawnTimer_ = SpawnRateMin_;
 	AnimationTimer_ = 0.0f;
+	Messages_.push_back("We don't/like yer kind/round here");
+	Messages_.push_back("GERT OURT");
+	Messages_.push_back("Get the new/comer!");
+	Messages_.push_back("When did/you make/that choice?");
+	Messages_.push_back("Someone needs/a cutting!");
+	Messages_.push_back("You're askin'/for it");
+	Messages_.push_back("Let's be/friends");
+	Messages_.push_back(" / /We accept you");
+	Messages_.push_back("You made/some choices/be happy");
+	Messages_.push_back("Welcome...");
+
+
+
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -340,8 +355,18 @@ MaVec2d GaTankComponent::getCentralPosition()
 
 void GaTankComponent::receiveFish()
 {
+	int message = BcRandom::Global.rand() % Messages_.size();
+	ScnEntityRef first;
+	for ( BcU32 Idx = 0; Idx < Children.size(); ++Idx )
+	{
+		if ( Children[ Idx ].isValid() )
+		{
+			first = Children[ Idx ];
+			break;
+		}
+	}
 	GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
-	bubble->setTarget(Children[0]);
-	bubble->setText("We don't like/your kinda/round here");
+	bubble->setTarget(first);
+	bubble->setText(Messages_[message]);
 	bubble->show();
 }

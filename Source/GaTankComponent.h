@@ -63,7 +63,7 @@ private:
 	std::vector< MaVec2d > SeaweedPositions_;
 	std::vector< BcU32 > SeaweedSprites_;
 
-	std::vector<ScnEntity*> Children;
+	std::vector<ScnEntityRef> Children;
 	std::vector<std::string> Messages_;
 };
 
