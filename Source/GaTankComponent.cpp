@@ -234,11 +234,29 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 	BcF32 Rot = 0.0f;
 	BcF32 RotAdv = BcPIMUL2 / BcF32( NoofFish_ );
 	BcF32 Radius = 128.0f;
+	BcU32 Fish = 0;
+
+	if( getParentEntity()->getName().getID() == 1 )
+	{
+		Fish = 0;
+	}
+	if( getParentEntity()->getName().getID() == 2 )
+	{
+		Fish = 1;
+	}
+	if( getParentEntity()->getName().getID() == 3 )
+	{
+		Fish = 2;
+	}
+	if( getParentEntity()->getName().getID() == 4 )
+	{
+		Fish = 3;
+	}
 	for( BcU32 FishIdx = 0; FishIdx < NoofFish_; ++FishIdx )
 	{
 		ScnEntitySpawnParams EnemyEntityParams =
 		{
-			"enemies", BcName( "EnemyEntity", getName().getID() ), BcName( "EnemyEntity", FishIdx ),
+			"enemies", BcName( "EnemyEntity", Fish ), BcName( "EnemyEntity", FishIdx ),
 			MaMat4d(),
 			Parent,
 			nullptr
