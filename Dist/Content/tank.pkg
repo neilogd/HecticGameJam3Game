@@ -13,14 +13,20 @@
 				},
 				
 				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "SeaweedMaterial_0",
+					"material"				: "$(ScnMaterial:materials.tanksheet2)",
+					"permutation"			: "2d"
+				},
+
+				{
 					"type"					: "GaSwarmManagerComponent",
 					"edgedistance"			: 250.0
 				},
 
 				{
 					"type"					: "GaTankComponent",
-					"watermaterial"			: "WaterMaterial_0",
-					"glassmaterial"			: "GlassMaterial_0",
+					"seaweedmaterial"		: "SeaweedMaterial_0",
 					"dimensions"			: "1024.0, 900.0",
 					"nooffish"				: 0,
 					"spawnratemin"			: 2.0,
@@ -65,14 +71,20 @@
 				},
 				
 				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "SeaweedMaterial_0",
+					"material"				: "$(ScnMaterial:materials.tanksheet2)",
+					"permutation"			: "2d"
+				},
+
+				{
 					"type"					: "GaSwarmManagerComponent",
 					"edgedistance"			: 150.0
 				},
 
 				{
 					"type"					: "GaTankComponent",
-					"watermaterial"			: "WaterMaterial_0",
-					"glassmaterial"			: "GlassMaterial_0",
+					"seaweedmaterial"		: "SeaweedMaterial_0",
 					"dimensions"			: "1536.0, 900.0",
 					"nooffish"				: 8,
 					"spawnratemin"			: 4.0,
@@ -87,8 +99,19 @@
 					"position"				: "768.0, 512.0",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
 					"center"				: true,
-					"layer"					: 0,
+					"layer"					: 2,
 					"index"					: 4
+				},
+
+				{
+					"type"					: "ScnSpriteComponent",
+					"materialcomponent"		: "TankMaterial_0",
+					"size"					: "1536.0, -1024.0",
+					"position"				: "768.0, 512.0",
+					"colour"				: "1.0, 1.0, 1.0, 1.0",
+					"center"				: true,
+					"layer"					: 1,
+					"index"					: 5
 				},
 
 				{

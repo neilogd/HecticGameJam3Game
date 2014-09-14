@@ -40,7 +40,25 @@
 					"size"					: "128.0, -128.0",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
 					"center"				: true,
-					"layer"					: 20
+					"layer"					: 20,
+					"animations"			: {
+						"none" : {
+							"keys" : [ -1, -1 ],
+							"next" : "idle"
+						},
+						"idle" : {
+							"keys" : [ 0, 0 ],
+							"next" : "idle"
+						},
+						"attack" : {
+							"keys" : [ 70, 71, 72, 73, 74, 75, 76 ],
+							"next" : "idle"
+						},
+						"dead" : {
+							"keys" : [ 70, 71, 72, 73, 74, 75, 76 ],
+							"next" : "dead"
+						}
+					}
 				}
 			]
 		}
