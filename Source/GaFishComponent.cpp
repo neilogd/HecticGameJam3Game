@@ -55,6 +55,9 @@ void GaFishComponent::initialise()
 	SizeIncreaseMultiplier_ = 1.0f;
 	EatDistance_ = 0.0f;
 	SwarmManager_ = nullptr;
+	RotationTimer_ = 0.0f;
+	RotationSpeed_ = 1.0f;
+	Rotation_ = 0.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -101,8 +104,10 @@ void GaFishComponent::update( BcF32 Tick )
 
 	// Do the flip and stuff.
 	auto Element = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
+	MaVec2d Velocity;
 	if( Element != nullptr )
 	{
+		Velocity = Element->getVelocity();
 		BcF32 MoveTurnVelocity = 1.0f;
 		if( Element->getVelocity().x() < -MoveTurnVelocity )
 		{
@@ -123,7 +128,24 @@ void GaFishComponent::update( BcF32 Tick )
 
 		NewSize.x( NewSize.x() * XScale_ );
 
+		// Calculate angle to point at.
+		auto FishVelRot = BcAtan2( Velocity.y(), BcAbs( Velocity.x() ) ) * 0.3f;
+
+		// Interpolate for turning.
+		FishVelRot = BcLerp( -FishVelRot, FishVelRot, ( XScale_ + 1.0f ) * 0.5f );
+
 		Sprites_[ Idx ]->setSize( NewSize );
+		Rotation_ = 
+			( Rotation_ * 0.1f ) + 
+			( FishVelRot + ( BcSin( RotationTimer_ ) * 0.02f ) * 0.9f );
+		Sprites_[ Idx ]->setRotation( Rotation_ );
+	}
+
+	// Rotation.
+	RotationTimer_ += Tick * RotationSpeed_ * Velocity.magnitude();
+	if( RotationTimer_ > BcPIMUL2 )
+	{
+		RotationTimer_ -= BcPIMUL2;
 	}
 }
 

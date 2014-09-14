@@ -52,6 +52,10 @@ private:
 	std::vector< ReObjectRef< class ScnSpriteComponent > > Sprites_;
 
 	BcF32 XScale_;
+
+	BcF32 RotationTimer_;
+	BcF32 RotationSpeed_;
+	BcF32 Rotation_;
 };
 
 #endif
