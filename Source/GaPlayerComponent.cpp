@@ -31,7 +31,7 @@
 
 #include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
-
+#include "GaSpeechBubbleComponent.h"
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
 DEFINE_RESOURCE( GaPlayerComponent );
@@ -58,6 +58,7 @@ void GaPlayerComponent::StaticRegisterClass()
 		new ReField( "TankIndex_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "Tank_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT  ),
 		new ReField( "Cannon_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT ),
+		new ReField( "FirstUpdate_", &GaPlayerComponent::FirstUpdate_, bcRFF_TRANSIENT ),
 	};
 
 	ReRegisterClass< GaPlayerComponent, Super >( Fields )
@@ -84,6 +85,8 @@ void GaPlayerComponent::initialise()
 	CannonStart_ = MaVec2d( 0.0f, 0.0f );
 	CannonEnd_ = MaVec2d( 0.0f, 0.0f );
 	TankIndex_ = 0;
+
+	FirstUpdate_ = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -109,6 +112,17 @@ void GaPlayerComponent::preUpdate( BcF32 Tick )
 //virtual
 void GaPlayerComponent::update( BcF32 Tick )
 {
+	if ( FirstUpdate_ )
+	{
+		GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
+		if (bubble.isValid())
+		{
+			FirstUpdate_ = false;
+			bubble->setTarget( getParentEntity() );
+			bubble->setText( "I must/escape this/horrid cage" );
+			bubble->show();
+		}
+	}
 	// Player is attached before cannons are to tanks. Need to get rid of the
 	// delayed attachment in the engine to fix this properly.
 	if( Cannon_ == nullptr )
@@ -212,6 +226,7 @@ void GaPlayerComponent::update( BcF32 Tick )
 					getParentEntity()->getWorldPosition().x(), 
 					getParentEntity()->getWorldPosition().y() );
 				PlayerState_ = PlayerState::IDLE;
+				Tank_->getComponentByType<GaTankComponent>()->receiveFish();
 			}
 
 			JumpTimer_ += Tick * JumpSpeed_;

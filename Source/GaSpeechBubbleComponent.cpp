@@ -38,7 +38,9 @@ void GaSpeechBubbleComponent::StaticRegisterClass()
 		new ReField( "FontOffset_", &GaSpeechBubbleComponent::FontOffset_, DsCore::DsCoreSerialised ),
 		new ReField( "VisibleTime_", &GaSpeechBubbleComponent::VisibleTime_, DsCore::DsCoreSerialised ),
 		new ReField( "TimeBeenVisible_", &GaSpeechBubbleComponent::TimeBeenVisible_, DsCore::DsCoreSerialised ),
-		new ReField( "Text_", &GaSpeechBubbleComponent::Text_, DsCore::DsCoreSerialised )
+		new ReField( "Text_", &GaSpeechBubbleComponent::Text_, DsCore::DsCoreSerialised ),
+		new ReField( "TargetEntity_", &GaSpeechBubbleComponent::TargetEntity_, bcRFF_TRANSIENT ),
+		new ReField( "SpriteOffset_", &GaSpeechBubbleComponent::SpriteOffset_,  DsCore::DsCoreSerialised )
 	};
 
 	ReRegisterClass< GaSpeechBubbleComponent, Super >( Fields )
@@ -59,6 +61,7 @@ void GaSpeechBubbleComponent::initialise()
 	Text_.push_back("cage!");/**/
 
 	FontOffset_ = MaVec2d( -165.0f, -210.0f );
+	SpriteOffset_ = MaVec2d( -340.0f, 350.0f );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -74,7 +77,9 @@ void GaSpeechBubbleComponent::initialise( const Json::Value& Object )
 		VisibleTime_ = BcF32( Object[ "visibletime" ].asDouble() );
 
 	if ( Object[ "visible" ].type() != Json::nullValue )
-		Visible_ = BcF32( Object[ "visible" ].asBool() );
+		Visible_ = ( Object[ "visible" ].asBool() );
+	if ( Object[ "spriteoffset" ].type() != Json::nullValue )
+		SpriteOffset_ = MaVec2d( Object[ "spriteoffset" ].asCString() );
 
 	if ( Object[ "text" ].type() != Json::nullValue )
 	{
@@ -90,6 +95,7 @@ void GaSpeechBubbleComponent::initialise( const Json::Value& Object )
 void GaSpeechBubbleComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
+
 	if ( !FontComponent_.isValid() )
 	{
 		Canvas_ = ParentEntity_->getComponentAnyParentByType< ScnCanvasComponent >();
@@ -102,6 +108,11 @@ void GaSpeechBubbleComponent::update( BcF32 Tick )
 	if ( SpeechBubble_.isValid() )
 	{
 		SpeechBubble_->setColour( RsColour( 1, 1, 1, Visible_ ? 1 : 0 ) );
+	}
+	if ( !TargetEntity_.isValid() )
+	{
+		// We aren't even gonna bother
+		return;
 	}
 
 	MaMat4d TextScaleMatrix;
@@ -121,10 +132,11 @@ void GaSpeechBubbleComponent::update( BcF32 Tick )
 		Canvas_->pushMatrix( TextScaleMatrix );
 	
 		MaVec2d Size;
-		MaVec3d worldPos = getParentEntity()->getWorldPosition();
+		MaVec3d worldPos = TargetEntity_->getWorldPosition();
 		MaVec2d Position( 0 , 0 );
 		MaVec2d localPos  = SpeechBubble_->getPosition();
-		localPos  = MaVec2d(worldPos.x(), -worldPos.y() ) + FontOffset_;
+		localPos  = MaVec2d(TargetEntity_->getWorldPosition().x(), -TargetEntity_->getWorldPosition().y() ) + FontOffset_;
+		SpeechBubble_->setPosition( MaVec2d( TargetEntity_->getWorldPosition().x(), TargetEntity_->getWorldPosition().y() )  + SpriteOffset_ );
 		for( BcU32 Idx = 0; Idx < Text_.size(); ++Idx )
 		{
 			const auto& Option( Text_[ Idx ] );
@@ -181,4 +193,9 @@ void GaSpeechBubbleComponent::setText(std::string Text)
 {
 	Text_.clear();
 	boost::split(Text_, Text, boost::is_any_of("/"));
+}
+
+void GaSpeechBubbleComponent::setTarget( ScnEntityRef Target )
+{
+	TargetEntity_ = Target;
 }

@@ -39,7 +39,9 @@ public:
 
 	BcF32 getRequiredSize() const;
 	void show();
-	void setText(std::string Text);
+	void setText( std::string Text );
+
+	void setTarget( ScnEntityRef Target );
 private:
 	BcF32 RequiredSize_;
 	BcBool Visible_;
@@ -52,6 +54,9 @@ private:
 	MaVec2d FontOffset_;
 	BcF32 VisibleTime_;
 	BcF32 TimeBeenVisible_;
+	ScnEntityRef TargetEntity_;
+
+	MaVec2d SpriteOffset_;
 };
 
 #endif
