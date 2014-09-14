@@ -9,7 +9,10 @@
 					"type"					: "GaSwarmElementComponent",
 					"unitmask"				: 1,
 					"velocitydriven"		: true,
-					"maxspeed"				: 20.0
+					"maxspeed"				: 20.0,
+					"maxhealth"				: 5,
+					"attackspeed"			: 1.7,
+					"attackdistance"		: 80.0
 				},
 
 				{
@@ -20,7 +23,7 @@
 					"type"					: "GaFishComponent",
 					"size"					: 1.0,
 					"sizeincreasemultiplier": 0.1,
-					"eatdistance"			: 256.0,
+					"eatdistance"			: 64.0,
 					"eatspeed"				: 1.0
 				},
 

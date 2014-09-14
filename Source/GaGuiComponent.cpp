@@ -13,6 +13,9 @@
 
 #include "GaPlayerComponent.h"
 #include "GaGuiComponent.h"
+#include "GaPlayerComponent.h"
+#include "GaFishComponent.h"
+#include "GaSwarmElementComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnSpriteComponent.h"
@@ -39,6 +42,7 @@ void GaGuiComponent::StaticRegisterClass()
 	{
 		new ReField( "Canvas_", &GaGuiComponent::Canvas_, bcRFF_TRANSIENT ),
 		new ReField( "Player_", &GaGuiComponent::Player_, bcRFF_TRANSIENT ),
+		new ReField( "Swarm_", &GaGuiComponent::Swarm_, bcRFF_TRANSIENT ),
 		new ReField( "HealthSprite_", &GaGuiComponent::HealthSprite_, bcRFF_TRANSIENT ),
 		new ReField( "Background_", &GaGuiComponent::Background_, bcRFF_TRANSIENT ),
 		new ReField( "HealthBar_", &GaGuiComponent::HealthBar_, bcRFF_TRANSIENT ),
@@ -114,14 +118,22 @@ void GaGuiComponent::update( BcF32 Tick )
 
 
 	if (!Player_.isValid())
+	{
 		Player_ = ParentEntity_->getParentEntity()->getComponentByType<GaPlayerComponent>();
-	if (Player_.isValid())
+	}
+
+	if( !Swarm_.isValid() )
+	{
+		Swarm_ = ParentEntity_->getParentEntity()->getComponentByType<GaSwarmElementComponent>();
+	}
+
+	if (Swarm_.isValid())
 	{
 		HealthBar_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "HealthBar", 0 ) );
 		Background_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "Background", 0 ) );
 		Pointer_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "FoodPointer", 0 ) );
-		BcF32 health = Player_->getHealth();
-		BcF32 maxHealth = Player_->getMaxHealth();
+		BcF32 health = Swarm_->getHealth();
+		BcF32 maxHealth = Swarm_->getMaxHealth();
 		float ratio = health / maxHealth;
 		float width = 640.0f * ratio;
 		MaVec2d ScreenBottom = MaVec2d(0.0f, -(BcF32)OsCore::pImpl()->getClient(0)->getHeight() / 2);

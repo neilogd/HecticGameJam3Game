@@ -26,7 +26,7 @@
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
 					"position"				: "0, -300",
 					"center"				: true,
-					"layer"					: 20,
+					"layer"					: 220,
 					"isscreenspace"			: true
 				},
 				
@@ -45,7 +45,7 @@
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
 					"position"				: "0, -300",
 					"center"				: true,
-					"layer"					: 21,
+					"layer"					: 221,
 					"isscreenspace"			: true
 				},
 			
@@ -64,7 +64,7 @@
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
 					"position"				: "0, -210",
 					"center"				: true,
-					"layer"					: 21,
+					"layer"					: 221,
 					"isscreenspace"			: true
 				}
 				

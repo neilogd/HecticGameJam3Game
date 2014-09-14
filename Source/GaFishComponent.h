@@ -45,10 +45,17 @@ private:
 	BcF32 SizeIncreaseMultiplier_;
 	BcF32 EatDistance_;
 	BcF32 EatSpeed_;	
+
 	ReObjectRef< class GaSwarmManagerComponent > SwarmManager_;
 
 	std::vector< MaVec2d > SpriteSizes_;
 	std::vector< ReObjectRef< class ScnSpriteComponent > > Sprites_;
+
+	BcF32 XScale_;
+
+	BcF32 RotationTimer_;
+	BcF32 RotationSpeed_;
+	BcF32 Rotation_;
 };
 
 #endif

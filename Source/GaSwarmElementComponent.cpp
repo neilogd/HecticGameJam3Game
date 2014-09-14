@@ -41,6 +41,11 @@ void GaSwarmElementComponent::StaticRegisterClass()
 		new ReField( "VelocityDriven_", &GaSwarmElementComponent::VelocityDriven_ ),
 		new ReField( "MaxSpeed_", &GaSwarmElementComponent::MaxSpeed_ ),
 		new ReField( "AttackTarget_", &GaSwarmElementComponent::AttackTarget_ ),
+		new ReField( "Health_", &GaSwarmElementComponent::Health_, DsCore::DsCoreSerialised ),
+		new ReField( "MaxHealth_", &GaSwarmElementComponent::MaxHealth_, DsCore::DsCoreSerialised ),
+		new ReField( "AttackSpeed_", &GaSwarmElementComponent::AttackSpeed_, DsCore::DsCoreSerialised ),
+		new ReField( "AttackTimer_", &GaSwarmElementComponent::AttackTimer_, DsCore::DsCoreSerialised ),
+		new ReField( "AttackTarget_", &GaSwarmElementComponent::AttackTarget_, DsCore::DsCoreSerialised ),
 	};
 		
 	ReRegisterClass< GaSwarmElementComponent, Super >( Fields )
@@ -70,6 +75,24 @@ void GaSwarmElementComponent::initialise( const Json::Value& Object )
 	{
 		MaxSpeed_ = BcF32( Object[ "maxspeed" ].asDouble() );
 	}
+
+	if( Object[ "maxhealth" ] != Json::ValueType::nullValue )
+	{
+		MaxHealth_ = Object[ "maxhealth" ].asUInt();
+		Health_ = MaxHealth_;
+	}
+
+	if( Object[ "attackspeed" ] != Json::ValueType::nullValue )
+	{
+		AttackSpeed_ = BcF32( Object[ "attackspeed" ].asDouble() );
+		AttackTimer_ = 1.0f;
+	}
+
+	if( Object[ "attackdistance" ] != Json::ValueType::nullValue )
+	{
+		AttackDistance_ = BcF32( Object[ "attackdistance" ].asDouble() );
+	}
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -84,6 +107,11 @@ void GaSwarmElementComponent::initialise( )
 	VelocityDriven_ = false;
 	MaxSpeed_ = 1.0f;
 	AttackTarget_ = nullptr;
+	MaxHealth_ = 5;
+	Health_ = MaxHealth_;
+	AttackSpeed_ = 1.0f;
+	AttackTimer_ = 1.0f;
+	AttackDistance_ = 80.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -101,6 +129,39 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 	
 		MaVec3d realPos(position, 0.0f);
 		getParentEntity()->setWorldPosition(realPos);
+	}
+
+	// Check target for attack.
+	if( getAttackTarget() != nullptr )
+	{
+		// Distance.
+		if( AttackTimer_ < 0.0f )
+		{
+			auto Distance = ( getAttackTarget()->getPosition() - getPosition() ).magnitude();
+			if( Distance < AttackDistance_ )
+			{
+				if( getAttackTarget()->Health_ > 0 ) 
+				{
+					// TODO: Animation thing.
+					if( --getAttackTarget()->Health_ == 0 )
+					{
+						// Kill it.
+						ScnCore::pImpl()->removeEntity( getAttackTarget()->getParentEntity() );
+
+						// No more targetting.
+						setAttackTarget( nullptr );
+					}
+				}
+				AttackTimer_ = 1.0f;
+			}
+		}
+	}
+
+
+	// Cool down for attack.
+	if( AttackTimer_ >= 0.0f )
+	{
+		AttackTimer_ -= Tick * AttackSpeed_;
 	}
 }
 
@@ -189,4 +250,18 @@ void GaSwarmElementComponent::setAttackTarget( GaSwarmElementComponent* AttackTa
 GaSwarmElementComponent* GaSwarmElementComponent::getAttackTarget() const
 {
 	return AttackTarget_;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// getFishSize
+BcU32 GaSwarmElementComponent::getMaxHealth() const
+{
+	return MaxHealth_;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// getFishSize
+BcU32 GaSwarmElementComponent::getHealth() const
+{
+	return Health_;
 }

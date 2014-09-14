@@ -28,6 +28,7 @@
 #include "System/Debug/DsCore.h"
 
 #include "GaSwarmElementComponent.h"
+
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
 DEFINE_RESOURCE( GaTankComponent );
@@ -105,9 +106,9 @@ void GaTankComponent::update( BcF32 Tick )
 		SpawnTimer_ += SpawnRange;
 
 		// Spawn the food.
-		//spawnFood();
+		spawnFood( 8 );
 
-	}/**/
+	}
 	SpawnTimer_ -= Tick;
 
 	Super::update( Tick );
@@ -157,7 +158,7 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 	BcChar buffer[256];
 	BcMemZero(buffer, 256);
 	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Spawn_Food");
-	DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::spawnFood, this ) );
+	DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::spawnFood, this, 1 ) );
 	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Reset_Position");
 	DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::magicReset, this ) );
 
@@ -203,7 +204,7 @@ const MaVec2d& GaTankComponent::getDimensions() const
 
 //////////////////////////////////////////////////////////////////////////
 // spawnFood
-void GaTankComponent::spawnFood()
+void GaTankComponent::spawnFood( BcU32 Noof )
 {
 	ScnEntitySpawnParams EnemyEntityParams =
 	{

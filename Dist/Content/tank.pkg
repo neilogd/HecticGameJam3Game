@@ -30,8 +30,8 @@
 					"glassmaterial"			: "GlassMaterial_0",
 					"dimensions"			: "2000.0, 1000.0",
 					"nooffish"				: 8,
-					"spawnratemin"			: 1.0,
-					"spawnratemax"			: 2.0
+					"spawnratemin"			: 2.0,
+					"spawnratemax"			: 4.0
 				}
 			]
 		}

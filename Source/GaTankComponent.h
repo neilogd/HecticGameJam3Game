@@ -37,7 +37,7 @@ public:
 	virtual void onDetach( ScnEntityWeakRef Parent );
 
 	const MaVec2d& getDimensions() const;
-	void spawnFood();
+	void spawnFood( BcU32 Noof );
 	void magicReset();
 
 	void registerEnemy(ScnEntityRef entity);
