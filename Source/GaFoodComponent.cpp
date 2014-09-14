@@ -71,7 +71,7 @@ void GaFoodComponent::update( BcF32 Tick )
 	for( BcU32 Idx = 0; Idx < Sprites_.size(); ++Idx )
 	{
 		Sprites_[ Idx ]->setSize( SpriteSizes_[ Idx ] * Size_ );
-		Sprites_[ Idx ]->setColour( RsColour( 1.0f, 0.5f, 0.0f, BcClamp( Life_ * 5.0f, 0.0f, 1.0f ) ) );
+		Sprites_[ Idx ]->setColour( RsColour( 1.0f, 1.0f, 1.0f, BcClamp( Life_ * 2.0f, 0.0f, 1.0f ) ) );
 	}
 
 	if( Life_ < 0.0f )
