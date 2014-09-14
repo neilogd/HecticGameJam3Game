@@ -58,6 +58,8 @@ private:
 	BcF32 SpawnRateMax_;
 	BcF32 SpawnTimer_;
 
+	MaVec3d CannonPosition_;
+
 	std::vector<ScnEntity*> Children;
 
 };

@@ -77,7 +77,7 @@ void GaPlayerComponent::initialise()
 
 	CannonTimer_ = 0.0f;
 	CannonSpeed_ = 1.0f;
-	CannonSuckDistance_ = 256.0f;
+	CannonSuckDistance_ = 128.0f;
 	CannonStart_ = MaVec2d( 0.0f, 0.0f );
 	CannonEnd_ = MaVec2d( 0.0f, 0.0f );
 	TankIndex_ = 0;
@@ -125,22 +125,18 @@ void GaPlayerComponent::update( BcF32 Tick )
 
 			if( Cannon_ != nullptr )
 			{
-				BcF32 Distance = ( getParentEntity()->getWorldPosition() - Cannon_->getWorldPosition() ).magnitude();
+				BcF32 Distance = ( getPosition() - getCannonPosition() ).magnitude();
 
 				if( Distance < CannonSuckDistance_ )
 				{
 					// Do suck later, go straight to load.
-					PlayerState_ = PlayerState::CANNON_LOAD;
+					PlayerState_ = PlayerState::CANNON_SUCK;
 
 					auto TankDimensions = Tank_->getComponentByType< GaTankComponent >()->getDimensions();
 
 					CannonTimer_ = 0.0f;
-					CannonStart_ = MaVec2d(
-						Cannon_->getWorldPosition().x(),
-						Cannon_->getWorldPosition().y() );
-					CannonEnd_ = MaVec2d(
-						Cannon_->getWorldPosition().x(),
-						Cannon_->getWorldPosition().y() + TankDimensions.y() );
+					CannonStart_ = getCannonPosition();
+					CannonEnd_ = getCannonPosition() + MaVec2d( 0.0f, 480.0f * 2.0f );
 				}
 			}
 		}
@@ -148,10 +144,13 @@ void GaPlayerComponent::update( BcF32 Tick )
 
 	case PlayerState::CANNON_SUCK:
 		{
-			// TODO: Pull player into cannon. Might wanna just use the 
-			//       swarm stuff so it looks natural.
-			BcBreakpoint;
 			BcAssert( Cannon_ != nullptr );
+			TargetPosition_ = getCannonPosition();
+			BcF32 Distance = ( getPosition() - getCannonPosition() ).magnitude();
+			if( Distance < 70.0f )
+			{
+				PlayerState_ = PlayerState::CANNON_LOAD;
+			}			
 		}
 		break;
 
@@ -163,14 +162,13 @@ void GaPlayerComponent::update( BcF32 Tick )
 			MaVec2d Position;
 			Position.lerp( CannonStart_, CannonEnd_, ClampedTimer );
 
+			MaVec3d NewPosition = getParentEntity()->getWorldPosition();
 			getParentEntity()->setWorldPosition(
-				MaVec3d( Position, 0.0f ) );
+				NewPosition * 0.5f + MaVec3d( Position, 0.0f ) * 0.5f );
 
 			if( CannonTimer_ > 1.0f )
 			{
-				TargetPosition_ = MaVec2d(
-					getParentEntity()->getLocalPosition().x(),
-					getParentEntity()->getLocalPosition().y() );
+				TargetPosition_ = getPosition();
 
 				auto FishComponent = getParentEntity()->getComponentByType< GaFishComponent >();
 				auto CannonComponent = Cannon_->getComponentByType< GaCannonComponent >();
@@ -359,7 +357,31 @@ const MaVec2d& GaPlayerComponent::getTargetPosition() const
 	return TargetPosition_;
 }
 
+//////////////////////////////////////////////////////////////////////////
+// getCannon
 ScnEntityRef GaPlayerComponent::getCannon()
 {
 	return Cannon_;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// getPosition
+MaVec2d GaPlayerComponent::getPosition() const
+{
+	return MaVec2d( 
+		getParentEntity()->getWorldPosition().x(), 
+		getParentEntity()->getWorldPosition().y() );
+}
+
+//////////////////////////////////////////////////////////////////////////
+// getCannonPosition
+MaVec2d GaPlayerComponent::getCannonPosition() const
+{
+	if( Cannon_ != nullptr )
+	{
+		return MaVec2d(
+			Cannon_->getWorldPosition().x(),
+			Cannon_->getWorldPosition().y() ) + MaVec2d( 200.0f, 210.0f ); // hack offset to scaled up sprite entry point.
+	}
+	return MaVec2d();
 }

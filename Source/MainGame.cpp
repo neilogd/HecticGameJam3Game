@@ -58,11 +58,26 @@ void PsyLaunchGame()
 				{
 					MaVec3d Position( 0.0f, 0.0f, 0.0f );
 					MaVec3d PositionIncrement( 2200.0f, 0.0f, 0.0f );
+
+					const std::string Tanks[] =
+					{
+						"SpawnTankEntity",
+						"TankEntity",
+						"TankEntity",
+						"TankEntity",
+						"TankEntity",
+						"TankEntity",
+						"TankEntity",
+						"TankEntity",
+						"TankEntity",
+						"TankEntity",
+					};
+
 					for( BcU32 Idx = 0; Idx < 5; ++Idx )
 					{
 						ScnEntitySpawnParams TankEntityParams =
 						{
-							"tank", "TankEntity", BcName( "TankEntity", Idx ),
+							"tank", Tanks[ Idx ], BcName( "TankEntity", Idx ),
 							MaMat4d(),
 							ParentEntity,
 						};
