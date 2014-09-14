@@ -160,6 +160,7 @@ void GaFishComponent::onAttach( ScnEntityWeakRef Parent )
 	BcU32 Idx = 0;
 	while( auto SpriteComponent = Parent->getComponentByType< ScnSpriteComponent >( Idx++ ) )
 	{
+		SpriteComponent->setAnimation( "idle" );
 		Sprites_.push_back( SpriteComponent );
 		SpriteSizes_.push_back( SpriteComponent->getSize() );
 	}

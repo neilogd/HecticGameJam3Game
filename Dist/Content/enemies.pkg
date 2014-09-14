@@ -42,7 +42,25 @@
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
 					"center"				: true,
 					"index"					: 14,
-					"layer"					: 10
+					"layer"					: 10,
+					"animations"			: {
+						"none" : {
+							"keys" : [ -1, -1 ],
+							"next" : "none"
+						},
+						"idle" : {
+							"keys" : [ 14, 14 ],
+							"next" : "idle"
+						},
+						"attack" : {
+							"keys" : [ 70, 71, 72, 73, 74, 75, 76 ],
+							"next" : "idle"
+						},
+						"dead" : {
+							"keys" : [ 70, 71, 72, 73, 74, 75, 76 ],
+							"next" : "dead"
+						}
+					}
 				}
 			]
 		}

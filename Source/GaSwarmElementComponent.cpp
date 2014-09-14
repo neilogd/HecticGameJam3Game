@@ -14,7 +14,7 @@
 #include "GaSwarmElementComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
-#include "System/Scene/Rendering/ScnViewComponent.h"
+#include "System/Scene/Rendering/ScnSpriteComponent.h"
 
 #include "System/Content/CsPackage.h"
 #include "System/Content/CsCore.h"
@@ -150,6 +150,13 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 
 						// No more targetting.
 						setAttackTarget( nullptr );
+					}
+
+					// Grab all sprites for scaling.
+					BcU32 Idx = 0;
+					while( auto SpriteComponent = getParentEntity()->getComponentByType< ScnSpriteComponent >( Idx++ ) )
+					{
+						SpriteComponent->setAnimation( "attack" );
 					}
 				}
 				AttackTimer_ = 1.0f;
