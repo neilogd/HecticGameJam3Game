@@ -314,7 +314,17 @@ eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Ev
 	{
 		if ((ref->UnitMask_ ==GaSwarmManagerComponent::DEAD) || (ref->UnitMask_ == GaSwarmManagerComponent::WINNER))
 		{
+			ScnEntityRef lajdfk = getParentEntity()->getComponentAnyParentByType<GaGameComponent>()->getParentEntity();
 			// Load game
+			ScnEntitySpawnParams StartGameEntityParams =
+			{
+				"default", "CustomisationEntity", "CustomisationEntity_0",
+				MaMat4d(),
+				lajdfk->getParentEntity(),
+				nullptr
+			};
+			ScnCore::pImpl()->removeEntity(lajdfk);
+			ScnCore::pImpl()->spawnEntity( StartGameEntityParams );
 		}
 	}
 
