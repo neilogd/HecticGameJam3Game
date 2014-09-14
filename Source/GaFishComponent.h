@@ -37,6 +37,7 @@ public:
 	virtual void onDetach( ScnEntityWeakRef Parent );
 
 	BcF32 getFishSize() const;
+	void setFishSize( BcF32 Size );
 
 	void updateSwarmManagerRef( class GaSwarmManagerComponent* SwarmManager );
 

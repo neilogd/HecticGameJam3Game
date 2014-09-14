@@ -44,6 +44,7 @@ void GaPlayerComponent::StaticRegisterClass()
 		new ReField( "ViewMatrix_", &GaPlayerComponent::ViewMatrix_, DsCore::DsCoreSerialised ),
 		new ReField( "TargetPosition_", &GaPlayerComponent::TargetPosition_, DsCore::DsCoreSerialised ),
 		new ReField( "PlayerState_", &GaPlayerComponent::PlayerState_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "OriginalSize_", &GaPlayerComponent::OriginalSize_, DsCore::DsCoreSerialised ),
 		new ReField( "JumpHeight_", &GaPlayerComponent::JumpHeight_, DsCore::DsCoreSerialised ),
 		new ReField( "JumpTimer_", &GaPlayerComponent::JumpTimer_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "JumpSpeed_", &GaPlayerComponent::JumpSpeed_, DsCore::DsCoreSerialised ),
@@ -70,6 +71,7 @@ void GaPlayerComponent::initialise()
 	TargetPosition_ = MaVec2d( 0.0f, 0.0f );
 	PlayerState_ = PlayerState::IDLE;
 
+	OriginalSize_ = 1.0f;
 	JumpHeight_ = 512.0f;
 	JumpTimer_ = 0.0f;
 	JumpSpeed_ = 0.5f;
@@ -198,6 +200,9 @@ void GaPlayerComponent::update( BcF32 Tick )
 
 			Position.y( Position.y() + std::sin( ClampedTimer * BcPI ) * JumpHeight_ );
 
+			auto Fish = getParentEntity()->getComponentByType< GaFishComponent >();
+			Fish->setFishSize( Fish->getFishSize() - Tick * 0.5f );
+			
 			getParentEntity()->setWorldPosition(
 				MaVec3d( Position, 0.0f ) );
 
@@ -235,6 +240,8 @@ void GaPlayerComponent::onAttach( ScnEntityWeakRef Parent )
 	// Find a canvas to use for rendering (someone in ours, or our parent's hierarchy).
 	Canvas_ = Parent->getComponentAnyParentByType< ScnCanvasComponent >( 0 );
 	BcAssertMsg( Canvas_.isValid(), "Player component needs to be attached to an entity with a canvas component in any parent!" );
+
+	OriginalSize_ = getParentEntity()->getComponentByType< GaFishComponent >()->getFishSize();
 
 	// Jump tank 0.
 	jumpTank( 0 );

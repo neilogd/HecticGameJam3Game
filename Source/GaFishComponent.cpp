@@ -102,6 +102,12 @@ void GaFishComponent::update( BcF32 Tick )
 		}
 	}
 
+	// Slowly size down.
+	Size_ = Size_ - ( 1.0f * Tick * 0.05f );
+
+	// Clamp to range.
+	Size_ = BcClamp( Size_, 0.75f, 2.0f );
+
 	// Do the flip and stuff.
 	auto Element = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
 	MaVec2d Velocity;
@@ -182,9 +188,15 @@ BcF32 GaFishComponent::getFishSize() const
 	return Size_;
 }
 
+//////////////////////////////////////////////////////////////////////////
+// setFishSize
+void GaFishComponent::setFishSize( BcF32 Size )
+{
+	Size_ = Size;
+}
 
 //////////////////////////////////////////////////////////////////////////
-// getFishSize
+// updateSwarmManagerRef
 void GaFishComponent::updateSwarmManagerRef( GaSwarmManagerComponent* SwarmManager )
 {
 	if( SwarmManager != nullptr )

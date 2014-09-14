@@ -56,6 +56,8 @@ private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 	MaMat4d ViewMatrix_;
 	MaVec2d TargetPosition_;
+
+	BcF32 OriginalSize_;
 	
 	BcF32 JumpHeight_;
 	BcF32 JumpTimer_;
