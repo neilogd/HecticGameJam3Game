@@ -309,6 +309,25 @@ void GaPlayerComponent::onDetach( ScnEntityWeakRef Parent )
 // onMouseDown
 eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Event )
 {
+	GaSwarmElementComponentRef ref = getParentEntity()->getComponentByType<GaSwarmElementComponent>();
+	if ( ref.isValid() )
+	{
+		if ((ref->UnitMask_ ==GaSwarmManagerComponent::DEAD) || (ref->UnitMask_ == GaSwarmManagerComponent::WINNER))
+		{
+			ScnEntityRef lajdfk = getParentEntity()->getComponentAnyParentByType<GaGameComponent>()->getParentEntity();
+			// Load game
+			ScnEntitySpawnParams StartGameEntityParams =
+			{
+				"default", "CustomisationEntity", "CustomisationEntity_0",
+				MaMat4d(),
+				lajdfk->getParentEntity(),
+				nullptr
+			};
+			ScnCore::pImpl()->removeEntity(lajdfk);
+			ScnCore::pImpl()->spawnEntity( StartGameEntityParams );
+		}
+	}
+
 	// Offset mouse postion.
 	MaVec2d MousePosition( MaVec2d( BcF32( Event.MouseX_ ), BcF32( Event.MouseY_ ) ) );
 	
