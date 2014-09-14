@@ -57,6 +57,12 @@ private:
 	ReObjectRef< class GaSwarmElementComponent > Swarm_;
 	ScnSpriteComponentRef HealthSprite_;
 	RsBuffer* UniformBuffer_;
+	MaVec2d AssetOffset_;
+	MaVec2d PointerOffset_;
+
+	ScnSpriteComponentRef Background_;
+	ScnSpriteComponentRef HealthBar_;
+	ScnSpriteComponentRef Pointer_;
 };
 
 #endif
