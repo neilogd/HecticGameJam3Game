@@ -116,9 +116,12 @@ void GaPlayerComponent::update( BcF32 Tick )
 	switch( PlayerState_ )
 	{
 	case PlayerState::IDLE:
-		{
-			//getParentEntity()->setWorldPosition(
-			//	MaVec3d( TargetPosition_, 0.0f ) );
+		{	
+			auto SwarmElement = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
+			if( SwarmElement->getAttackTarget() )
+			{
+				TargetPosition_ = SwarmElement->getAttackTarget()->getPosition();
+			}
 
 			if( Cannon_ != nullptr )
 			{
@@ -279,7 +282,7 @@ eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Ev
 	MousePosition = MousePosition * InverseViewMatrix;
 
 	auto SwarmElement = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
-
+	
 	// Target position.
 	if( Event.ButtonCode_ == 0 )
 	{

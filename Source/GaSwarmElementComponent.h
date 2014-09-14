@@ -66,6 +66,10 @@ private:
 	BcU32 Health_;
 	BcU32 MaxHealth_;
 
+	BcF32 AttackSpeed_;
+	BcF32 AttackTimer_;
+	BcF32 AttackDistance_;
+
 	GaSwarmElementComponent* AttackTarget_;
 
 };
