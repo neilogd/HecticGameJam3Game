@@ -230,7 +230,7 @@
 							"next" : "idle"
 						},
 						"attack" : {
-							"keys" : [ 26, 27, 28, 29 ],
+							"keys" : [ 25, 26, 27, 28 ],
 							"next" : "idle"
 						}						
 					}
@@ -287,7 +287,7 @@
 							"next" : "none"
 						},
 						"idle" : {
-							"keys" : [ 24, 24 ],
+							"keys" : [ 32, 32 ],
 							"next" : "idle"
 						}
 					}
@@ -305,7 +305,7 @@
 							"next" : "none"
 						},
 						"idle" : {
-							"keys" : [ 32, 32 ],
+							"keys" : [ 33, 33 ],
 							"next" : "idle"
 						},
 						"attack" : {

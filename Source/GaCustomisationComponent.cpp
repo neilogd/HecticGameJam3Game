@@ -160,16 +160,20 @@ void GaCustomisationComponent::spawnGame()
 			const std::string Tanks[] =
 			{
 				"SpawnTankEntity",
-				"TankEntity",
-				"TankEntity",
-				"TankEntity",
-				"TankEntity",
-				"TankEntity",
-				"TankEntity",
-				"TankEntity",
-				"TankEntity",
-				"TankEntity",
+				"TankEntity_0",
+				"WinnerTankEntity",
+				"TankEntity_1",
+				"TankEntity_1",
+				"TankEntity_1",
+				"WinnerTankEntity",
+				"TankEntity_0",
+				"TankEntity_0",
+				"TankEntity_0",
+				"TankEntity_0",
+				"TankEntity_0",
+				"TankEntity_0",
 			};
+
 
 			for( BcU32 Idx = 0; Idx < 5; ++Idx )
 			{
