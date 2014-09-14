@@ -7,7 +7,8 @@
 			"components" : [
 				{
 					"type"					: "GaGuiComponent",
-					"assetoffset"			: "0, 10",
+					"assetoffset"			: "0, 110",
+					"pointeroffset"			: "0, -27"
 				},
 				
 				{
@@ -19,8 +20,9 @@
 
 				{
 					"type"					: "ScnSpriteComponent",
+					"name"					: "Background_0",
 					"materialcomponent"		: "GuiMaterialComponent_0",
-					"size"					: "512.0, 64.0",
+					"size"					: "640, -256",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
 					"position"				: "0, -300",
 					"center"				: true,
@@ -39,68 +41,34 @@
 					"type"					: "ScnSpriteComponent",
 					"name"					: "HealthBar_0",
 					"materialcomponent"		: "GuiMaterialComponent_1",
-					"size"					: "256.0, 64.0",
+					"size"					: "640, -256",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
 					"position"				: "0, -300",
 					"center"				: true,
 					"layer"					: 21,
 					"isscreenspace"			: true
 				},
-				
+			
 				{
 					"type"					: "ScnMaterialComponent",
 					"name"					: "GuiMaterialComponent_2",
-					"material"				: "$(ScnMaterial:materials.foodBarBacking)",
+					"material"				: "$(ScnMaterial:materials.foodBarPointer)",
 					"permutation"			: "2d"
 				},
 
 				{
 					"type"					: "ScnSpriteComponent",
+					"name"					: "FoodPointer_0",
 					"materialcomponent"		: "GuiMaterialComponent_2",
-					"size"					: "256.0, -128.0",
-					"colour"				: "1.0, 1.0, 1.0, 1.0",
-					"position"				: "0, -210",
-					"center"				: true,
-					"layer"					: 21,
-					"isscreenspace"			: true
-				},
-				
-				{
-					"type"					: "ScnMaterialComponent",
-					"name"					: "GuiMaterialComponent_3",
-					"material"				: "$(ScnMaterial:materials.foodBarFill)",
-					"permutation"			: "2d"
-				},
-
-				{
-					"type"					: "ScnSpriteComponent",
-					"name"					: "FoodBar_0",
-					"materialcomponent"		: "GuiMaterialComponent_3",
-					"size"					: "256.0, -128.0",
-					"colour"				: "1.0, 1.0, 1.0, 1.0",
-					"position"				: "0, -210",
-					"center"				: true,
-					"layer"					: 21,
-					"isscreenspace"			: true
-				},
-				
-				{
-					"type"					: "ScnMaterialComponent",
-					"name"					: "GuiMaterialComponent_4",
-					"material"				: "$(ScnMaterial:materials.foodBarBorder)",
-					"permutation"			: "2d"
-				},
-
-				{
-					"type"					: "ScnSpriteComponent",
-					"materialcomponent"		: "GuiMaterialComponent_4",
-					"size"					: "256.0, -128.0",
+					"size"					: "256.0, -256.0",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
 					"position"				: "0, -210",
 					"center"				: true,
 					"layer"					: 21,
 					"isscreenspace"			: true
 				}
+				
+				
 			]
 		}
 	]

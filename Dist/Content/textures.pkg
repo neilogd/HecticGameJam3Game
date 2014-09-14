@@ -45,35 +45,21 @@
 			"type"			: "ScnTexture",
 			"name"			: "healthbarBacking",
 
-			"source"		: "Content/Source/healthBarBacking.png"
+			"source"		: "Content/Source/GUI Assests-01.png"
 		},
 
 		{
 			"type"			: "ScnTexture",
 			"name"			: "healthbar",
 
-			"source"		: "Content/Source/healthBar.png"
+			"source"		: "Content/Source/GUI Assests-02.png"
 		},
 
 		{
 			"type"			: "ScnTexture",
-			"name"			: "foodBarBacking",
+			"name"			: "foodBarPointer",
 
-			"source"		: "Content/Source/foodBarBacking.png"
-		},
-
-		{
-			"type"			: "ScnTexture",
-			"name"			: "foodBarFill",
-
-			"source"		: "Content/Source/foodBarFill.png"
-		},
-
-		{
-			"type"			: "ScnTexture",
-			"name"			: "foodBarBorder",
-
-			"source"		: "Content/Source/foodBarBorder.png"
+			"source"		: "Content/Source/GUI Assests-03.png"
 		},
 
 		{

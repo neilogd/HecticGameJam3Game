@@ -60,6 +60,7 @@ private:
 	ScnSpriteComponentRef HealthSprite_;
 	RsBuffer* UniformBuffer_;
 	MaVec2d AssetOffset_;
+	MaVec2d PointerOffset_;
 
 	ScnSpriteComponentRef Background_;
 	ScnSpriteComponentRef HealthBar_;

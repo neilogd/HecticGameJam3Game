@@ -40,6 +40,11 @@ void GaGuiComponent::StaticRegisterClass()
 		new ReField( "Canvas_", &GaGuiComponent::Canvas_, bcRFF_TRANSIENT ),
 		new ReField( "Player_", &GaGuiComponent::Player_, bcRFF_TRANSIENT ),
 		new ReField( "HealthSprite_", &GaGuiComponent::HealthSprite_, bcRFF_TRANSIENT ),
+		new ReField( "Background_", &GaGuiComponent::Background_, bcRFF_TRANSIENT ),
+		new ReField( "HealthBar_", &GaGuiComponent::HealthBar_, bcRFF_TRANSIENT ),
+		new ReField( "Pointer_", &GaGuiComponent::Pointer_, bcRFF_TRANSIENT ),
+		new ReField( "PointerOffset_", &GaGuiComponent::PointerOffset_, DsCore::DsCoreSerialised ),
+		new ReField( "AssetOffset_", &GaGuiComponent::AssetOffset_, DsCore::DsCoreSerialised ),
 	};
 
 	ReRegisterClass< GaGuiComponent, Super >( Fields )
@@ -70,6 +75,7 @@ void GaGuiComponent::initialise()
 {
 	UniformBuffer_ = nullptr;
 	AssetOffset_ = MaVec2d( 0, 0 );
+	PointerOffset_ = MaVec2d( 0, 0 );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -80,6 +86,10 @@ void GaGuiComponent::initialise( const Json::Value& Object )
 	if (Object[ "assetoffset" ].type() != Json::nullValue )
 	{
 		AssetOffset_ = MaVec2d( Object[ "assetoffset" ].asCString() );
+	}	
+	if (Object[ "pointeroffset" ].type() != Json::nullValue )
+	{
+		PointerOffset_ = MaVec2d( Object[ "pointeroffset" ].asCString() );
 	}
 }
 
@@ -108,21 +118,31 @@ void GaGuiComponent::update( BcF32 Tick )
 	if (Player_.isValid())
 	{
 		HealthBar_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "HealthBar", 0 ) );
-		Background_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "HealthBar", 0 ) );
-		Background_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "HealthBar", 0 ) );
+		Background_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "Background", 0 ) );
+		Pointer_ = ParentEntity_->getComponentByType<ScnSpriteComponent>( BcName( "FoodPointer", 0 ) );
 		BcF32 health = Player_->getHealth();
 		BcF32 maxHealth = Player_->getMaxHealth();
 		float ratio = health / maxHealth;
-		float width = 512.f * ratio;
+		float width = 640.0f * ratio;
+		MaVec2d ScreenBottom = MaVec2d(0.0f, -(BcF32)OsCore::pImpl()->getClient(0)->getHeight() / 2);
 		if (HealthBar_.isValid())
 		{
-			HealthBar_->setSize( MaVec2d( width, 64.0f ) );
+			HealthBar_->setSize( MaVec2d( width, -256 ) );
+			HealthBar_->setPosition( AssetOffset_ + ScreenBottom );
+		}
+		if (Background_.isValid())
+		{
+			Background_->setPosition( AssetOffset_ + ScreenBottom );
+		}
+		if (Pointer_.isValid())
+		{
+			Pointer_->setPosition( AssetOffset_ + ScreenBottom + PointerOffset_ );
 		}
 	}
-	/*
+	
 	GaGuiShaderUniformBlockData block;
-	block.VariableNameHere_ = MaVec4d(0.5f, 0,0,0);
-	RsCore::pImpl()->updateBuffer( 
+	block.VariableNameHere_ = MaVec4d(1.0f, 0,0,0);
+	/**RsCore::pImpl()->updateBuffer( 
 		UniformBuffer_,
 		0, sizeof( block ),
 		RsResourceUpdateFlags::ASYNC,
@@ -130,7 +150,7 @@ void GaGuiComponent::update( BcF32 Tick )
 		{
 			BcMemCopy( Lock.Buffer_, &block, sizeof( block ) );
 		} );
-		*/
+		/**/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -151,17 +171,17 @@ void GaGuiComponent::onAttach( ScnEntityWeakRef Parent )
 
 	Player_ = ParentEntity_->getParentEntity()->getComponentByType<GaPlayerComponent>();
 
-	ScnMaterialComponentRef MaterialComponent_ =  ParentEntity_->getComponentByType<ScnMaterialComponent>("GuiMaterialComponent_3");
+	ScnMaterialComponentRef MaterialComponent_ =  ParentEntity_->getComponentByType<ScnMaterialComponent>("GuiMaterialComponent_2");
 
 
-	UniformBuffer_ = RsCore::pImpl()->createBuffer( 
+	/*UniformBuffer_ = RsCore::pImpl()->createBuffer( 
 		RsBufferDesc(
 			RsBufferType::UNIFORM,
 			RsResourceCreationFlags::STREAM,
 			sizeof( GaGuiShaderUniformBlockData ) ) );
 	auto UniformBlock = MaterialComponent_->findUniformBlock( "GuiUniformBlock" );
 	BcAssert( UniformBlock != BcErrorCode );
-	MaterialComponent_->setUniformBlock( UniformBlock, UniformBuffer_ );
+	MaterialComponent_->setUniformBlock( UniformBlock, UniformBuffer_ );/**/
 
 }
 

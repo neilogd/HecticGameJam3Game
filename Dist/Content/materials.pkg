@@ -241,56 +241,14 @@
 		
 		{
 			"type"			: "ScnMaterial",
-			"name"			: "foodBarBacking",
+			"name"			: "foodBarPointer",
 
 			// Shader
 			"shader"		: "$(ScnShader:shaders.textured)",
 
 			// Textures
 			"textures"		: {
-				"aDiffuseTex"	: "$(ScnTexture:textures.foodBarBacking)"
-			},
-
-			// State
-			"state"			: {
-				"depth_write_enable" 		: 0,
-				"depth_test_enable" 		: 0,
-				"depth_test_compare" 		: "lessequal",
-				"blend_mode" 				: "blend"
-			}
-		},
-		
-		{
-			"type"			: "ScnMaterial",
-			"name"			: "foodBarBorder",
-
-			// Shader
-			"shader"		: "$(ScnShader:shaders.textured)",
-
-			// Textures
-			"textures"		: {
-				"aDiffuseTex"	: "$(ScnTexture:textures.foodBarBorder)"
-			},
-
-			// State
-			"state"			: {
-				"depth_write_enable" 		: 0,
-				"depth_test_enable" 		: 0,
-				"depth_test_compare" 		: "lessequal",
-				"blend_mode" 				: "blend"
-			}
-		},
-		
-		{
-			"type"			: "ScnMaterial",
-			"name"			: "foodBarFill",
-
-			// Shader
-			"shader"		: "$(ScnShader:shaders.foodBarShader)",
-
-			// Textures
-			"textures"		: {
-				"aDiffuseTex"	: "$(ScnTexture:textures.foodBarFill)"
+				"aDiffuseTex"	: "$(ScnTexture:textures.foodBarPointer)"
 			},
 
 			// State
