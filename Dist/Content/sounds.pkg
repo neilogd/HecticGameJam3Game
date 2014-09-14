@@ -1,0 +1,61 @@
+{
+
+	"resources" : [
+		{
+			"name"		:		"MusicGame",
+			"type"		:		"ScnSound",
+			"source"	:		"Content/Source/music/Hectic_v1.ogg",
+			"isstream" : true,
+			"isloop" : true
+		},
+
+		{
+			"name"		:		"MusicWin",
+			"type"		:		"ScnSound",
+			"source"	:		"Content/Source/music/Hectic_win_v1.ogg",
+			"isstream" : true
+		},
+
+		{
+			"name"		:		"SoundAggro",
+			"type"		:		"ScnSound",
+			"source"	:		"Content/Source/sounds/Hectic_aggro_v1.ogg"
+		},
+
+		{
+			"name"		:		"SoundAttack",
+			"type"		:		"ScnSound",
+			"source"	:		"Content/Source/sounds/Hectic_attack_v1.ogg"
+		},
+
+		{
+			"name"		:		"SoundDie",
+			"type"		:		"ScnSound",
+			"source"	:		"Content/Source/sounds/Hectic_fishdie_v1.ogg"
+		},
+
+		{
+			"name"		:		"SoundHit",
+			"type"		:		"ScnSound",
+			"source"	:		"Content/Source/sounds/Hectic_hit_v1.ogg"
+		},
+
+		{
+			"name"		:		"SoundCannon",
+			"type"		:		"ScnSound",
+			"source"	:		"Content/Source/sounds/8.wav"
+		},
+
+		{
+			"name"		:		"SoundLand",
+			"type"		:		"ScnSound",
+			"source"	:		"Content/Source/sounds/10.wav"
+		},
+
+		{
+			"name"		:		"SoundMove",
+			"type"		:		"ScnSound",
+			"source"	:		"Content/Source/sounds/12.wav"
+		}
+	]
+}

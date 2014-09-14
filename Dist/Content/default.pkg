@@ -99,8 +99,19 @@
 
 			"components" : [
 				{
-					"type"					: "GaGameComponent"
+					"type"					: "GaGameComponent",
+					"soundref"				: "$(ScnSound:sounds.MusicGame)",	
+					"foodref"				: "$(ScnEntity:food.FoodEntity)",
+					"cannonref"				: "$(ScnEntity:cannon.CannonEntity)",
+					"tankref"				: "$(ScnEntity:tank.SpawnTankEntity)",
+					"playerref"				: "$(ScnEntity:player.PlayerEntity)",
+					"enemiesref"			: "$(ScnEntity:enemies.EnemyEntity)"
+				},
+
+				{
+					"type"					: "ScnSoundEmitterComponent"
 				}
+
 			]
 		},
 		

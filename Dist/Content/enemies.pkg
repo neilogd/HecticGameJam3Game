@@ -38,7 +38,7 @@
 				{
 					"type"					: "ScnSpriteComponent",
 					"materialcomponent"		: "EnemyMaterialComponent_0",
-					"size"					: "128.0, -128.0",
+					"size"					: "192.0, -192.0",
 					"colour"				: "1.0, 1.0, 1.0, 1.0",
 					"center"				: true,
 					"index"					: 14,
@@ -49,17 +49,31 @@
 							"next" : "none"
 						},
 						"idle" : {
-							"keys" : [ 14, 14 ],
+							"keys" : [ 8, 8 ],
+							"next" : "idle"
+						}
+					}
+				},
+				{
+					"type"					: "ScnSpriteComponent",
+					"materialcomponent"		: "EnemyMaterialComponent_0",
+					"size"					: "192.0, -192.0",
+					"colour"				: "1.0, 1.0, 1.0, 1.0",
+					"center"				: true,
+					"layer"					: 21,
+					"animations"			: {
+						"none" : {
+							"keys" : [ -1, -1 ],
+							"next" : "none"
+						},
+						"idle" : {
+							"keys" : [ 9, 9 ],
 							"next" : "idle"
 						},
 						"attack" : {
-							"keys" : [ 70, 71, 72, 73, 74, 75, 76 ],
+							"keys" : [ 9, 10, 11, 12 ],
 							"next" : "idle"
-						},
-						"dead" : {
-							"keys" : [ 70, 71, 72, 73, 74, 75, 76 ],
-							"next" : "dead"
-						}
+						}						
 					}
 				}
 			]

@@ -81,6 +81,16 @@
 
 		{
 			"type"			: "ScnTextureAtlas",
+			"name"			: "foodsheet",
+			"tileatlas"		: true,
+			"tilewidth"		: 512,
+			"tileheight"	: 512,
+
+			"source"		: "Content/Source/spritesheets/food sheet V001-01.png"
+		},
+
+		{
+			"type"			: "ScnTextureAtlas",
 			"name"			: "tanksheet",
 			"tileatlas"		: true,
 			"tilewidth"		: 768,

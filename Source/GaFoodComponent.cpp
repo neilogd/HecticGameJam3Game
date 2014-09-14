@@ -21,6 +21,7 @@
 
 #include "System/Debug/DsCore.h"
 
+#include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,6 +46,7 @@ void GaFoodComponent::StaticRegisterClass()
 void GaFoodComponent::initialise()
 {
 	Size_ = 0.0f;
+	Life_ = 1.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -63,10 +65,18 @@ void GaFoodComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
 
+	Life_ -= Tick * 0.2f;
+
 	// Update sprite sizes.
 	for( BcU32 Idx = 0; Idx < Sprites_.size(); ++Idx )
 	{
 		Sprites_[ Idx ]->setSize( SpriteSizes_[ Idx ] * Size_ );
+		Sprites_[ Idx ]->setColour( RsColour( 1.0f, 1.0f, 1.0f, BcClamp( Life_ * 2.0f, 0.0f, 1.0f ) ) );
+	}
+
+	if( Life_ < 0.0f )
+	{
+		ScnCore::pImpl()->removeEntity( getParentEntity() );
 	}
 }
 
