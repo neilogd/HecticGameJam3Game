@@ -8,7 +8,9 @@
 				{
 					"type"					: "GaGuiComponent",
 					"assetoffset"			: "0, 110",
-					"pointeroffset"			: "0, -27"
+					"pointeroffset"			: "0, -27",
+					"rotateleft" 			: "-1.6",
+					"rotateright" 			: "1.6"
 				},
 				
 				{

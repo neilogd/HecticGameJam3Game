@@ -49,6 +49,9 @@ void GaGuiComponent::StaticRegisterClass()
 		new ReField( "Pointer_", &GaGuiComponent::Pointer_, bcRFF_TRANSIENT ),
 		new ReField( "PointerOffset_", &GaGuiComponent::PointerOffset_, DsCore::DsCoreSerialised ),
 		new ReField( "AssetOffset_", &GaGuiComponent::AssetOffset_, DsCore::DsCoreSerialised ),
+		new ReField( "RotationAmount_", &GaGuiComponent::RotationAmount_, DsCore::DsCoreSerialised ),
+		new ReField( "RotateLeft_", &GaGuiComponent::RotateLeft_, DsCore::DsCoreSerialised ),
+		new ReField( "RotateRight_", &GaGuiComponent::RotateRight_, DsCore::DsCoreSerialised ),
 	};
 
 	ReRegisterClass< GaGuiComponent, Super >( Fields )
@@ -80,6 +83,9 @@ void GaGuiComponent::initialise()
 	UniformBuffer_ = nullptr;
 	AssetOffset_ = MaVec2d( 0, 0 );
 	PointerOffset_ = MaVec2d( 0, 0 );
+	RotationAmount_ = 0.0f;
+	RotateLeft_ = 0.0f;
+	RotateRight_ = 1.2f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -94,6 +100,14 @@ void GaGuiComponent::initialise( const Json::Value& Object )
 	if (Object[ "pointeroffset" ].type() != Json::nullValue )
 	{
 		PointerOffset_ = MaVec2d( Object[ "pointeroffset" ].asCString() );
+	}
+	if (Object[ "rotateleft" ].type() != Json::nullValue )
+	{
+		RotateLeft_ = (float)( Object[ "rotateleft" ].asDouble() );
+	}
+	if (Object[ "rotateright" ].type() != Json::nullValue )
+	{
+		RotateRight_ = (float)( Object[ "rotateright" ].asDouble() );
 	}
 }
 
@@ -149,6 +163,8 @@ void GaGuiComponent::update( BcF32 Tick )
 		if (Pointer_.isValid())
 		{
 			Pointer_->setPosition( AssetOffset_ + ScreenBottom + PointerOffset_ );
+			BcF32 rotate = RotateRight_ * RotationAmount_  + RotateLeft_ * ( 1.0f - RotationAmount_ );
+			Pointer_->setRotation( rotate );
 		}
 	}
 	
