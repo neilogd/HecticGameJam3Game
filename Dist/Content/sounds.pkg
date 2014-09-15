@@ -63,6 +63,13 @@
 			"name"		:		"SoundMove",
 			"type"		:		"ScnSound",
 			"source"	:		"Content/Source/sounds/12.wav"
+		},
+
+		{
+			"name"		:		"SoundClick",
+			"type"		:		"ScnSound",
+			"source"	:		"Content/Source/sounds/1.wav"
 		}
+
 	]
 }

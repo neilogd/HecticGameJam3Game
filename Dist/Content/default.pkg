@@ -156,6 +156,10 @@
 					"center"				: true,
 					"layer"					: 221,
 					"isscreenspace"			: true
+				},
+
+				{
+					"type"					: "ScnSoundEmitterComponent"
 				}
 			]
 		}

@@ -12,10 +12,13 @@
 **************************************************************************/
 
 #include "GaCustomisationComponent.h"
+#include "GaGameComponent.h"
 
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnViewComponent.h"
 #include "System/Scene/Rendering/ScnSpriteComponent.h"
+#include "System/Scene/Sound/ScnSound.h"
+#include "System/Scene/Sound/ScnSoundEmitter.h"
 
 #include "System/Content/CsPackage.h"
 #include "System/Content/CsCore.h"
@@ -109,6 +112,13 @@ void GaCustomisationComponent::onDetach( ScnEntityWeakRef Parent )
 // onMouseDown
 eEvtReturn GaCustomisationComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Event )
 {
+	auto SoundEmitter = getParentEntity()->getComponentAnyParentByType< ScnSoundEmitterComponent >();
+	ScnSoundRef Sound;
+	if( CsCore::pImpl()->requestResource( "sounds", "SoundClick", Sound ) )
+	{
+		SoundEmitter->play( Sound );
+	}
+
 	if (ShowCredits_ )
 	{
 		ShowCredits_ = false;
