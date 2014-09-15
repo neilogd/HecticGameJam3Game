@@ -47,6 +47,7 @@ void GaSwarmElementComponent::StaticRegisterClass()
 		new ReField( "AttackSpeed_", &GaSwarmElementComponent::AttackSpeed_, DsCore::DsCoreSerialised ),
 		new ReField( "AttackTimer_", &GaSwarmElementComponent::AttackTimer_, DsCore::DsCoreSerialised ),
 		new ReField( "AttackTarget_", &GaSwarmElementComponent::AttackTarget_, DsCore::DsCoreSerialised ),
+		new ReField( "AttackRespondTimer_", &GaSwarmElementComponent::AttackRespondTimer_, DsCore::DsCoreSerialised ),
 	};
 		
 	ReRegisterClass< GaSwarmElementComponent, Super >( Fields )
@@ -113,6 +114,7 @@ void GaSwarmElementComponent::initialise( )
 	AttackSpeed_ = 1.0f;
 	AttackTimer_ = 1.0f;
 	AttackDistance_ = 80.0f;
+	AttackRespondTimer_ = 0.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -150,6 +152,9 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 			{
 				if( getAttackTarget()->Health_ > 0 ) 
 				{
+					// Some time to respond to an attack.
+					getAttackTarget()->AttackRespondTimer_ = 5.0f;
+
 					// TODO: Animation thing.
 					if( --getAttackTarget()->Health_ == 0 )
 					{
@@ -183,6 +188,8 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 			}
 		}
 	}
+
+	AttackRespondTimer_ -= Tick;
 
 
 	// Cool down for attack.

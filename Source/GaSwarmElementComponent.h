@@ -69,6 +69,7 @@ public:
 	BcF32 AttackSpeed_;
 	BcF32 AttackTimer_;
 	BcF32 AttackDistance_;
+	BcF32 AttackRespondTimer_;
 
 	GaSwarmElementComponent* AttackTarget_;
 
