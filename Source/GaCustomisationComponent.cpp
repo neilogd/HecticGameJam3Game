@@ -169,7 +169,7 @@ void GaCustomisationComponent::spawnGame()
 			"WinnerTankEntity",
 		};
 
-		for( BcU32 Idx = 0; Idx < 5; ++Idx )
+		for( BcU32 Idx = 0; Idx < 6; ++Idx )
 		{
 			ScnEntitySpawnParams TankEntityParams =
 			{

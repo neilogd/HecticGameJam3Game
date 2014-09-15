@@ -185,7 +185,9 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 	// If we're an enemy, move to player thing.
 	if( Element->getUnitMask() == ENEMY )
 	{
-		if( unitTypeExists( FOOD ) )
+		if( unitTypeExists( FOOD ) && 
+			( Element->AttackRespondTimer_ < 0.0f ||
+			Element->AttackRespondTimer_ > 4.5f ) )
 		{
 			Move += forceTowardsNearbyUnits( Element, 1, FOOD, FLT_MAX );
 			Element->setAttackTarget( nullptr );
@@ -195,7 +197,7 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 			auto player = getNearbyUnits( Element->getPosition(), 1, PLAYER );
 			if( player.size() > 0 )
 			{
-				if( ( player[ 0 ]->getPosition() - Element->getPosition() ).magnitude() < 128.0f )
+				if( ( player[ 0 ]->getPosition() - Element->getPosition() ).magnitude() < 256.0f )
 				{
 					Element->setAttackTarget( player[ 0 ] );
 				}				
