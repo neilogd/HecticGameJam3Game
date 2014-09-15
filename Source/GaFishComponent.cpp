@@ -44,7 +44,9 @@ void GaFishComponent::StaticRegisterClass()
 		new ReField( "EatSpeed_", &GaFishComponent::EatSpeed_, DsCore::DsCoreSerialised ),
 		new ReField( "SwarmManager_", &GaFishComponent::SwarmManager_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "Sprites_", &GaFishComponent::Sprites_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
-		new ReField( "SpriteSizes_", &GaFishComponent::SpriteSizes_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised )
+		new ReField( "SpriteSizes_", &GaFishComponent::SpriteSizes_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "XScale_", &GaFishComponent::XScale_, DsCore::DsCoreSerialised ),
+		new ReField( "LoseWeightTimer_", &GaFishComponent::LoseWeightTimer_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 	};
 	
 	ReRegisterClass< GaFishComponent, Super >( Fields )
@@ -63,6 +65,7 @@ void GaFishComponent::initialise()
 	RotationSpeed_ = 1.0f;
 	Rotation_ = 0.0f;
 	XScale_ = -1.0f;
+	LoseWeightTimer_ = 0.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,6 +86,20 @@ void GaFishComponent::initialise( const Json::Value& Object )
 void GaFishComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
+
+	BcBool WasTooSmall = BcFalse;
+
+	GaPlayerComponentRef player = getParentEntity()->getComponentByType<GaPlayerComponent>();
+	if (player.isValid())
+	{
+		GaCannonComponentRef cannon = player->getCannon()->getComponentByType<GaCannonComponent>();
+
+		GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
+		if ( bubble.isValid() && cannon.isValid() && ( cannon->getRequiredSize() > Size_ ) )
+		{
+			WasTooSmall = BcTrue;
+		}
+	}
 
 	auto Element = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
 
@@ -113,23 +130,40 @@ void GaFishComponent::update( BcF32 Tick )
 	}
 
 	// Slowly size down.
-	Size_ = Size_ - ( 1.0f * Tick * 0.05f );
+	if( LoseWeightTimer_ < 0.0f )
+	{
+		Size_ = Size_ - ( 1.0f * Tick * 0.04f );
+	}
+	else
+	{
+		LoseWeightTimer_ -= Tick;
+	}
 
-	// Clamp to range.
-	Size_ = BcClamp( Size_, 0.75f, 2.0f );
-	GaPlayerComponentRef player = getParentEntity()->getComponentByType<GaPlayerComponent>();
 	if (player.isValid())
 	{
 		GaCannonComponentRef cannon = player->getCannon()->getComponentByType<GaCannonComponent>();
 		
 		GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
-		if ( bubble.isValid() && cannon.isValid() && ( cannon->getRequiredSize() <= Size_ ) )
+		if ( bubble.isValid() && cannon.isValid() )
 		{
-			bubble->setTarget( getParentEntity() );
-			bubble->setText( "I've eaten/enough to/escape!" );
-			bubble->show(0.2f);
+			if( ( cannon->getRequiredSize() <= Size_ ) && WasTooSmall )
+			{
+				bubble->setTarget( getParentEntity() );
+				bubble->setText( "I've eaten/enough to/escape!" );
+				bubble->show(3.2f);
+				LoseWeightTimer_ = 3.0f;
+			}
+			else if ( ( cannon->getRequiredSize() > Size_ ) && !WasTooSmall )
+			{
+				bubble->setTarget( getParentEntity() );
+				bubble->setText( "Too slow/must eat/more :(" );
+				bubble->show(3.2f);
+			}
 		}
 	}
+
+	// Clamp to range.
+	Size_ = BcClamp( Size_, 0.75f, 2.0f );
 
 	// Do the flip and stuff.
 	MaVec2d Velocity;

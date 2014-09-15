@@ -227,7 +227,7 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 		// Move towards food.
 		if( !Attacking && unitTypeExists( FOOD ) )
 		{
-			Move += forceTowardsNearbyUnits( Element, 1, FOOD, 256.0f ) * 4.0f;
+			Move += forceTowardsNearbyUnits( Element, 1, FOOD, 256.0f ) * 8.0f;
 		}
 
 		// Move away from crowd

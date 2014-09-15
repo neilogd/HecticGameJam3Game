@@ -155,9 +155,11 @@ void GaGuiComponent::update( BcF32 Tick )
 			RotationAmount_ = 0.0f;
 			if ( cannon.isValid() )
 			{
+				BcF32 MinSize = 0.75f;
+				BcF32 TotalRange = ( cannon->getRequiredSize() - MinSize ) * 2.0f;
 				BcF32 requiredSize = cannon->getRequiredSize();
 				BcF32 currentSize = Fish_->getFishSize();
-				RotationAmount_ = BcClamp(currentSize / requiredSize, 0.0f, 1.0f);
+				RotationAmount_ = BcClamp( ( currentSize - MinSize ) / TotalRange, 0.0f, 1.0f);
 			}
 		}
 
