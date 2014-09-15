@@ -84,6 +84,8 @@ private:
 	};
 
 	PlayerState PlayerState_;
+	BcBool ShownNextMessage_;
+	BcF32 TimeSinceStart_;
 };
 
 #endif

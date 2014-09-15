@@ -59,6 +59,8 @@ void GaPlayerComponent::StaticRegisterClass()
 		new ReField( "TankIndex_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "Tank_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT  ),
 		new ReField( "Cannon_", &GaPlayerComponent::TankIndex_, bcRFF_TRANSIENT ),
+		new ReField( "ShownNextMessage_", &GaPlayerComponent::ShownNextMessage_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "TimeSinceStart_", &GaPlayerComponent::TimeSinceStart_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "FirstUpdate_", &GaPlayerComponent::FirstUpdate_, bcRFF_TRANSIENT ),
 	};
 
@@ -88,6 +90,8 @@ void GaPlayerComponent::initialise()
 	TankIndex_ = 0;
 
 	FirstUpdate_ = true;
+	ShownNextMessage_ = false;
+	TimeSinceStart_ = 0.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -121,6 +125,18 @@ void GaPlayerComponent::update( BcF32 Tick )
 			FirstUpdate_ = false;
 			bubble->setTarget( getParentEntity() );
 			bubble->setText( "I must/escape this/horrid cage" );
+			bubble->show();
+		}
+	}
+	TimeSinceStart_ += Tick;
+	if ( (TimeSinceStart_ > 5.0f ) && !ShownNextMessage_)
+	{
+		ShownNextMessage_ = true;
+		GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
+		if (bubble.isValid())
+		{
+			bubble->setTarget( getParentEntity() );
+			bubble->setText( "If I eat/enough, I can/escape through/that tube..." );
 			bubble->show();
 		}
 	}
