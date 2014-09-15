@@ -38,8 +38,8 @@ public:
 	virtual void						onDetach( ScnEntityWeakRef Parent );
 	eEvtReturn							onMouseDown( EvtID ID, const OsEventInputMouse& Event );
 private:
-	ScnSpriteComponentRef Image_;
-	ScnSpriteComponentRef CreditImage_;
+	ScnSpriteComponentRef Images_[ 6 ];
+	BcU32 ImageIdx_;
 	bool ShowCredits_;
 	bool InGame_;
 	void								spawnGame();

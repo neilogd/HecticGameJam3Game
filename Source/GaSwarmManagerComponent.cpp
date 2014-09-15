@@ -187,7 +187,7 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 	{
 		if( unitTypeExists( FOOD ) && 
 			( Element->AttackRespondTimer_ < 0.0f ||
-			Element->AttackRespondTimer_ > 4.5f ) )
+			Element->AttackRespondTimer_ > 4.2f ) )
 		{
 			Move += forceTowardsNearbyUnits( Element, 1, FOOD, FLT_MAX );
 			Element->setAttackTarget( nullptr );

@@ -152,7 +152,8 @@ void GaPlayerComponent::update( BcF32 Tick )
 		jumpTank( TankIndex_ );
 	}
 
-	if( getParentEntity()->getComponentByType< GaSwarmElementComponent >()->UnitMask_ == GaSwarmManagerComponent::DEAD )
+	if( getParentEntity()->getComponentByType< GaSwarmElementComponent >()->UnitMask_ == GaSwarmManagerComponent::DEAD ||
+		getParentEntity()->getComponentByType< GaSwarmElementComponent >()->UnitMask_ == GaSwarmManagerComponent::WINNER )
 	{
 		PostDeathTimer_ -= Tick;
 	}

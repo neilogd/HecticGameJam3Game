@@ -12,6 +12,7 @@
 **************************************************************************/
 
 #include "GaFishComponent.h"
+#include "GaGameComponent.h"
 #include "GaFoodComponent.h"
 #include "GaPlayerComponent.h"
 #include "GaSpeechBubbleComponent.h"
@@ -28,7 +29,7 @@
 
 #include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
-
+#include "Base/BcRandom.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
@@ -47,6 +48,7 @@ void GaFishComponent::StaticRegisterClass()
 		new ReField( "SpriteSizes_", &GaFishComponent::SpriteSizes_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "XScale_", &GaFishComponent::XScale_, DsCore::DsCoreSerialised ),
 		new ReField( "LoseWeightTimer_", &GaFishComponent::LoseWeightTimer_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "EatSoundTimer_", &GaFishComponent::EatSoundTimer_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 	};
 	
 	ReRegisterClass< GaFishComponent, Super >( Fields )
@@ -66,6 +68,7 @@ void GaFishComponent::initialise()
 	Rotation_ = 0.0f;
 	XScale_ = -1.0f;
 	LoseWeightTimer_ = 0.0f;
+	EatSoundTimer_ = 0.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -92,12 +95,15 @@ void GaFishComponent::update( BcF32 Tick )
 	GaPlayerComponentRef player = getParentEntity()->getComponentByType<GaPlayerComponent>();
 	if (player.isValid())
 	{
-		GaCannonComponentRef cannon = player->getCannon()->getComponentByType<GaCannonComponent>();
-
-		GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
-		if ( bubble.isValid() && cannon.isValid() && ( cannon->getRequiredSize() > Size_ ) )
+		if( player->getCannon().isValid() )
 		{
-			WasTooSmall = BcTrue;
+			GaCannonComponentRef cannon = player->getCannon()->getComponentByType<GaCannonComponent>();
+
+			GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
+			if ( bubble.isValid() && cannon.isValid() && ( cannon->getRequiredSize() > Size_ ) )
+			{
+				WasTooSmall = BcTrue;
+			}
 		}
 	}
 
@@ -124,6 +130,17 @@ void GaFishComponent::update( BcF32 Tick )
 					auto AmountAte = Food->tryEat( Tick * EatSpeed_ );
 
 					Size_ += AmountAte * SizeIncreaseMultiplier_;
+
+					if( Element->getUnitMask() == GaSwarmManagerComponent::PLAYER )
+					{
+						EatSoundTimer_ -= Tick;
+						if( EatSoundTimer_ < 0.0f )
+						{
+							EatSoundTimer_ += BcRandom::Global.randRealRange( 0.4f, 0.6f );
+							auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+							GameComponent->playSound( "SoundEat", BcFalse );
+						}
+					}
 				}
 			}
 		}
@@ -132,7 +149,7 @@ void GaFishComponent::update( BcF32 Tick )
 	// Slowly size down.
 	if( LoseWeightTimer_ < 0.0f )
 	{
-		Size_ = Size_ - ( 1.0f * Tick * 0.04f );
+		Size_ = Size_ - ( 1.0f * Tick * 0.03f );
 	}
 	else
 	{
@@ -141,23 +158,26 @@ void GaFishComponent::update( BcF32 Tick )
 
 	if (player.isValid())
 	{
-		GaCannonComponentRef cannon = player->getCannon()->getComponentByType<GaCannonComponent>();
-		
-		GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
-		if ( bubble.isValid() && cannon.isValid() )
+		if( player->getCannon().isValid() )
 		{
-			if( ( cannon->getRequiredSize() <= Size_ ) && WasTooSmall )
+			GaCannonComponentRef cannon = player->getCannon()->getComponentByType<GaCannonComponent>();
+		
+			GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
+			if ( bubble.isValid() && cannon.isValid() )
 			{
-				bubble->setTarget( getParentEntity() );
-				bubble->setText( "I've eaten/enough to/escape!" );
-				bubble->show(3.2f);
-				LoseWeightTimer_ = 3.0f;
-			}
-			else if ( ( cannon->getRequiredSize() > Size_ ) && !WasTooSmall )
-			{
-				bubble->setTarget( getParentEntity() );
-				bubble->setText( "Too slow/must eat/more :(" );
-				bubble->show(3.2f);
+				if( ( cannon->getRequiredSize() <= Size_ ) && WasTooSmall )
+				{
+					bubble->setTarget( getParentEntity() );
+					bubble->setText( "I've eaten/enough to/escape!" );
+					bubble->show(3.2f);
+					LoseWeightTimer_ = 3.0f;
+				}
+				else if ( ( cannon->getRequiredSize() > Size_ ) && !WasTooSmall )
+				{
+					bubble->setTarget( getParentEntity() );
+					bubble->setText( "Too slow/must eat/more :(" );
+					bubble->show(3.2f);
+				}
 			}
 		}
 	}

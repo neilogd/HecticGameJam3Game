@@ -35,8 +35,8 @@ void GaCustomisationComponent::StaticRegisterClass()
 {
 	ReField* Fields[] =
 	{
-		new ReField( "Image_", &GaCustomisationComponent::Image_, bcRFF_TRANSIENT ),
-		new ReField( "CreditImage_", &GaCustomisationComponent::CreditImage_, DsCore::DsCoreSerialised ),
+		new ReField( "Images_", &GaCustomisationComponent::Images_, bcRFF_TRANSIENT ),
+		new ReField( "ImageIdx_", &GaCustomisationComponent::ImageIdx_, DsCore::DsCoreSerialised ),
 		new ReField( "ShowCredits_", &GaCustomisationComponent::ShowCredits_, DsCore::DsCoreSerialised ),
 		new ReField( "InGame_", &GaCustomisationComponent::InGame_, DsCore::DsCoreSerialised ),
 	};
@@ -51,6 +51,7 @@ void GaCustomisationComponent::initialise( const Json::Value& Object )
 {
 	ShowCredits_ = false;
 	InGame_ = false;
+	ImageIdx_ = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,6 +60,7 @@ void GaCustomisationComponent::initialise( )
 {
 	ShowCredits_ = false;
 	InGame_ = false;
+	ImageIdx_ = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -67,20 +69,16 @@ void GaCustomisationComponent::initialise( )
 void GaCustomisationComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
-
-	if (InGame_)
-	{
-		Image_->setColour( RsColour( 1.0f, 1.0f, 1.0f, ShowCredits_ ? 0.0f : 0.0f ) );
-		CreditImage_->setColour( RsColour( 1.0f, 1.0f, 1.0f, ShowCredits_ ? 0.0f : 0.0f ) );
-	}
 	BcF32 width = OsCore::pImpl()->getClient( 0 )->getWidth();;
 	BcF32 height = OsCore::pImpl()->getClient( 0 )->getHeight();;
 	MaVec2d size( width, -height );
-	Image_->setSize( size );
-	CreditImage_->setSize( size );
-
-	Image_->setColour( RsColour( 1.0f, 1.0f, 1.0f, ShowCredits_ ? 0.0f : 1.0f ) );
-	CreditImage_->setColour( RsColour( 1.0f, 1.0f, 1.0f, ShowCredits_ ? 1.0f : 0.0f ) );
+	for( BcU32 Idx = 0; Idx < 6; ++Idx )
+	{
+		Images_[ Idx ]->setSize( size );
+		Images_[ Idx ]->setColour( RsColour( 1.0f, 1.0f, 1.0f, 0.0f ) );
+	}
+	Images_[ ImageIdx_ ]->setColour( RsColour( 1.0f, 1.0f, 1.0f, ShowCredits_ ? 0.0f : 1.0f ) );
+	Images_[ 5 ]->setColour( RsColour( 1.0f, 1.0f, 1.0f, ShowCredits_ ? 1.0f : 0.0f ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -89,9 +87,11 @@ void GaCustomisationComponent::update( BcF32 Tick )
 void GaCustomisationComponent::onAttach( ScnEntityWeakRef Parent )
 {
 	Super::onAttach( Parent );
-	Image_ = getParentEntity()->getComponentByType<ScnSpriteComponent>( "CustomiseImage_0" );
-	CreditImage_ = getParentEntity()->getComponentByType<ScnSpriteComponent>( "CreditImage_0" );
 
+	for( BcU32 Idx = 0; Idx < 6; ++Idx )
+	{
+		Images_[ Idx ] = getParentEntity()->getComponentByType<ScnSpriteComponent>( BcName( "CustomiseImage", Idx ) );
+	}
 
 	OsEventInputMouse::Delegate OnMouseDown = OsEventInputMouse::Delegate::bind< GaCustomisationComponent, &GaCustomisationComponent::onMouseDown >( this );
 	OsCore::pImpl()->subscribe( osEVT_INPUT_MOUSEDOWN, OnMouseDown );
@@ -140,14 +140,19 @@ eEvtReturn GaCustomisationComponent::onMouseDown( EvtID ID, const OsEventInputMo
 	if ( ( 350.f <= ux ) && ( ux <= 2560.f ) && 
 		( 1550.f <= uy ) && ( uy <= 1695.f ) )
 	{
-		Image_->setColour(RsColour::RED);
-		InGame_ = true;
-		spawnGame();
-		ScnCore::pImpl()->removeEntity( getParentEntity() );
+		++ImageIdx_;
+		if( ImageIdx_ == 5 )
+		{
+			//Image_->setColour(RsColour::RED);
+			InGame_ = true;
+			spawnGame();
+			ScnCore::pImpl()->removeEntity( getParentEntity() );
+			ImageIdx_ = 4;
+		}
 	}
 	else
 	{
-		Image_->setColour(RsColour::GREEN);
+		//Image_->setColour(RsColour::GREEN);
 		
 		ShowCredits_ = true;
 	}
@@ -174,8 +179,8 @@ void GaCustomisationComponent::spawnGame()
 			"SpawnTankEntity",
 			"TankEntity_0",
 			"TankEntity_1",
-			"TankEntity_1",
-			"TankEntity_1",
+			"TankEntity_2",
+			"TankEntity_3",
 			"WinnerTankEntity",
 		};
 

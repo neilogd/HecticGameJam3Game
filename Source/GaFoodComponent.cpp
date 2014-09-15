@@ -34,6 +34,9 @@ void GaFoodComponent::StaticRegisterClass()
 	ReField* Fields[] =
 	{
 		new ReField( "Size_", &GaFoodComponent::Size_, DsCore::DsCoreSerialised ),
+		new ReField( "Life_", &GaFoodComponent::Life_, DsCore::DsCoreSerialised ),
+		new ReField( "Sprite_", &GaFoodComponent::Sprite_, DsCore::DsCoreSerialised ),
+		new ReField( "Rotation_", &GaFoodComponent::Rotation_, DsCore::DsCoreSerialised ),
 		new ReField( "Sprites_", &GaFoodComponent::Sprites_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "SpriteSizes_", &GaFoodComponent::SpriteSizes_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 	};
@@ -48,6 +51,8 @@ void GaFoodComponent::initialise()
 {
 	Size_ = 0.0f;
 	Life_ = 1.0f;
+	Sprite_ = 0;
+	Rotation_ = 0.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,12 +71,13 @@ void GaFoodComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
 
-	Life_ -= Tick * 0.2f;
-
+	Life_ -= Tick * 0.1f;
+	Rotation_ += Tick;
 	// Update sprite sizes.
 	for( BcU32 Idx = 0; Idx < Sprites_.size(); ++Idx )
 	{
-		Sprites_[ Idx ]->setIndex( Sprite_ );
+		Sprites_[ Idx ]->setSpriteIndex( Sprite_ );
+		Sprites_[ Idx ]->setRotation( Rotation_ );
 		Sprites_[ Idx ]->setSize( SpriteSizes_[ Idx ] * Size_ );
 		Sprites_[ Idx ]->setColour( RsColour( 1.0f, 1.0f, 1.0f, BcClamp( Life_ * 2.0f, 0.0f, 1.0f ) ) );
 	}

@@ -122,7 +122,37 @@
 				{
 					"type"					: "ScnMaterialComponent",
 					"name"					: "GuiMaterialComponent_0",
-					"material"				: "$(ScnMaterial:materials.customisationMaterial)",
+					"material"				: "$(ScnMaterial:materials.customisationMaterial0)",
+					"permutation"			: "2d"
+				},
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "GuiMaterialComponent_1",
+					"material"				: "$(ScnMaterial:materials.customisationMaterial1)",
+					"permutation"			: "2d"
+				},
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "GuiMaterialComponent_2",
+					"material"				: "$(ScnMaterial:materials.customisationMaterial2)",
+					"permutation"			: "2d"
+				},
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "GuiMaterialComponent_3",
+					"material"				: "$(ScnMaterial:materials.customisationMaterial3)",
+					"permutation"			: "2d"
+				},
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "GuiMaterialComponent_4",
+					"material"				: "$(ScnMaterial:materials.customisationMaterial4)",
+					"permutation"			: "2d"
+				},
+				{
+					"type"					: "ScnMaterialComponent",
+					"name"					: "GuiMaterialComponent_5",
+					"material"				: "$(ScnMaterial:materials.creditMaterial)",
 					"permutation"			: "2d"
 				},
 				{
@@ -137,18 +167,8 @@
 					"isscreenspace"			: true
 				},
 				{
-					"type"					: "GaCustomisationComponent"
-					
-				},
-				{
-					"type"					: "ScnMaterialComponent",
-					"name"					: "GuiMaterialComponent_1",
-					"material"				: "$(ScnMaterial:materials.creditMaterial)",
-					"permutation"			: "2d"
-				},
-				{
 					"type"					: "ScnSpriteComponent",
-					"name"					: "CreditImage_0",
+					"name"					: "CustomiseImage_1",
 					"materialcomponent"		: "GuiMaterialComponent_1",
 					"size"					: "2816, -2048",
 					"colour"				: "1.0, 1.0, 1.0, 0.0",
@@ -157,7 +177,55 @@
 					"layer"					: 221,
 					"isscreenspace"			: true
 				},
+				{
+					"type"					: "ScnSpriteComponent",
+					"name"					: "CustomiseImage_2",
+					"materialcomponent"		: "GuiMaterialComponent_2",
+					"size"					: "2816, -2048",
+					"colour"				: "1.0, 1.0, 1.0, 0.0",
+					"position"				: "0, 0",
+					"center"				: true,
+					"layer"					: 221,
+					"isscreenspace"			: true
+				},
+				{
+					"type"					: "ScnSpriteComponent",
+					"name"					: "CustomiseImage_3",
+					"materialcomponent"		: "GuiMaterialComponent_3",
+					"size"					: "2816, -2048",
+					"colour"				: "1.0, 1.0, 1.0, 0.0",
+					"position"				: "0, 0",
+					"center"				: true,
+					"layer"					: 221,
+					"isscreenspace"			: true
+				},
+				{
+					"type"					: "ScnSpriteComponent",
+					"name"					: "CustomiseImage_4",
+					"materialcomponent"		: "GuiMaterialComponent_4",
+					"size"					: "2816, -2048",
+					"colour"				: "1.0, 1.0, 1.0, 0.0",
+					"position"				: "0, 0",
+					"center"				: true,
+					"layer"					: 221,
+					"isscreenspace"			: true
+				},
+				{
+					"type"					: "ScnSpriteComponent",
+					"name"					: "CustomiseImage_5",
+					"materialcomponent"		: "GuiMaterialComponent_5",
+					"size"					: "2816, -2048",
+					"colour"				: "1.0, 1.0, 1.0, 0.0",
+					"position"				: "0, 0",
+					"center"				: true,
+					"layer"					: 221,
+					"isscreenspace"			: true
+				},
 
+				{
+					"type"					: "GaCustomisationComponent"
+					
+				},
 				{
 					"type"					: "ScnSoundEmitterComponent"
 				}

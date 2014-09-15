@@ -203,7 +203,7 @@ void GaTankComponent::update( BcF32 Tick )
 		// Spawn the food.
 		if( HasCannon_ )
 		{
-			spawnFood( 8 );
+			spawnFood( 3 );
 		}
 
 	}
@@ -336,23 +336,26 @@ const MaVec2d& GaTankComponent::getDimensions() const
 // spawnFood
 void GaTankComponent::spawnFood( BcU32 Noof )
 {
-	ScnEntitySpawnParams EnemyEntityParams =
+	for( BcU32 Idx = 0; Idx < Noof; ++Idx )
 	{
-		"food", "FoodEntity", BcName( "FoodEntity" ).getUnique(),
-		MaMat4d(),
-		getParentEntity(),
-		nullptr
-	};
-	auto TankDimensions = getDimensions();
-	auto CentralPosition = MaVec3d(
-		BcRandom::Global.randRealRange( 0.0f, TankDimensions.x() ),
-		TankDimensions.y(),
-		0.0f );
+		ScnEntitySpawnParams EnemyEntityParams =
+		{
+			"food", "FoodEntity", BcName( "FoodEntity" ).getUnique(),
+			MaMat4d(),
+			getParentEntity(),
+			nullptr
+		};
+		auto TankDimensions = getDimensions();
+		auto CentralPosition = MaVec3d(
+			BcRandom::Global.randRealRange( 0.0f, TankDimensions.x() ),
+			TankDimensions.y(),
+			0.0f );
 
-	EnemyEntityParams.Transform_.translation(
-		CentralPosition );
+		EnemyEntityParams.Transform_.translation(
+			CentralPosition );
 
-	ScnCore::pImpl()->spawnEntity( EnemyEntityParams ) ;
+		ScnCore::pImpl()->spawnEntity( EnemyEntityParams ) ;
+	}
 }
 
 void GaTankComponent::magicReset()

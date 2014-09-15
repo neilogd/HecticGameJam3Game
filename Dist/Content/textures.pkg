@@ -71,9 +71,38 @@
 
 		{
 			"type"			: "ScnTexture",
-			"name"			: "customisationTexture",
+			"name"			: "customisationTexture0",
 
 			"source"		: "Content/Source/CHOICE-01.png"
+		},
+
+		{
+			"type"			: "ScnTexture",
+			"name"			: "customisationTexture1",
+
+			"source"		: "Content/Source/CHOICE-04.png"
+		},
+
+		{
+			"type"			: "ScnTexture",
+			"name"			: "customisationTexture2",
+
+			"source"		: "Content/Source/CHOICE-05.png"
+		},
+
+		{
+			"type"			: "ScnTexture",
+			"name"			: "customisationTexture3",
+
+			"source"		: "Content/Source/CHOICE-06.png"
+		},
+
+
+		{
+			"type"			: "ScnTexture",
+			"name"			: "customisationTexture4",
+
+			"source"		: "Content/Source/CHOICE-07.png"
 		},
 
 		{
@@ -107,8 +136,8 @@
 			"type"			: "ScnTextureAtlas",
 			"name"			: "tanksheet",
 			"tileatlas"		: true,
-			"tilewidth"		: 768,
-			"tileheight"	: 512,
+			"tilewidth"		: 1536,
+			"tileheight"	: 1024,
 
 			"source"		: "Content/Source/spritesheets/tank sheet V004-01.png"
 		},
@@ -117,8 +146,8 @@
 			"type"			: "ScnTextureAtlas",
 			"name"			: "tanksheet2",
 			"tileatlas"		: true,
-			"tilewidth"		: 256,
-			"tileheight"	: 768,
+			"tilewidth"		: 512,
+			"tileheight"	: 1536,
 
 			"source"		: "Content/Source/spritesheets/tank sheet V004-02.png"
 		},

@@ -325,14 +325,14 @@
 		
 		{
 			"type"			: "ScnMaterial",
-			"name"			: "customisationMaterial",
+			"name"			: "customisationMaterial0",
 
 			// Shader
 			"shader"		: "$(ScnShader:shaders.textured)",
 
 			// Textures
 			"textures"		: {
-				"aDiffuseTex"	: "$(ScnTexture:textures.customisationTexture)"
+				"aDiffuseTex"	: "$(ScnTexture:textures.customisationTexture0)"
 			},
 
 			// State
@@ -344,6 +344,90 @@
 			}
 		},
 		
+		{
+			"type"			: "ScnMaterial",
+			"name"			: "customisationMaterial1",
+
+			// Shader
+			"shader"		: "$(ScnShader:shaders.textured)",
+
+			// Textures
+			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.customisationTexture1)"
+			},
+
+			// State
+			"state"			: {
+				"depth_write_enable" 		: 0,
+				"depth_test_enable" 		: 0,
+				"depth_test_compare" 		: "lessequal",
+				"blend_mode" 				: "blend"
+			}
+		},
+
+		{
+			"type"			: "ScnMaterial",
+			"name"			: "customisationMaterial2",
+
+			// Shader
+			"shader"		: "$(ScnShader:shaders.textured)",
+
+			// Textures
+			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.customisationTexture2)"
+			},
+
+			// State
+			"state"			: {
+				"depth_write_enable" 		: 0,
+				"depth_test_enable" 		: 0,
+				"depth_test_compare" 		: "lessequal",
+				"blend_mode" 				: "blend"
+			}
+		},
+
+		{
+			"type"			: "ScnMaterial",
+			"name"			: "customisationMaterial3",
+
+			// Shader
+			"shader"		: "$(ScnShader:shaders.textured)",
+
+			// Textures
+			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.customisationTexture3)"
+			},
+
+			// State
+			"state"			: {
+				"depth_write_enable" 		: 0,
+				"depth_test_enable" 		: 0,
+				"depth_test_compare" 		: "lessequal",
+				"blend_mode" 				: "blend"
+			}
+		},
+
+		{
+			"type"			: "ScnMaterial",
+			"name"			: "customisationMaterial4",
+
+			// Shader
+			"shader"		: "$(ScnShader:shaders.textured)",
+
+			// Textures
+			"textures"		: {
+				"aDiffuseTex"	: "$(ScnTexture:textures.customisationTexture4)"
+			},
+
+			// State
+			"state"			: {
+				"depth_write_enable" 		: 0,
+				"depth_test_enable" 		: 0,
+				"depth_test_compare" 		: "lessequal",
+				"blend_mode" 				: "blend"
+			}
+		},
+
 		{
 			"type"			: "ScnMaterial",
 			"name"			: "creditMaterial",

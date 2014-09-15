@@ -68,7 +68,13 @@
 		{
 			"name"		:		"SoundClick",
 			"type"		:		"ScnSound",
-			"source"	:		"Content/Source/sounds/1.wav"
+			"source"	:		"Content/Source/sounds/10.wav"
+		},
+
+		{
+			"name"		:		"SoundEat",
+			"type"		:		"ScnSound",
+			"source"	:		"Content/Source/sounds/2.wav"
 		}
 
 	]
