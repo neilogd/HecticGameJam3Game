@@ -13,8 +13,11 @@
 
 #include "GaFishComponent.h"
 #include "GaFoodComponent.h"
+#include "GaPlayerComponent.h"
+#include "GaSpeechBubbleComponent.h"
 #include "GaSwarmManagerComponent.h"
 #include "GaSwarmElementComponent.h"
+#include "GaCannonComponent.h"
 
 #include "System/Scene/Rendering/ScnSpriteComponent.h"
 
@@ -25,7 +28,8 @@
 
 #include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
- 
+
+
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
 DEFINE_RESOURCE( GaFishComponent );
@@ -113,6 +117,19 @@ void GaFishComponent::update( BcF32 Tick )
 
 	// Clamp to range.
 	Size_ = BcClamp( Size_, 0.75f, 2.0f );
+	GaPlayerComponentRef player = getParentEntity()->getComponentByType<GaPlayerComponent>();
+	if (player.isValid())
+	{
+		GaCannonComponentRef cannon = player->getCannon()->getComponentByType<GaCannonComponent>();
+		
+		GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
+		if ( bubble.isValid() && cannon.isValid() && ( cannon->getRequiredSize() <= Size_ ) )
+		{
+			bubble->setTarget( getParentEntity() );
+			bubble->setText( "I've eaten/enough to/escape!" );
+			bubble->show(0.2f);
+		}
+	}
 
 	// Do the flip and stuff.
 	MaVec2d Velocity;

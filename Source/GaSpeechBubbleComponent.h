@@ -38,7 +38,7 @@ public:
 	virtual void onDetach( ScnEntityWeakRef Parent );
 
 	BcF32 getRequiredSize() const;
-	void show();
+	void show( BcF32 VisibleTime = 5.0f );
 	void setText( std::string Text );
 
 	void setTarget( ScnEntityRef Target );

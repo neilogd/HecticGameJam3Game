@@ -183,9 +183,10 @@ BcF32 GaSpeechBubbleComponent::getRequiredSize() const
 
 //////////////////////////////////////////////////////////////////////////
 // show
-void GaSpeechBubbleComponent::show()
+void GaSpeechBubbleComponent::show( BcF32 VisibleTime )
 {
 	Visible_ = true;
+	VisibleTime_ = VisibleTime;
 	TimeBeenVisible_ = 0.0f;
 }
 

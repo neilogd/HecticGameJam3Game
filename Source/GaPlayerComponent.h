@@ -51,7 +51,6 @@ public:
 	MaVec2d getPosition() const;
 	MaVec2d getCannonPosition() const;
 
-
 private:
 	ReObjectRef< class ScnCanvasComponent > Canvas_;
 	MaMat4d ViewMatrix_;
