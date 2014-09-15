@@ -62,6 +62,7 @@ void GaPlayerComponent::StaticRegisterClass()
 		new ReField( "ShownNextMessage_", &GaPlayerComponent::ShownNextMessage_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "TimeSinceStart_", &GaPlayerComponent::TimeSinceStart_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
 		new ReField( "FirstUpdate_", &GaPlayerComponent::FirstUpdate_, bcRFF_TRANSIENT ),
+		new ReField( "PostDeathTimer_", &GaPlayerComponent::PostDeathTimer_, bcRFF_TRANSIENT ),
 	};
 
 	ReRegisterClass< GaPlayerComponent, Super >( Fields )
@@ -92,6 +93,8 @@ void GaPlayerComponent::initialise()
 	FirstUpdate_ = true;
 	ShownNextMessage_ = false;
 	TimeSinceStart_ = 0.0f;
+
+	PostDeathTimer_ = 4.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -147,6 +150,11 @@ void GaPlayerComponent::update( BcF32 Tick )
 	if( Cannon_ == nullptr && Tank_->getComponentByType< GaTankComponent >()->HasCannon_ )
 	{
 		jumpTank( TankIndex_ );
+	}
+
+	if( getParentEntity()->getComponentByType< GaSwarmElementComponent >()->UnitMask_ == GaSwarmManagerComponent::DEAD )
+	{
+		PostDeathTimer_ -= Tick;
 	}
 
 	switch( PlayerState_ )
@@ -336,17 +344,20 @@ eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Ev
 	{
 		if ((ref->UnitMask_ ==GaSwarmManagerComponent::DEAD) || (ref->UnitMask_ == GaSwarmManagerComponent::WINNER))
 		{
-			ScnEntityRef lajdfk = getParentEntity()->getComponentAnyParentByType<GaGameComponent>()->getParentEntity();
-			// Load game
-			ScnEntitySpawnParams StartGameEntityParams =
+			if( PostDeathTimer_ < 0.0f )
 			{
-				"default", "CustomisationEntity", "CustomisationEntity_0",
-				MaMat4d(),
-				lajdfk->getParentEntity(),
-				nullptr
-			};
-			ScnCore::pImpl()->removeEntity(lajdfk);
-			ScnCore::pImpl()->spawnEntity( StartGameEntityParams );
+				ScnEntityRef lajdfk = getParentEntity()->getComponentAnyParentByType<GaGameComponent>()->getParentEntity();
+				// Load game
+				ScnEntitySpawnParams StartGameEntityParams =
+				{
+					"default", "CustomisationEntity", "CustomisationEntity_0",
+					MaMat4d(),
+					lajdfk->getParentEntity(),
+					nullptr
+				};
+				ScnCore::pImpl()->removeEntity(lajdfk);
+				ScnCore::pImpl()->spawnEntity( StartGameEntityParams );
+			}
 		}
 	}
 

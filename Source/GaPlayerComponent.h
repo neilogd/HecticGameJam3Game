@@ -74,6 +74,9 @@ private:
 	ScnEntityRef Tank_;
 	ScnEntityRef Cannon_;
 	bool FirstUpdate_;
+
+	BcF32 PostDeathTimer_;
+
 	enum class PlayerState
 	{
 		IDLE,
