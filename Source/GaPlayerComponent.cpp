@@ -108,7 +108,9 @@ void GaPlayerComponent::preUpdate( BcF32 Tick )
 {
 	Super::preUpdate( Tick );
 
-	ViewMatrix_.translation( -getParentEntity()->getWorldPosition() );
+	auto NewTranslation = ViewMatrix_.translation();
+	NewTranslation = NewTranslation * 0.75f + ( -getParentEntity()->getWorldPosition() * 0.25f );
+	ViewMatrix_.translation( NewTranslation );
 	Canvas_->setViewMatrix( ViewMatrix_ );
 }
 
@@ -308,6 +310,10 @@ void GaPlayerComponent::onAttach( ScnEntityWeakRef Parent )
 	TargetPosition_ = MaVec2d( 
 		getParentEntity()->getWorldPosition().x(), 
 		getParentEntity()->getWorldPosition().y() );
+
+	// Set to start pos.
+	ViewMatrix_.translation( -getParentEntity()->getWorldPosition() );
+	Canvas_->setViewMatrix( ViewMatrix_ );
 
 	Super::onAttach( Parent );
 }
