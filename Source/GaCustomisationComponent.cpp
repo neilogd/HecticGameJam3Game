@@ -36,9 +36,9 @@ void GaCustomisationComponent::StaticRegisterClass()
 	ReField* Fields[] =
 	{
 		new ReField( "Images_", &GaCustomisationComponent::Images_, bcRFF_TRANSIENT ),
-		new ReField( "ImageIdx_", &GaCustomisationComponent::ImageIdx_, DsCore::DsCoreSerialised ),
-		new ReField( "ShowCredits_", &GaCustomisationComponent::ShowCredits_, DsCore::DsCoreSerialised ),
-		new ReField( "InGame_", &GaCustomisationComponent::InGame_, DsCore::DsCoreSerialised ),
+		new ReField( "ImageIdx_", &GaCustomisationComponent::ImageIdx_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "ShowCredits_", &GaCustomisationComponent::ShowCredits_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "InGame_", &GaCustomisationComponent::InGame_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
 	};
 
 	ReRegisterClass< GaCustomisationComponent, Super >( Fields )

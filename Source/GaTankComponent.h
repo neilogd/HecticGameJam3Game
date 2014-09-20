@@ -66,6 +66,9 @@ public:
 
 	std::vector<ScnEntityRef> Children;
 	std::vector<std::string> Messages_;
+
+	BcU32 SpawnHandle_;
+	BcU32 ResetHandle_;
 };
 
 #endif

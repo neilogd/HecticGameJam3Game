@@ -31,7 +31,7 @@ void GaCannonComponent::StaticRegisterClass()
 {
 	ReField* Fields[] =
 	{
-		new ReField( "RequiredSize_", &GaCannonComponent::RequiredSize_, DsCore::DsCoreSerialised )
+		new ReField( "RequiredSize_", &GaCannonComponent::RequiredSize_, ReFieldFlags::bcRFF_DEBUG_EDIT )
 	};
 
 	ReRegisterClass< GaCannonComponent, Super >( Fields )

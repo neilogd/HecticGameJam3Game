@@ -33,12 +33,12 @@ void GaFoodComponent::StaticRegisterClass()
 {
 	ReField* Fields[] =
 	{
-		new ReField( "Size_", &GaFoodComponent::Size_, DsCore::DsCoreSerialised ),
-		new ReField( "Life_", &GaFoodComponent::Life_, DsCore::DsCoreSerialised ),
-		new ReField( "Sprite_", &GaFoodComponent::Sprite_, DsCore::DsCoreSerialised ),
-		new ReField( "Rotation_", &GaFoodComponent::Rotation_, DsCore::DsCoreSerialised ),
-		new ReField( "Sprites_", &GaFoodComponent::Sprites_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
-		new ReField( "SpriteSizes_", &GaFoodComponent::SpriteSizes_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "Size_", &GaFoodComponent::Size_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "Life_", &GaFoodComponent::Life_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "Sprite_", &GaFoodComponent::Sprite_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "Rotation_", &GaFoodComponent::Rotation_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "Sprites_", &GaFoodComponent::Sprites_, bcRFF_TRANSIENT | ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "SpriteSizes_", &GaFoodComponent::SpriteSizes_, bcRFF_TRANSIENT | ReFieldFlags::bcRFF_DEBUG_EDIT ),
 	};
 	
 	ReRegisterClass< GaFoodComponent, Super >( Fields )

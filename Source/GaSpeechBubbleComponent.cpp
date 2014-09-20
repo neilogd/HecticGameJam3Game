@@ -34,13 +34,13 @@ void GaSpeechBubbleComponent::StaticRegisterClass()
 {
 	ReField* Fields[] =
 	{
-		new ReField( "Visible_", &GaSpeechBubbleComponent::Visible_, DsCore::DsCoreSerialised ),
-		new ReField( "FontOffset_", &GaSpeechBubbleComponent::FontOffset_, DsCore::DsCoreSerialised ),
-		new ReField( "VisibleTime_", &GaSpeechBubbleComponent::VisibleTime_, DsCore::DsCoreSerialised ),
-		new ReField( "TimeBeenVisible_", &GaSpeechBubbleComponent::TimeBeenVisible_, DsCore::DsCoreSerialised ),
-		new ReField( "Text_", &GaSpeechBubbleComponent::Text_, DsCore::DsCoreSerialised ),
+		new ReField( "Visible_", &GaSpeechBubbleComponent::Visible_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "FontOffset_", &GaSpeechBubbleComponent::FontOffset_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "VisibleTime_", &GaSpeechBubbleComponent::VisibleTime_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "TimeBeenVisible_", &GaSpeechBubbleComponent::TimeBeenVisible_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "Text_", &GaSpeechBubbleComponent::Text_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
 		new ReField( "TargetEntity_", &GaSpeechBubbleComponent::TargetEntity_, bcRFF_TRANSIENT ),
-		new ReField( "SpriteOffset_", &GaSpeechBubbleComponent::SpriteOffset_,  DsCore::DsCoreSerialised )
+		new ReField( "SpriteOffset_", &GaSpeechBubbleComponent::SpriteOffset_,  ReFieldFlags::bcRFF_DEBUG_EDIT )
 	};
 
 	ReRegisterClass< GaSpeechBubbleComponent, Super >( Fields )
@@ -136,7 +136,7 @@ void GaSpeechBubbleComponent::update( BcF32 Tick )
 		MaVec2d Position( 0 , 0 );
 		MaVec2d localPos  = SpeechBubble_->getPosition();
 		localPos  = MaVec2d(TargetEntity_->getWorldPosition().x(), -TargetEntity_->getWorldPosition().y() ) + FontOffset_;
-		SpeechBubble_->setPosition( MaVec2d( TargetEntity_->getWorldPosition().x(), TargetEntity_->getWorldPosition().y() )  + SpriteOffset_ );
+		SpeechBubble_->setPosition( TargetEntity_->getWorldPosition().xy()   + SpriteOffset_ );
 		for( BcU32 Idx = 0; Idx < Text_.size(); ++Idx )
 		{
 			const auto& Option( Text_[ Idx ] );

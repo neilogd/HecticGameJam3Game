@@ -48,11 +48,11 @@ void GaGuiComponent::StaticRegisterClass()
 		new ReField( "Background_", &GaGuiComponent::Background_, bcRFF_TRANSIENT ),
 		new ReField( "HealthBar_", &GaGuiComponent::HealthBar_, bcRFF_TRANSIENT ),
 		new ReField( "Pointer_", &GaGuiComponent::Pointer_, bcRFF_TRANSIENT ),
-		new ReField( "PointerOffset_", &GaGuiComponent::PointerOffset_, DsCore::DsCoreSerialised ),
-		new ReField( "AssetOffset_", &GaGuiComponent::AssetOffset_, DsCore::DsCoreSerialised ),
-		new ReField( "RotationAmount_", &GaGuiComponent::RotationAmount_, DsCore::DsCoreSerialised ),
-		new ReField( "RotateLeft_", &GaGuiComponent::RotateLeft_, DsCore::DsCoreSerialised ),
-		new ReField( "RotateRight_", &GaGuiComponent::RotateRight_, DsCore::DsCoreSerialised ),
+		new ReField( "PointerOffset_", &GaGuiComponent::PointerOffset_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "AssetOffset_", &GaGuiComponent::AssetOffset_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "RotationAmount_", &GaGuiComponent::RotationAmount_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "RotateLeft_", &GaGuiComponent::RotateLeft_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "RotateRight_", &GaGuiComponent::RotateRight_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
 	};
 
 	ReRegisterClass< GaGuiComponent, Super >( Fields )

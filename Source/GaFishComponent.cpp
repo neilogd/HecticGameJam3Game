@@ -39,16 +39,16 @@ void GaFishComponent::StaticRegisterClass()
 {
 	ReField* Fields[] =
 	{
-		new ReField( "Size_", &GaFishComponent::Size_, DsCore::DsCoreSerialised ),
-		new ReField( "SizeIncreaseMultiplier_", &GaFishComponent::SizeIncreaseMultiplier_, DsCore::DsCoreSerialised ),
-		new ReField( "EatDistance_", &GaFishComponent::EatDistance_, DsCore::DsCoreSerialised ),
-		new ReField( "EatSpeed_", &GaFishComponent::EatSpeed_, DsCore::DsCoreSerialised ),
-		new ReField( "SwarmManager_", &GaFishComponent::SwarmManager_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
-		new ReField( "Sprites_", &GaFishComponent::Sprites_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
-		new ReField( "SpriteSizes_", &GaFishComponent::SpriteSizes_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
-		new ReField( "XScale_", &GaFishComponent::XScale_, DsCore::DsCoreSerialised ),
-		new ReField( "LoseWeightTimer_", &GaFishComponent::LoseWeightTimer_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
-		new ReField( "EatSoundTimer_", &GaFishComponent::EatSoundTimer_, bcRFF_TRANSIENT | DsCore::DsCoreSerialised ),
+		new ReField( "Size_", &GaFishComponent::Size_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "SizeIncreaseMultiplier_", &GaFishComponent::SizeIncreaseMultiplier_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "EatDistance_", &GaFishComponent::EatDistance_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "EatSpeed_", &GaFishComponent::EatSpeed_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "SwarmManager_", &GaFishComponent::SwarmManager_, bcRFF_TRANSIENT | ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "Sprites_", &GaFishComponent::Sprites_, bcRFF_TRANSIENT | ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "SpriteSizes_", &GaFishComponent::SpriteSizes_, bcRFF_TRANSIENT | ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "XScale_", &GaFishComponent::XScale_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "LoseWeightTimer_", &GaFishComponent::LoseWeightTimer_, bcRFF_TRANSIENT | ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "EatSoundTimer_", &GaFishComponent::EatSoundTimer_, bcRFF_TRANSIENT | ReFieldFlags::bcRFF_DEBUG_EDIT ),
 	};
 	
 	ReRegisterClass< GaFishComponent, Super >( Fields )

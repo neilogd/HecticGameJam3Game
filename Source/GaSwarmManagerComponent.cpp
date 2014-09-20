@@ -31,10 +31,10 @@ DEFINE_RESOURCE( GaSwarmManagerComponent );
 void GaSwarmManagerComponent::StaticRegisterClass()
 {	ReField* Fields[] =
 	{
-		new ReField( "VelocityNeighbourDistance_", &GaSwarmManagerComponent::VelocityNeighbourDistance_ , DsCore::DsCoreSerialised ),
-		new ReField( "PositionNeighbourDistance_", &GaSwarmManagerComponent::PositionNeighbourDistance_ , DsCore::DsCoreSerialised ),
-		new ReField( "SeparationDistance_", &GaSwarmManagerComponent::SeparationDistance_, DsCore::DsCoreSerialised ),
-		new ReField( "EdgeDistance_", &GaSwarmManagerComponent::EdgeDistance_, DsCore::DsCoreSerialised ),
+		new ReField( "VelocityNeighbourDistance_", &GaSwarmManagerComponent::VelocityNeighbourDistance_ , ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "PositionNeighbourDistance_", &GaSwarmManagerComponent::PositionNeighbourDistance_ , ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "SeparationDistance_", &GaSwarmManagerComponent::SeparationDistance_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
+		new ReField( "EdgeDistance_", &GaSwarmManagerComponent::EdgeDistance_, ReFieldFlags::bcRFF_DEBUG_EDIT ),
 	};
 	ReRegisterClass< GaSwarmManagerComponent, Super >( Fields )
 		.addAttribute( new ScnComponentAttribute( 0 ) );
