@@ -11,7 +11,8 @@
 
 			"backendtypes" : [
 				"D3D11",
-				"GLSL"
+				"GLSL",
+				"GLSL_ES"
 			],
 
 			"entrypoints"		: {
@@ -31,7 +32,8 @@
 
 			"backendtypes" : [
 				"D3D11",
-				"GLSL"
+				"GLSL",
+				"GLSL_ES"
 			],
 
 			"entrypoints"		: {
@@ -51,7 +53,8 @@
 
 			"backendtypes" : [
 				"D3D11",
-				"GLSL"
+				"GLSL",
+				"GLSL_ES"
 			],
 
 			"entrypoints"		: {
@@ -71,7 +74,8 @@
 
 			"backendtypes" : [
 				"D3D11",
-				"GLSL"
+				"GLSL",
+				"GLSL_ES"
 			],
 
 			"entrypoints"		: {

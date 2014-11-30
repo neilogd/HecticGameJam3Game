@@ -12,6 +12,16 @@
 				"aDiffuseTex"	: "$(ScnTexture:textures.default)"
 			},
 
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
+			},
+
 			// State
 			"state"			: {
 				"depth_write_enable" 		: 0,
@@ -33,6 +43,16 @@
 				"aDiffuseTex"	: "$(ScnTexture:textures.particles)"
 			},
 
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
+			},
+
 			// State
 			"state"			: {
 				"depth_write_enable" 		: 0,
@@ -52,6 +72,16 @@
 			// Textures
 			"textures"		: {
 				"aDiffuseTex"	: "$(ScnTexture:textures.default)"
+			},
+
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
 			},
 
 			// State
@@ -98,6 +128,16 @@
 				"aDiffuseTex"	: "$(ScnTexture:textures.test)"
 			},
 
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
+			},
+
 			// State
 			"state"			: {
 				"depth_write_enable" 		: 1,
@@ -124,6 +164,16 @@
 				"aDiffuseTex"	: "$(ScnTexture:textures.tanksheet)"
 			},
 
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
+			},
+
 			// State
 			"state"			: {
 				"depth_write_enable" 		: 0,
@@ -143,6 +193,16 @@
 			// Textures
 			"textures"		: {
 				"aDiffuseTex"	: "$(ScnTexture:textures.winnertank)"
+			},
+
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
 			},
 
 			// State
@@ -167,6 +227,16 @@
 				"aDiffuseTex"	: "$(ScnTexture:textures.tanksheet2)"
 			},
 
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
+			},
+
 			// State
 			"state"			: {
 				"depth_write_enable" 		: 0,
@@ -186,6 +256,16 @@
 			// Textures
 			"textures"		: {
 				"aDiffuseTex"	: "$(ScnTexture:textures.fishsheet)"
+			},
+
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
 			},
 
 			// State
@@ -209,6 +289,16 @@
 				"aDiffuseTex"	: "$(ScnTexture:textures.foodsheet)"
 			},
 
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
+			},
+
 			// State
 			"state"			: {
 				"depth_write_enable" 		: 0,
@@ -228,6 +318,16 @@
 			// Textures
 			"textures"		: {
 				"aDiffuseTex"	: "$(ScnTexture:textures.default)"
+			},
+
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
 			},
 
 			// State
@@ -251,6 +351,16 @@
 				"aDiffuseTex"	: "$(ScnTexture:textures.healthBar)"
 			},
 
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
+			},
+
 			// State
 			"state"			: {
 				"depth_write_enable" 		: 0,
@@ -270,6 +380,16 @@
 			// Textures
 			"textures"		: {
 				"aDiffuseTex"	: "$(ScnTexture:textures.healthBarBacking)"
+			},
+
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
 			},
 
 			// State
@@ -293,6 +413,16 @@
 				"aDiffuseTex"	: "$(ScnTexture:textures.foodBarPointer)"
 			},
 
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
+			},
+
 			// State
 			"state"			: {
 				"depth_write_enable" 		: 0,
@@ -312,6 +442,16 @@
 			// Textures
 			"textures"		: {
 				"aDiffuseTex"	: "$(ScnTexture:textures.speechBubbleTexture)"
+			},
+
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
 			},
 
 			// State
@@ -335,6 +475,16 @@
 				"aDiffuseTex"	: "$(ScnTexture:textures.customisationTexture)"
 			},
 
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
+			},
+
 			// State
 			"state"			: {
 				"depth_write_enable" 		: 0,
@@ -354,6 +504,16 @@
 			// Textures
 			"textures"		: {
 				"aDiffuseTex"	: "$(ScnTexture:textures.creditTexture)"
+			},
+
+			// Samplers
+			"samplers"              : {
+				"aDiffuseTex"   : {
+					"addressu" : "wrap",
+					"addressv" : "wrap",
+					"minfilter" : "linear_mipmap_linear",
+					"magfilter" : "linear"
+				}
 			},
 
 			// State
