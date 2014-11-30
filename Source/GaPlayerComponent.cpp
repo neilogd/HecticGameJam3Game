@@ -33,6 +33,9 @@
 #include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
 #include "GaSpeechBubbleComponent.h"
+
+#include <cmath>
+
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
 DEFINE_RESOURCE( GaPlayerComponent );

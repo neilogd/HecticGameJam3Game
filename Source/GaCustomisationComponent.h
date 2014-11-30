@@ -16,7 +16,8 @@
 
 #include "Psybrus.h"
 #include "System/Scene/Rendering/ScnSpriteComponent.h"
-#include "System/OS/OsCore.h"
+#include "System/Os/OsCore.h"
+
 //////////////////////////////////////////////////////////////////////////
 // GaExampleComponentRef
 typedef ReObjectRef< class GaCustomisationComponent > GaCustomisationComponentRef;

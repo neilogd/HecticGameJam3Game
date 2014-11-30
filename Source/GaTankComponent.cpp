@@ -258,7 +258,7 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 		{
 			"enemies", BcName( "EnemyEntity", Fish ), BcName( "EnemyEntity", FishIdx ),
 			MaMat4d(),
-			Parent,
+			ScnEntityRef( Parent ),
 			nullptr
 		};
 
@@ -275,9 +275,9 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 	BcChar buffer[256];
 	BcMemZero(buffer, 256);
 	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Spawn_Food");
-	DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::spawnFood, this, 1 ) );
+	//DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::spawnFood, this, 1 ) );
 	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Reset_Position");
-	DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::magicReset, this ) );
+	//DsCore::pImpl()->registerFunction( buffer, std::bind( &GaTankComponent::magicReset, this ) );
 #endif
 
 	if( HasCannon_ )
@@ -295,7 +295,7 @@ void GaTankComponent::onAttach( ScnEntityWeakRef Parent )
 		{
 			"cannon", "CannonEntity", "CannonEntity_0",
 			MaMat4d(),
-			Parent,
+			ScnEntityRef( Parent ),
 			nullptr
 		};
 
@@ -317,9 +317,9 @@ void GaTankComponent::onDetach( ScnEntityWeakRef Parent )
 #if !PSY_PRODUCTION
 	BcChar buffer[256];
 	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Spawn_Food");
-	DsCore::pImpl()->deregisterFunction( buffer );
+	//DsCore::pImpl()->deregisterFunction( buffer );
 	BcSPrintf(buffer, "%s_%s", (*getParentEntity()->getName()).c_str(), "Reset_Position");
-	DsCore::pImpl()->deregisterFunction( buffer );
+	//DsCore::pImpl()->deregisterFunction( buffer );
 #endif
 
 	Super::onDetach( Parent );	

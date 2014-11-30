@@ -61,7 +61,7 @@ public:
 	MaVec2d								capVector( MaVec2d vector, BcF32 MaxMagnitude );
 	MaVec2d								forceAwayFromNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask );
 	MaVec2d								forceTowardsNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask, BcF32 Range );
-	SwarmElementList					getNearbyUnits( MaVec2d Position, BcU8 UnitCount, BcU8 Mask, BcF32 Range = FLT_MAX );
+	SwarmElementList					getNearbyUnits( MaVec2d Position, BcU8 UnitCount, BcU8 Mask, BcF32 Range = std::numeric_limits< BcF32 >::max() );
 	bool								unitTypeExists( BcU8 Mask );
 public:
 	static const BcU8 PLAYER = 0x01;

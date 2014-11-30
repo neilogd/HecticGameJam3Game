@@ -24,6 +24,9 @@
 #include "Base/BcMath.h"
 #include "Base/BcProfiler.h"
 
+#include <cmath>
+#include <algorithm>
+
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
 DEFINE_RESOURCE( GaSwarmManagerComponent );
@@ -189,7 +192,7 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 			( Element->AttackRespondTimer_ < 0.0f ||
 			Element->AttackRespondTimer_ > 4.5f ) )
 		{
-			Move += forceTowardsNearbyUnits( Element, 1, FOOD, FLT_MAX );
+			Move += forceTowardsNearbyUnits( Element, 1, FOOD, std::numeric_limits< BcF32 >::max() );
 			Element->setAttackTarget( nullptr );
 		}
 		else
@@ -343,7 +346,7 @@ MaVec2d GaSwarmManagerComponent::capVector( MaVec2d vector, BcF32 MaxMagnitude )
 
 MaVec2d GaSwarmManagerComponent::forceAwayFromNearbyUnits( GaSwarmElementComponentRef Unit, BcU8 UnitCount, BcU8 Mask )
 {
-	return -forceTowardsNearbyUnits( Unit, UnitCount, Mask, FLT_MAX );
+	return -forceTowardsNearbyUnits( Unit, UnitCount, Mask, std::numeric_limits< BcF32 >::max() );
 
 }
 
