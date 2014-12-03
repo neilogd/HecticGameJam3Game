@@ -192,6 +192,21 @@ void GaSpeechBubbleComponent::setText(std::string Text)
 	Text_.clear();
 
 	//boost::split(Text_, Text, boost::is_any_of("/"));
+	std::string Next;
+	for( auto Char : Text )
+	{
+		if( Char != '/' )
+		{
+			Next += Char;
+		}
+		else
+		{
+			Text_.push_back( Next );
+			Next = "";
+		}
+	}
+
+	Text_.push_back( Next );
 }
 
 void GaSpeechBubbleComponent::setTarget( ScnEntityRef Target )

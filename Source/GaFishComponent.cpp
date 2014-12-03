@@ -113,7 +113,7 @@ void GaFishComponent::update( BcF32 Tick )
 	}
 
 	// Slowly size down.
-	Size_ = Size_ - ( 1.0f * Tick * 0.05f );
+	Size_ = Size_ - ( 1.0f * Tick * 0.02f );
 
 	// Clamp to range.
 	Size_ = BcClamp( Size_, 0.75f, 2.0f );
