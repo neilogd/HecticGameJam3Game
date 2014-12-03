@@ -7,16 +7,15 @@
 ///////////////////////////////////////////////////////////////////////
 // GuiUniformBlock
 BEGIN_CBUFFER( GaGuiShaderUniformBlockData )
-	float4 VariableNameHere_;
+	ENTRY( float4, VariableNameHere_ )
 END_CBUFFER
 
 #if !PSY_USE_CBUFFER
 GaGuiShaderUniformBlockData GaGuiShaderUniformBlockDataVS;
 
-#  define VariableNameHere_ ScnShaderViewUniformBlockDataVS.XVariableNameHere_
+#  define VariableNameHere_ GaGuiShaderUniformBlockDataVS.XVariableNameHere_
 
 #endif
-
 
 ////////////////////////////////////////////////////////////////////////
 // VS_OUTPUT
@@ -50,7 +49,7 @@ VS_OUTPUT vertexMain( VS_INPUT i )
 
 ////////////////////////////////////////////////////////////////////////
 // pixelMain
-PSY_SAMPLER_2D( DiffuseTex )
+PSY_SAMPLER_2D( DiffuseTex );
 
 PS_OUTPUT pixelMain( VS_OUTPUT i )
 {

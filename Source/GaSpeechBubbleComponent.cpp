@@ -13,9 +13,6 @@
 
 #include "GaSpeechBubbleComponent.h"
 
-#include <boost/algorithm/string/split.hpp>
-#include <boost/algorithm/string/classification.hpp>
-
 #include "System/Scene/Rendering/ScnShaderFileData.h"
 #include "System/Scene/Rendering/ScnViewComponent.h"
 
@@ -26,6 +23,7 @@
 
 #include "Base/BcProfiler.h"
 #include "GaPlayerComponent.h"
+
 //////////////////////////////////////////////////////////////////////////
 // Define resource internals.
 DEFINE_RESOURCE( GaSpeechBubbleComponent );
@@ -158,10 +156,8 @@ void GaSpeechBubbleComponent::update( BcF32 Tick )
 //virtual
 void GaSpeechBubbleComponent::onAttach( ScnEntityWeakRef Parent )
 {
-
-
-
 	Super::onAttach( Parent );
+
 	Canvas_ = Parent->getComponentAnyParentByType< ScnCanvasComponent >();
 	FontComponent_ = ParentEntity_->getComponentAnyParentByType<ScnFontComponent>();
 }
@@ -172,6 +168,7 @@ void GaSpeechBubbleComponent::onAttach( ScnEntityWeakRef Parent )
 void GaSpeechBubbleComponent::onDetach( ScnEntityWeakRef Parent )
 {
 	Super::onDetach( Parent );
+	std::vector< int > Bleh;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -193,7 +190,8 @@ void GaSpeechBubbleComponent::show( BcF32 VisibleTime )
 void GaSpeechBubbleComponent::setText(std::string Text)
 {
 	Text_.clear();
-	boost::split(Text_, Text, boost::is_any_of("/"));
+
+	//boost::split(Text_, Text, boost::is_any_of("/"));
 }
 
 void GaSpeechBubbleComponent::setTarget( ScnEntityRef Target )

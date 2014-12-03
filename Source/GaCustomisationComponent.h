@@ -11,7 +11,7 @@
 * 
 **************************************************************************/
 
-#ifndef __GGaCustomisationComponent_H__
+#ifndef __GaCustomisationComponent_H__
 #define __GaCustomisationComponent_H__
 
 #include "Psybrus.h"
