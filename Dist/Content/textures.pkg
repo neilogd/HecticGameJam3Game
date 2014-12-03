@@ -11,7 +11,7 @@
 		{
 			"type"			: "ScnTextureAtlas",
 			"name"			: "particles",
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: [
 				"EngineContent/TextureSource/particle0.png",
@@ -24,7 +24,7 @@
 		{
 			"type"			: "ScnTexture",
 			"name"			: "test",
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: "Content/Source/testtexture.png"
 		},
@@ -32,7 +32,7 @@
 		{
 			"type"			: "ScnTexture",
 			"name"			: "healthbarBacking",
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: "Content/Source/GUI Assests-01.png"
 		},
@@ -40,7 +40,7 @@
 		{
 			"type"			: "ScnTexture",
 			"name"			: "healthbar",
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: "Content/Source/GUI Assests-02.png"
 		},
@@ -48,7 +48,7 @@
 		{
 			"type"			: "ScnTexture",
 			"name"			: "foodBarPointer",
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: "Content/Source/GUI Assests-03.png"
 		},
@@ -56,7 +56,7 @@
 		{
 			"type"			: "ScnTexture",
 			"name"			: "speechBubbleTexture",
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: "Content/Source/GUI Assests-04.png"
 		},
@@ -64,7 +64,7 @@
 		{
 			"type"			: "ScnTexture",
 			"name"			: "customisationTexture",
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: "Content/Source/CHOICE-01.png"
 		},
@@ -72,7 +72,7 @@
 		{
 			"type"			: "ScnTexture",
 			"name"			: "creditTexture",
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: "Content/Source/CHOICE-02.png"
 		},
@@ -83,7 +83,7 @@
 			"tileatlas"		: true,
 			"tilewidth"		: 256,
 			"tileheight"	: 256,
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: "Content/Source/spritesheets/fish sheet V005-01.png"
 		},
@@ -94,7 +94,7 @@
 			"tileatlas"		: true,
 			"tilewidth"		: 512,
 			"tileheight"	: 512,
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: "Content/Source/spritesheets/food sheet V001-01.png"
 		},
@@ -105,7 +105,7 @@
 			"tileatlas"		: true,
 			"tilewidth"		: 768,
 			"tileheight"	: 512,
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: "Content/Source/spritesheets/tank sheet V004-01.png"
 		},
@@ -116,7 +116,7 @@
 			"tileatlas"		: true,
 			"tilewidth"		: 256,
 			"tileheight"	: 768,
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: "Content/Source/spritesheets/tank sheet V004-02.png"
 		},
@@ -124,7 +124,7 @@
 		{
 			"type"			: "ScnTexture",
 			"name"			: "winnertank",
-			"rounduppoweroftwo" : true,
+			"rounddownpoweroftwo" : true,
 
 			"source"		: "Content/Source/spritesheets/CHOICE-03.png"
 		}
