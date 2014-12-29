@@ -84,7 +84,7 @@ void GaSwarmManagerComponent::update( BcF32 Tick )
 {
 	if (!TankComponent_.isValid())
 	{
-		TankComponent_ = getParentEntity()->getComponentAnyParentByType<GaTankComponent>();
+		TankComponent_ = getComponentAnyParentByType<GaTankComponent>();
 	}
 	bool hasTank = TankComponent_.isValid();
 	MaVec2d CentralPosition;
@@ -225,7 +225,7 @@ MaVec2d GaSwarmManagerComponent::defaultMovement( MaVec2d Move, GaSwarmElementCo
 	// if we're a player...
 	if( Element->getUnitMask() == PLAYER )
 	{
-		GaPlayerComponentRef Player = Element->getParentEntity()->getComponentByType< GaPlayerComponent >();
+		GaPlayerComponentRef Player = Element->getComponentByType< GaPlayerComponent >();
 
 		// Move towards food.
 		if( !Attacking && unitTypeExists( FOOD ) )

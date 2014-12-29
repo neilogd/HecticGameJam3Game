@@ -84,7 +84,7 @@ void GaFishComponent::update( BcF32 Tick )
 {
 	Super::update( Tick );
 
-	auto Element = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
+	auto Element = getComponentByType< GaSwarmElementComponent >();
 
 	if( Element->getUnitMask() != GaSwarmManagerComponent::DEAD )
 	{
@@ -103,7 +103,7 @@ void GaFishComponent::update( BcF32 Tick )
 
 				if( Distance < EatDistance_ )
 				{
-					auto Food = FoodSwarmElement->getParentEntity()->getComponentByType< GaFoodComponent >();
+					auto Food = FoodSwarmElement->getComponentByType< GaFoodComponent >();
 					auto AmountAte = Food->tryEat( Tick * EatSpeed_ );
 
 					Size_ += AmountAte * SizeIncreaseMultiplier_;
@@ -117,12 +117,12 @@ void GaFishComponent::update( BcF32 Tick )
 
 	// Clamp to range.
 	Size_ = BcClamp( Size_, 0.75f, 2.0f );
-	GaPlayerComponentRef player = getParentEntity()->getComponentByType<GaPlayerComponent>();
+	GaPlayerComponentRef player = getComponentByType<GaPlayerComponent>();
 	if (player.isValid())
 	{
 		GaCannonComponentRef cannon = player->getCannon()->getComponentByType<GaCannonComponent>();
 		
-		GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
+		GaSpeechBubbleComponentRef bubble = getComponentAnyParentByType<GaSpeechBubbleComponent>();
 		if ( bubble.isValid() && cannon.isValid() && ( cannon->getRequiredSize() <= Size_ ) )
 		{
 			bubble->setTarget( getParentEntity() );
@@ -234,6 +234,6 @@ void GaFishComponent::updateSwarmManagerRef( GaSwarmManagerComponent* SwarmManag
 	}
 	else
 	{
-		SwarmManager_ = getParentEntity()->getComponentAnyParentByType< GaSwarmManagerComponent >();
+		SwarmManager_ = getComponentAnyParentByType< GaSwarmManagerComponent >();
 	}
 }

@@ -63,7 +63,7 @@ void GaEnemyComponent::onAttach( ScnEntityWeakRef Parent )
 		tank->registerEnemy(getParentEntity());
 	}
 
-	getParentEntity()->getComponentByType< GaFishComponent >()->updateSwarmManagerRef( nullptr );
+	getComponentByType< GaFishComponent >()->updateSwarmManagerRef( nullptr );
 
 }
 

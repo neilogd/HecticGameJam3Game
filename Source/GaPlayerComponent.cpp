@@ -122,7 +122,7 @@ void GaPlayerComponent::update( BcF32 Tick )
 {
 	if ( FirstUpdate_ )
 	{
-		GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
+		GaSpeechBubbleComponentRef bubble = getComponentAnyParentByType<GaSpeechBubbleComponent>();
 		if (bubble.isValid())
 		{
 			FirstUpdate_ = false;
@@ -135,7 +135,7 @@ void GaPlayerComponent::update( BcF32 Tick )
 	if ( (TimeSinceStart_ > 5.0f ) && !ShownNextMessage_)
 	{
 		ShownNextMessage_ = true;
-		GaSpeechBubbleComponentRef bubble = getParentEntity()->getComponentAnyParentByType<GaSpeechBubbleComponent>();
+		GaSpeechBubbleComponentRef bubble = getComponentAnyParentByType<GaSpeechBubbleComponent>();
 		if (bubble.isValid())
 		{
 			bubble->setTarget( getParentEntity() );
@@ -154,7 +154,7 @@ void GaPlayerComponent::update( BcF32 Tick )
 	{
 	case PlayerState::IDLE:
 		{	
-			auto SwarmElement = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
+			auto SwarmElement = getComponentByType< GaSwarmElementComponent >();
 			if( SwarmElement->getAttackTarget() )
 			{
 				TargetPosition_ = SwarmElement->getAttackTarget()->getPosition();
@@ -186,7 +186,7 @@ void GaPlayerComponent::update( BcF32 Tick )
 			BcF32 Distance = ( getPosition() - getCannonPosition() ).magnitude();
 			if( Distance < 70.0f )
 			{
-				auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+				auto GameComponent = getComponentAnyParentByType< GaGameComponent >();
 				GameComponent->playSound( "SoundSuck", BcFalse );
 				PlayerState_ = PlayerState::CANNON_LOAD;
 			}			
@@ -209,7 +209,7 @@ void GaPlayerComponent::update( BcF32 Tick )
 			{
 				TargetPosition_ = getPosition();
 
-				auto FishComponent = getParentEntity()->getComponentByType< GaFishComponent >();
+				auto FishComponent = getComponentByType< GaFishComponent >();
 				auto CannonComponent = Cannon_->getComponentByType< GaCannonComponent >();
 
 				if( FishComponent->getFishSize() < CannonComponent->getRequiredSize() )
@@ -234,7 +234,7 @@ void GaPlayerComponent::update( BcF32 Tick )
 
 			Position.y( Position.y() + std::sin( ClampedTimer * BcPI ) * JumpHeight_ );
 
-			auto Fish = getParentEntity()->getComponentByType< GaFishComponent >();
+			auto Fish = getComponentByType< GaFishComponent >();
 			Fish->setFishSize( Fish->getFishSize() - Tick * 0.5f );
 			
 			getParentEntity()->setWorldPosition(
@@ -250,14 +250,14 @@ void GaPlayerComponent::update( BcF32 Tick )
 
 				if( !Tank_->getComponentByType< GaTankComponent >()->HasCannon_ )
 				{
-					auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+					auto GameComponent = getComponentAnyParentByType< GaGameComponent >();
 					GameComponent->stopAllSounds();
 					GameComponent->playSound( "MusicWin", BcFalse );
 
-					getParentEntity()->getComponentByType< GaSwarmElementComponent >()->UnitMask_ = GaSwarmManagerComponent::WINNER;
+					getComponentByType< GaSwarmElementComponent >()->UnitMask_ = GaSwarmManagerComponent::WINNER;
 
 					BcU32 Idx = 0;
-					while( auto SpriteComponent = getParentEntity()->getComponentByType< ScnSpriteComponent >( Idx++ ) )
+					while( auto SpriteComponent = getComponentByType< ScnSpriteComponent >( Idx++ ) )
 					{
 						SpriteComponent->setAnimation( "none" );
 						SpriteComponent->setAnimation( "dead" );
@@ -292,7 +292,7 @@ void GaPlayerComponent::onAttach( ScnEntityWeakRef Parent )
 	Canvas_ = Parent->getComponentAnyParentByType< ScnCanvasComponent >( 0 );
 	BcAssertMsg( Canvas_.isValid(), "Player component needs to be attached to an entity with a canvas component in any parent!" );
 
-	OriginalSize_ = getParentEntity()->getComponentByType< GaFishComponent >()->getFishSize();
+	OriginalSize_ = getComponentByType< GaFishComponent >()->getFishSize();
 
 	// Jump tank 0.
 	jumpTank( 0 );
@@ -328,12 +328,12 @@ void GaPlayerComponent::onDetach( ScnEntityWeakRef Parent )
 // onMouseDown
 eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Event )
 {
-	GaSwarmElementComponentRef ref = getParentEntity()->getComponentByType<GaSwarmElementComponent>();
+	GaSwarmElementComponentRef ref = getComponentByType<GaSwarmElementComponent>();
 	if ( ref.isValid() )
 	{
 		if ((ref->UnitMask_ ==GaSwarmManagerComponent::DEAD) || (ref->UnitMask_ == GaSwarmManagerComponent::WINNER))
 		{
-			ScnEntityRef lajdfk = getParentEntity()->getComponentAnyParentByType<GaGameComponent>()->getParentEntity();
+			ScnEntityRef lajdfk = getComponentAnyParentByType<GaGameComponent>()->getParentEntity();
 			// Load game
 			ScnEntitySpawnParams StartGameEntityParams =
 			{
@@ -359,10 +359,10 @@ eEvtReturn GaPlayerComponent::onMouseDown( EvtID ID, const OsEventInputMouse& Ev
 	InverseViewMatrix.inverse();
 	MousePosition = MousePosition * InverseViewMatrix;
 
-	auto SwarmElement = getParentEntity()->getComponentByType< GaSwarmElementComponent >();
+	auto SwarmElement = getComponentByType< GaSwarmElementComponent >();
 	
 	// Do die sound.
-	auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+	auto GameComponent = getComponentAnyParentByType< GaGameComponent >();
 	
 	// Target position.
 	if( Event.ButtonCode_ == 0 )
@@ -399,25 +399,25 @@ void GaPlayerComponent::jumpTank( BcU32 TankIndex, BcBool Force )
 	if( Tank_ != nullptr )
 	{
 		Tank_->getComponentByType< GaSwarmManagerComponent >()->deregisterElement( 
-			getParentEntity()->getComponentByType< GaSwarmElementComponent >() );
+			getComponentByType< GaSwarmElementComponent >() );
 	}
 
-	Tank_ = getParentEntity()->getComponentAnyParentByType< ScnEntity >( BcName( "TankEntity", TankIndex ) );
+	Tank_ = getComponentAnyParentByType< ScnEntity >( BcName( "TankEntity", TankIndex ) );
 	Cannon_ = Tank_->getComponentByType< ScnEntity >( "CannonEntity_0" );
 
-	getParentEntity()->getComponentByType< GaFishComponent >()->updateSwarmManagerRef( 
+	getComponentByType< GaFishComponent >()->updateSwarmManagerRef( 
 		Tank_->getComponentAnyParentByType< GaSwarmManagerComponent >() );
 
 	
 	if( Tank_ != nullptr )
 	{
 		Tank_->getComponentByType< GaSwarmManagerComponent >()->registerElement( 
-			getParentEntity()->getComponentByType< GaSwarmElementComponent >() );
+			getComponentByType< GaSwarmElementComponent >() );
 	}
 
 	if( TankIndex != TankIndex_ || Force )
 	{
-		auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+		auto GameComponent = getComponentAnyParentByType< GaGameComponent >();
 		GameComponent->playSound( "SoundCannon", BcFalse );
 
 		PlayerState_ = PlayerState::JUMP;

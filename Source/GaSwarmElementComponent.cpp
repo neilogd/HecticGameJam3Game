@@ -139,7 +139,7 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 		return;
 	}
 
-	auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+	auto GameComponent = getComponentAnyParentByType< GaGameComponent >();
 
 	// Check target for attack.
 	if( getAttackTarget() != nullptr )
@@ -161,7 +161,7 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 						//ScnCore::pImpl()->removeEntity( getAttackTarget()->getParentEntity() );
 						if( ( getAttackTarget()->UnitMask_ & GaSwarmManagerComponent::PLAYER ) != 0 )
 						{
-							auto GameComponent = getParentEntity()->getComponentAnyParentByType< GaGameComponent >();
+							auto GameComponent = getComponentAnyParentByType< GaGameComponent >();
 							GameComponent->stopAllSounds();
 							GameComponent->playSound( "MusicLose", BcFalse );
 						}
@@ -175,7 +175,7 @@ void GaSwarmElementComponent::update( BcF32 Tick )
 					}
 
 					BcU32 Idx = 0;
-					while( auto SpriteComponent = getParentEntity()->getComponentByType< ScnSpriteComponent >( Idx++ ) )
+					while( auto SpriteComponent = getComponentByType< ScnSpriteComponent >( Idx++ ) )
 					{
 						SpriteComponent->setAnimation( "attack" );
 					}

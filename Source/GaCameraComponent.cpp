@@ -40,7 +40,7 @@ void GaCameraComponent::StaticRegisterClass()
 
 //////////////////////////////////////////////////////////////////////////
 // initialise
-void GaCameraComponent::initialise( const Json::Value& Object )
+void GaCameraComponent::initialise()
 {
 	Super::initialise();
 
@@ -48,6 +48,13 @@ void GaCameraComponent::initialise( const Json::Value& Object )
 	NextCameraState_ = STATE_IDLE;
 	CameraDistance_ = 64.0f;
 	CameraZoom_ = 0.0f;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// initialise
+void GaCameraComponent::initialise( const Json::Value& Object )
+{
+	initialise();
 }
 
 //////////////////////////////////////////////////////////////////////////

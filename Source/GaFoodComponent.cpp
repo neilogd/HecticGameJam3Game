@@ -94,7 +94,7 @@ void GaFoodComponent::onAttach( ScnEntityWeakRef Parent )
 
 	// Grab all sprites for scaling.
 	BcU32 Idx = 0;
-	while( auto SpriteComponent = Parent->getComponentByType< ScnSpriteComponent >( Idx++ ) )
+	while( auto SpriteComponent = getComponentByType< ScnSpriteComponent >( Idx++ ) )
 	{
 		Sprites_.push_back( SpriteComponent );
 		SpriteSizes_.push_back( SpriteComponent->getSize() );

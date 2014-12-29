@@ -73,7 +73,7 @@ void GaGameComponent::onDetach( ScnEntityWeakRef Parent )
 // playSound
 void GaGameComponent::playSound( std::string Name, BcBool Looping )
 {
-	auto SoundEmitter = getParentEntity()->getComponentAnyParentByType< ScnSoundEmitterComponent >();
+	auto SoundEmitter = getComponentAnyParentByType< ScnSoundEmitterComponent >();
 
 	ScnSoundRef Sound;
 	if( CsCore::pImpl()->requestResource( "sounds", Name, Sound ) )
@@ -86,6 +86,6 @@ void GaGameComponent::playSound( std::string Name, BcBool Looping )
 // stopAllSounds
 void GaGameComponent::stopAllSounds()
 {
-	auto SoundEmitter = getParentEntity()->getComponentAnyParentByType< ScnSoundEmitterComponent >();
+	auto SoundEmitter = getComponentAnyParentByType< ScnSoundEmitterComponent >();
 	SoundEmitter->stopAll();
 }

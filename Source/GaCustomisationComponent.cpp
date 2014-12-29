@@ -86,8 +86,8 @@ void GaCustomisationComponent::update( BcF32 Tick )
 void GaCustomisationComponent::onAttach( ScnEntityWeakRef Parent )
 {
 	Super::onAttach( Parent );
-	Image_ = getParentEntity()->getComponentByType<ScnSpriteComponent>( "CustomiseImage_0" );
-	CreditImage_ = getParentEntity()->getComponentByType<ScnSpriteComponent>( "CreditImage_0" );
+	Image_ = getComponentByType<ScnSpriteComponent>( "CustomiseImage_0" );
+	CreditImage_ = getComponentByType<ScnSpriteComponent>( "CreditImage_0" );
 
 
 	OsEventInputMouse::Delegate OnMouseDown = OsEventInputMouse::Delegate::bind< GaCustomisationComponent, &GaCustomisationComponent::onMouseDown >( this );
